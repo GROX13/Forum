@@ -1,14 +1,7 @@
 package JDO;
 
-import info.DataBaseInfo;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import connection.DataBaseConnection;
-import connection.DataBaseManager;
 
 /**
  * 
@@ -24,81 +17,111 @@ public class Message {
 	private ArrayList<String> MESSAGE_IMAGES;
 	private ArrayList<String> MESSAGE_VIDEOS;
 
-	private DataBaseManager DBManager;
-
-	public Message(int ID, DataBaseConnection connectionPool) {
-		DBManager = new DataBaseManager(connectionPool);
-		String query = "SELECT * FROM " + DataBaseInfo.MYSQL_TABLE_MESSAGE
-				+ " WHERE " + DataBaseInfo.MYSQL_TABLE_ID + " = ?;";
-		ArrayList<Object> values = new ArrayList<Object>();
-		values.add(ID);
-		ResultSet rs = DBManager.executeQueryStatement(query, values);
-		try {
-			rs.next();
-			this.ID = ID;
-			SENDER_ID = rs.getInt(DataBaseInfo.MYSQL_MESSAGE_SENDER);
-			RECEIVER_ID = rs.getInt(DataBaseInfo.MYSQL_MESSAGE_SENDER);
-			MESSAGE_TEXT = rs.getString(DataBaseInfo.MYSQL_MESSAGE_MESSAGE);
-			SEND_DATE = rs.getDate(DataBaseInfo.MYSQL_MESSAGE_SEND_DATE);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	/**
+	 * 
+	 * @param ID
+	 * @param sender
+	 * @param receiver
+	 * @param text
+	 * @param sendDate
+	 * @param images
+	 * @param videos
+	 */
+	public Message(int ID, int sender, int receiver, String text,
+			Date sendDate, ArrayList<String> images, ArrayList<String> videos) {
+		this.ID = ID;
+		this.SENDER_ID = sender;
+		this.RECEIVER_ID = receiver;
+		this.MESSAGE_TEXT = text;
+		this.SEND_DATE = sendDate;
+		this.MESSAGE_IMAGES = images;
+		this.MESSAGE_VIDEOS = videos;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getMessageID() {
 		return ID;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getMessageSenderID() {
 		return SENDER_ID;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getMessageReceiverID() {
 		return RECEIVER_ID;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public String getMessageText() {
 		return MESSAGE_TEXT;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<String> getMessageImages() {
 		return MESSAGE_IMAGES;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<String> getMessageVideos() {
 		return MESSAGE_VIDEOS;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public Date getMessageSendDate() {
 		return SEND_DATE;
 	}
-
-	public void setMessageID() {
-
-	}
-
-	public void setMessageSenderID() {
-
-	}
-
-	public void setMessageReceiverID() {
-
-	}
-
-	public void setMessageText() {
-
-	}
-
-	public void setMessageImages() {
-
-	}
-
-	public void setMessageVideos() {
-
-	}
-
-	public void setMessageSendDate() {
-
-	}
+	
+	/* 
+	 * 
+	 * public void setMessageID() {
+	 * 
+	 * }
+	 * 
+	 * public void setMessageSenderID() {
+	 * 
+	 * }
+	 * 
+	 * public void setMessageReceiverID() {
+	 * 
+	 * }
+	 * 
+	 * public void setMessageText() {
+	 * 
+	 * }
+	 * 
+	 * public void setMessageImages() {
+	 * 
+	 * }
+	 * 
+	 * public void setMessageVideos() {
+	 * 
+	 * }
+	 * 
+	 * public void setMessageSendDate() {
+	 * 
+	 * }
+	 */
 }

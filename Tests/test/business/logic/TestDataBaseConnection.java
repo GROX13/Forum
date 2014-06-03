@@ -1,6 +1,4 @@
-package tests;
-
-import static org.junit.Assert.*;
+package test.business.logic;
 
 import org.junit.Before;
 import org.junit.Test;

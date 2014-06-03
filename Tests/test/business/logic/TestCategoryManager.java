@@ -1,4 +1,4 @@
-package tests;
+package test.business.logic;
 
 import info.DataBaseInfo;
 import java.sql.ResultSet;

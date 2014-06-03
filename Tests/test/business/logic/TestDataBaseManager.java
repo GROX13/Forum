@@ -1,4 +1,4 @@
-package tests;
+package test.business.logic;
 
 import static org.junit.Assert.*;
 

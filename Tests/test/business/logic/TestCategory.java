@@ -1,4 +1,4 @@
-package tests;
+package test.business.logic;
 
 import org.junit.Before;
 import org.junit.Test;
