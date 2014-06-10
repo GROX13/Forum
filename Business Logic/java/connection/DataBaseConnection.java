@@ -24,17 +24,6 @@ public class DataBaseConnection {
 
 	public DataBaseConnection() {
 		// TODO Auto-generated constructor stub
-//		 try {
-//			 Class.forName("com.mysql.jdbc.Driver");
-//			 connection = (Connection) DriverManager.getConnection(
-//					 "jdbc:mysql://" + server, account, password);
-//		 } catch (SQLException e) {
-//			 // TODO Auto-generated catch block
-//			 e.printStackTrace();
-//		 } catch (ClassNotFoundException e) {
-//			 // TODO Auto-generated catch block
-//			 e.printStackTrace();
-//		 }
 
 		PoolProperties p = new PoolProperties();
 		p.setUrl("jdbc:mysql://" + server);

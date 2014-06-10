@@ -1,13 +1,11 @@
 package java.managers.database;
 
-
 import java.connection.DataBaseConnection;
 import java.info.DataBaseInfo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
