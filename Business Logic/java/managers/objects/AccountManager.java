@@ -22,7 +22,7 @@ public class AccountManager {
 	private Connection connection;
 
 	public AccountManager() {
-		connection = new DataBaseConnection().getConnection();
+		connection = (Connection) new DataBaseConnection().getConnection();
 	}
 
 	public boolean containsAccount(String username) throws SQLException {
