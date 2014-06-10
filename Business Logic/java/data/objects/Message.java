@@ -93,35 +93,5 @@ public class Message {
 	public Date getMessageSendDate() {
 		return SEND_DATE;
 	}
-	
-	/* 
-	 * 
-	 * public void setMessageID() {
-	 * 
-	 * }
-	 * 
-	 * public void setMessageSenderID() {
-	 * 
-	 * }
-	 * 
-	 * public void setMessageReceiverID() {
-	 * 
-	 * }
-	 * 
-	 * public void setMessageText() {
-	 * 
-	 * }
-	 * 
-	 * public void setMessageImages() {
-	 * 
-	 * }
-	 * 
-	 * public void setMessageVideos() {
-	 * 
-	 * }
-	 * 
-	 * public void setMessageSendDate() {
-	 * 
-	 * }
-	 */
+
 }
