@@ -15,11 +15,13 @@ import java.util.Calendar;
 public class Admin extends Account {
 	
 	private DataBaseManager DBManager;
+	private CategoryManager categoryManager;
 	private ArrayList<Object> values;
 	private ArrayList<String> columns;
 	
 	public Admin(){
 		DBManager = new DataBaseManager();
+		categoryManager = new CategoryManager();
 		values = new ArrayList<Object>();
 		columns = new ArrayList<String>();
 	}
@@ -36,37 +38,29 @@ public class Admin extends Account {
 		if(resultSet.next())
 			return false;
 		
-		CategoryManager categoryManager = new CategoryManager(connection);
 		categoryManager.add(categoryTitle, categoryDescription);
 		
 		return true;
 	}
 	
 	public void ModifyCategoryTitle(int categoryId, String categoryTitle){
-		CategoryManager categoryManager = new CategoryManager(connection);
-		
+
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_CATEGORIES_TITLE);
-		values.add(categoryTitle);
-		
+		values.add(categoryTitle);		
 		categoryManager.change(categoryId, columns, values);
-		
-		
 	}
 
 	public void ModifyCategoryDescription(int categoryId, String categoryDescription){
-		CategoryManager categoryManager = new CategoryManager(connection);
-		
+	
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_CATEGORIES_DESCRIPTION);
 		values.add(categoryDescription);
-		
 		categoryManager.change(categoryId, columns, values);
 		
 	}
 	
 	public void DeleteCategory(int categoryId){
-		CategoryManager categoryManager = new CategoryManager(connection);
 		categoryManager.remove(categoryId);
 	}
 	
