@@ -1,6 +1,5 @@
 package java.managers.objects;
 
-import java.connection.DataBaseConnection;
 import java.data.objects.Message;
 import java.info.DataBaseInfo;
 import java.managers.database.DataBaseManager;
@@ -16,7 +15,7 @@ public class MessageManager {
 	private ArrayList<Message> messages;
 	private static int SHOWN_NUMBER_OF_MESSAGES = 20;
 
-	public MessageManager(int receiverID, int senderID, DataBaseConnection DBCon) {
+	public MessageManager(int receiverID, int senderID) {
 		DBManager = new DataBaseManager();
 	}
 
@@ -24,13 +23,17 @@ public class MessageManager {
 		ArrayList<String> columns = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		columns.add("");
+		columns.add("");
+		columns.add("");
+		columns.add("");
+		columns.add("");
 		DBManager.putDataInDataBase(DataBaseInfo.MYSQL_TABLE_MESSAGE, columns,
 				values);
 	}
 
 	public ArrayList<Message> receiveFullConversation() {
 		if (messages.size() == SHOWN_NUMBER_OF_MESSAGES) {
-			
+
 		}
 		return messages;
 	}
