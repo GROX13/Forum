@@ -26,6 +26,7 @@ public class AccountManager {
 	}
 
 	public boolean containsAccount(String username) throws SQLException {
+		
 		PreparedStatement preparedStatement = (PreparedStatement) connection
 				.prepareStatement("select username FROM users WHERE users.username = ? ; ");
 		preparedStatement.setString(1, username);
