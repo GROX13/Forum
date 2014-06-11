@@ -1,13 +1,10 @@
 package java.connection;
 
-
 import java.info.MyDBInfo;
 import java.sql.SQLException;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-
-import com.mysql.jdbc.Connection;
 
 /**
  * 
@@ -15,6 +12,15 @@ import com.mysql.jdbc.Connection;
  */
 
 public class DataBaseConnection {
+	private static DataBaseConnection instance;
+	public static DataBaseConnection getInstance() {
+		if (instance == null) {
+			instance = new DataBaseConnection();
+		}
+		return instance;
+	}
+
+	
 	private static String account = MyDBInfo.MYSQL_USERNAME;
 	private static String password = MyDBInfo.MYSQL_PASSWORD;
 	private static String server = MyDBInfo.MYSQL_DATABASE_SERVER;
@@ -22,7 +28,7 @@ public class DataBaseConnection {
 	private java.sql.Connection connection;
 	private DataSource datasource;
 
-	public DataBaseConnection() {
+	private DataBaseConnection() {
 		// TODO Auto-generated constructor stub
 
 		PoolProperties p = new PoolProperties();
@@ -60,4 +66,5 @@ public class DataBaseConnection {
 		}
 		return connection;
 	}
+
 }
