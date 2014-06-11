@@ -1,6 +1,5 @@
 package java.managers.objects;
 
-
 import java.info.DataBaseInfo;
 import java.managers.database.DataBaseManager;
 import java.sql.Date;
@@ -9,64 +8,98 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 public class AccountManager {
+	
 	private DataBaseManager DBManager; 
+	private ArrayList<Object> values;
+	private ArrayList<String> columns;
 
 	public AccountManager() {
 		DBManager = new DataBaseManager();
+		values = new ArrayList<Object>();
+		columns = new ArrayList<String>();
 	}
 
-	public boolean containsAccount(final String username) throws SQLException {
+	public boolean containsAccount(String username) throws SQLException {
 		
 		String query = "select username FROM users WHERE users.username = ? ; ";
-		ResultSet resultSet = DBManager.executeQueryStatement(query, new ArrayList<Object>(){{
-			add(username); }});
+		
+		clearArrays();
+		values.add(username);
+		
+		ResultSet resultSet = DBManager.executeQueryStatement(query, values);
 		
 		if (resultSet.next())
 			return true;
 		return false;
 	}
 
-	public boolean matchesPassword(final String username, final String password)
+	public boolean matchesPassword(String username, String password)
 			throws SQLException {
+		
 		String query = "select username, password FROM users WHERE users.username" + 
 		"= ? and users.password = ? ; ";
 		
-		ResultSet resultSet = DBManager.executeQueryStatement(query, new ArrayList<Object>(){{
-			add(username); add(password); }});
-
+		clearArrays();
+		values.add(username);
+		values.add(password);
+		
+		ResultSet resultSet = DBManager.executeQueryStatement(query, values);
+		
 		if (resultSet.next())
 			return true;
 		return false;
 	}
 
-	public boolean createAccount(final String username, final String password,
-			final String avatar, final String firstName, final String lastName, final String email,
-			final String signature, final String gender, final Date birthDate, final int userType) throws SQLException {
+	public boolean createAccount(String username, String password,
+			String avatar, String firstName, String lastName, String email,
+			String signature, String gender, Date birthDate, int userType) throws SQLException {
 		
 		if (containsAccount(username))
 			return false;
 		
-		ArrayList<String> columns = new ArrayList<String>(){{add(DataBaseInfo.MYSQL_USERS_AVATAR); 
-		add(DataBaseInfo.MYSQL_USERS_USERNAME); add(DataBaseInfo.MYSQL_USERS_FIRST_NAME); add(DataBaseInfo.MYSQL_USERS_TYPE);
-		add(DataBaseInfo.MYSQL_USERS_LAST_NAME); add(DataBaseInfo.MYSQL_USERS_EMAIL); add(DataBaseInfo.MYSQL_USERS_SIGNATURE); 
-		add(DataBaseInfo.MYSQL_USERS_GENDER); add(DataBaseInfo.MYSQL_USERS_BIRTH_DATE); add(DataBaseInfo.MYSQL_USERS_PASSWORD);
-		add(DataBaseInfo.MYSQL_USERS_REGISTRATION_DATE);}};
+		final Date registrationDate = currentDate();
 		
-		/*
-		 * Current date of registration
-		 */
-		Calendar cal = Calendar.getInstance();
-		long date = cal.getTimeInMillis();
-		final Date registrationDate = new Date(date);
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_USERS_AVATAR);
+		columns.add(DataBaseInfo.MYSQL_USERS_USERNAME);
+		columns.add(DataBaseInfo.MYSQL_USERS_FIRST_NAME);
+		columns.add(DataBaseInfo.MYSQL_USERS_TYPE);
+		columns.add(DataBaseInfo.MYSQL_USERS_LAST_NAME); 
+		columns.add(DataBaseInfo.MYSQL_USERS_EMAIL);
+		columns.add(DataBaseInfo.MYSQL_USERS_SIGNATURE); 
+		columns.add(DataBaseInfo.MYSQL_USERS_GENDER); 
+		columns.add(DataBaseInfo.MYSQL_USERS_BIRTH_DATE); 
+		columns.add(DataBaseInfo.MYSQL_USERS_PASSWORD);
+		columns.add(DataBaseInfo.MYSQL_USERS_REGISTRATION_DATE);
 		
-		ArrayList<Object> values = new ArrayList<Object>(){{
-			add(avatar); add(username); add(firstName); add(userType); add(lastName); add(email); add(signature);
-			add(gender); add(birthDate); add(password); add(registrationDate);
-		}};
+		values.add(avatar); 
+		values.add(username);
+		values.add(firstName);
+		values.add(userType); 
+		values.add(lastName);
+		values.add(email); 
+		values.add(signature);
+		values.add(gender); 
+		values.add(birthDate); 
+		values.add(password); 
+		values.add(registrationDate);
 		
 		DBManager.putDataInDataBase("users", columns, values);
+		
 		return true;
+	}
+
+	
+	private Date currentDate() {
+		Calendar cal = Calendar.getInstance();
+		long date = cal.getTimeInMillis();
+		Date currentDate = new Date(date);
+		return currentDate;	
+	}
+	
+	private void clearArrays() {
+		values.clear();
+		columns.clear();
 	}
 }
