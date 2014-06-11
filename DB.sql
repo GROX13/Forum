@@ -15,7 +15,7 @@ CREATE TABLE users (
 	birth_date DATE,
 	registration_date DATE,
 	user_type INT,
-	password BINARY(32)
+	password VARCHAR(32)
 );
 
 CREATE TABLE message (
