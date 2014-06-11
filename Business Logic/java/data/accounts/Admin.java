@@ -13,34 +13,56 @@ import java.util.Calendar;
 
 
 public class Admin extends Account {
-	private DataBaseConnection connection;
-	private DataBaseManager DBManager = new DataBaseManager((DataBaseConnection) connection);
+	
+	private DataBaseManager DBManager;
+	private ArrayList<Object> values;
+	private ArrayList<String> columns;
 	
 	public Admin(){
-		connection = (DataBaseConnection) new DataBaseConnection().getConnection();
+		DBManager = new DataBaseManager();
+		values = new ArrayList<Object>();
+		columns = new ArrayList<String>();
 	}
 	
-	public boolean AddCategory(final int categoryId, final String categoryTitle, final String categoryDescription) throws SQLException{
-		ResultSet resultSet = DBManager.getDataFromDataBase("categories", 
-				new ArrayList<String>(){{add("categories.title = ");}}, 
-				new ArrayList<Object>(){{add(categoryTitle);}});
+	public boolean AddCategory(final int categoryId, String categoryTitle, 
+			String categoryDescription) throws SQLException{
+		
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_TABLE_CATEGORIES + "." + DataBaseInfo.MYSQL_CATEGORIES_TITLE);
+		values.add(categoryTitle);
+		
+		ResultSet resultSet = DBManager.getDataFromDataBase("categories", columns, values);
+		
 		if(resultSet.next())
 			return false;
+		
 		CategoryManager categoryManager = new CategoryManager(connection);
 		categoryManager.add(categoryTitle, categoryDescription);
+		
 		return true;
 	}
 	
-	public void ModifyCategoryTitle(int categoryId, final String categoryTitle){
+	public void ModifyCategoryTitle(int categoryId, String categoryTitle){
 		CategoryManager categoryManager = new CategoryManager(connection);
-		categoryManager.change(categoryId, new ArrayList<String>(){{add(DataBaseInfo.MYSQL_CATEGORIES_TITLE);}}, 
-				new ArrayList<Object>(){{add(categoryTitle);}});
+		
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_CATEGORIES_TITLE);
+		values.add(categoryTitle);
+		
+		categoryManager.change(categoryId, columns, values);
+		
+		
 	}
-	
-	public void ModifyCategoryDescription(int categoryId, final String categoryDescription){
+
+	public void ModifyCategoryDescription(int categoryId, String categoryDescription){
 		CategoryManager categoryManager = new CategoryManager(connection);
-		categoryManager.change(categoryId, new ArrayList<String>(){{add(DataBaseInfo.MYSQL_CATEGORIES_DESCRIPTION);}}, 
-				new ArrayList<Object>(){{add(categoryDescription);}});
+		
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_CATEGORIES_DESCRIPTION);
+		values.add(categoryDescription);
+		
+		categoryManager.change(categoryId, columns, values);
+		
 	}
 	
 	public void DeleteCategory(int categoryId){
@@ -68,16 +90,42 @@ public class Admin extends Account {
 		
 	}
 	
-	public void BannUser(final String username, final Date bannEndDate) throws SQLException{
-		ResultSet resultSet = DBManager.getDataFromDataBase("users", 
-				new ArrayList<String>(){{add("users.username = ");}}, 
-				new ArrayList<Object>(){{add(username);}});
-		final int userID = resultSet.getInt("id");
+	public void BannUser(String username, Date bannEndDate) throws SQLException{
+		
+		
+		Date bannStartDate = currenDate();
+		
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + DataBaseInfo.MYSQL_USERS_USERNAME);
+		values.add(username);
+		
+		ResultSet resultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_USERS, 
+				columns, values);
+		
+		int userID = resultSet.getInt("id");
+		
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_USERID);
+		columns.add(DataBaseInfo.MYSQL_START_DATE);
+		columns. add(DataBaseInfo.MYSQL_END_DATE);
+	
+		values.add(userID);
+		values.add(bannStartDate);
+		values.add(bannEndDate);
+		
+		DBManager.putDataInDataBase(DataBaseInfo.MYSQL_TABLE_BANN, columns, values);
+	}
+	
+	private Date currenDate() {
 		Calendar cal = Calendar.getInstance();
 		long date = cal.getTimeInMillis();
-		final Date bannStartDate = new Date(date);
-		DBManager.putDataInDataBase("bann", 
-				new ArrayList<String>(){{add(DataBaseInfo.MYSQL_USERID); 
-				add(DataBaseInfo.MYSQL_START_DATE); add(DataBaseInfo.MYSQL_END_DATE);}}, 
-				new ArrayList<Object>(){{add(userID); add(bannStartDate); add(bannEndDate);}});	}
+		Date currentDate = new Date(date);
+		return currentDate;
+	}
+
+	private void clearArrays() {
+		values.clear();
+		columns.clear();
+	}
 }
+
