@@ -1,4 +1,4 @@
-package java.managers.objects;
+package test.data.accounts;
 
 import static org.junit.Assert.*;
 
