@@ -2,9 +2,13 @@ package java.data.accounts;
 
 import java.connection.DataBaseConnection;
 import java.data.objects.Category;
+import java.data.objects.Post;
+import java.data.objects.Theme;
 import java.info.DataBaseInfo;
 import java.managers.database.DataBaseManager;
 import java.managers.objects.CategoryManager;
+import java.managers.objects.PostManager;
+import java.managers.objects.ThemeManager;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +18,9 @@ import java.util.Calendar;
 
 public class Admin extends Account {
 	
+	private ThemeManager themeManager;
 	private DataBaseManager DBManager;
+	private PostManager postManager;
 	private CategoryManager categoryManager;
 	private ArrayList<Object> values;
 	private ArrayList<String> columns;
@@ -22,66 +28,102 @@ public class Admin extends Account {
 	public Admin(){
 		DBManager = new DataBaseManager();
 		categoryManager = new CategoryManager();
+		themeManager = new ThemeManager();
+		postManager = new PostManager();
 		values = new ArrayList<Object>();
 		columns = new ArrayList<String>();
 	}
 	
-	public boolean AddCategory(final int categoryId, String categoryTitle, 
-			String categoryDescription) throws SQLException{
+	public boolean AddCategory(Category category) throws SQLException{
 		
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_CATEGORIES + "." + DataBaseInfo.MYSQL_CATEGORIES_TITLE);
-		values.add(categoryTitle);
+		values.add(category.getTitle());
 		
 		ResultSet resultSet = DBManager.getDataFromDataBase("categories", columns, values);
 		
 		if(resultSet.next())
 			return false;
 		
-		categoryManager.add(categoryTitle, categoryDescription);
+		categoryManager.add(category.getTitle(), category.getDescription());
 		
 		return true;
 	}
 	
-	public void ModifyCategoryTitle(int categoryId, String categoryTitle){
+	public void ModifyCategoryTitle(Category category){
 
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_CATEGORIES_TITLE);
-		values.add(categoryTitle);		
-		categoryManager.change(categoryId, columns, values);
+		values.add(category.getTitle());		
+		categoryManager.change(category.getId(), columns, values);
 	}
 
-	public void ModifyCategoryDescription(int categoryId, String categoryDescription){
+	public void ModifyCategoryDescription(Category category){
 	
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_CATEGORIES_DESCRIPTION);
-		values.add(categoryDescription);
-		categoryManager.change(categoryId, columns, values);
+		values.add(category.getDescription());
+		categoryManager.change(category.getId(), columns, values);
 		
 	}
 	
-	public void DeleteCategory(int categoryId){
-		categoryManager.remove(categoryId);
+	public void DeleteCategory(Category category){
+		categoryManager.remove(category.getId());
 	}
 	
-	public void DeleteTheme(){
+	public boolean DeleteTheme(Theme theme) throws SQLException{
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_TABLE_ID);
+		values.add(theme.getId());
+		ResultSet resultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_THEME,
+				columns, values);
+		if(resultSet.next())
+			return false;
+		themeManager.remove(theme.getId());
+		return true;
+	}
+	
+	public void ModifyThemeTitle(Theme theme){
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_THEME_TITLE);
+		values.add(theme.getTitle());
+		themeManager.change(theme.getId(), columns, values);
+	}
+	
+	public void ModifyThemeDescription(Theme theme){
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_THEME_DESCRIPTION);
+		values.add(theme.getDescription());
+		themeManager.change(theme.getId(), columns, values);
+	}
+	
+	public void ModifyThemeStatus(Theme theme){
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_THEME_IS_OPEN);
+		values.add(theme.getOpen());
+		themeManager.change(theme.getId(), columns, values);
+	}
+	
+	public void ModifyPostText(Post post){
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_POSTS_POST_TEXT);
+		values.add(post.getId());
+		postManager.change(post.getId(), columns, values);
+	}
+	
+	public void ModifyPostImages(Post post){
 		
 	}
-	
-	public void ModifyTheme(){
-		
-	}
-	
-	public void DeletePost(){
-		
-	}
-	
-	public void ModifyPost(){
+
+	public void ModifyPostVideos(Post post){
 		
 	}
 	
 	public void WarnUser(){
-		
+		//sad vwert im metods romelic
+		//ganaaxldeba yovel TIME droshi
+		//da miscems users dapostvis sashualeba
+		//mokled es ver gavige xval gavarkviot :\
 	}
 	
 	public void BannUser(String username, Date bannEndDate) throws SQLException{
