@@ -1,49 +1,40 @@
 package java.managers.objects;
 
 
-import java.connection.DataBaseConnection;
 import java.info.DataBaseInfo;
 import java.managers.database.DataBaseManager;
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.DatabaseMetaData;
-import com.mysql.jdbc.PreparedStatement;
-
 
 public class AccountManager {
-	private Connection connection;
+	private DataBaseManager DBManager; 
 
 	public AccountManager() {
-		connection = (Connection) new DataBaseConnection().getConnection();
+		DBManager = new DataBaseManager();
 	}
 
-	public boolean containsAccount(String username) throws SQLException {
+	public boolean containsAccount(final String username) throws SQLException {
 		
-		PreparedStatement preparedStatement = (PreparedStatement) connection
-				.prepareStatement("select username FROM users WHERE users.username = ? ; ");
-		preparedStatement.setString(1, username);
-		ResultSet resultSet = preparedStatement.executeQuery();
-
+		String query = "select username FROM users WHERE users.username = ? ; ";
+		ResultSet resultSet = DBManager.executeQueryStatement(query, new ArrayList<Object>(){{
+			add(username); }});
+		
 		if (resultSet.next())
 			return true;
 		return false;
 	}
 
-	public boolean matchesPassword(String username, String password)
+	public boolean matchesPassword(final String username, final String password)
 			throws SQLException {
-		PreparedStatement preparedStatement = (PreparedStatement) connection
-				.prepareStatement("select username, password FROM users WHERE users.username = ? and users.password = ? ; ");
-		preparedStatement.setString(1, username);
-		preparedStatement.setString(2, password);
-		ResultSet resultSet = preparedStatement.executeQuery();
+		String query = "select username, password FROM users WHERE users.username" + 
+		"= ? and users.password = ? ; ";
+		
+		ResultSet resultSet = DBManager.executeQueryStatement(query, new ArrayList<Object>(){{
+			add(username); add(password); }});
 
 		if (resultSet.next())
 			return true;
@@ -56,8 +47,6 @@ public class AccountManager {
 		
 		if (containsAccount(username))
 			return false;
-		
-		DataBaseManager DBManager = new DataBaseManager((DataBaseConnection) connection);
 		
 		ArrayList<String> columns = new ArrayList<String>(){{add(DataBaseInfo.MYSQL_USERS_AVATAR); 
 		add(DataBaseInfo.MYSQL_USERS_USERNAME); add(DataBaseInfo.MYSQL_USERS_FIRST_NAME); add(DataBaseInfo.MYSQL_USERS_TYPE);
