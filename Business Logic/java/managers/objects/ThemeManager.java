@@ -1,15 +1,14 @@
 package java.managers.objects;
 
-import info.DataBaseInfo;
+import java.data.objects.Theme;
+import java.info.DataBaseInfo;
+import java.managers.database.DataBaseManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import JDO.Theme;
-import connection.DataBaseConnection;
-import connection.DataBaseManager;
 
 
 
@@ -22,8 +21,8 @@ public class ThemeManager extends DataBaseInfo{
 	private Map<Integer, Theme> allCat;
 	private DataBaseManager data;
 
-	public ThemeManager(DataBaseConnection con) {
-		data = new DataBaseManager(con);
+	public ThemeManager() {
+		data = new DataBaseManager();
 		allCat = new HashMap<Integer, Theme>();
 	}
 

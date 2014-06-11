@@ -1,17 +1,14 @@
 package java.managers.objects;
 
-import info.DataBaseInfo;
-
+import java.data.objects.Post;
+import java.info.DataBaseInfo;
+import java.managers.database.DataBaseManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import JDO.Post;
-import connection.DataBaseConnection;
-import connection.DataBaseManager;
 
 /**
  * 
@@ -22,8 +19,8 @@ public class PostManager extends DataBaseInfo {
 	private Map<Integer, Post> allCat;
 	private DataBaseManager data;
 
-	public PostManager(DataBaseConnection con) {
-		data = new DataBaseManager(con);
+	public PostManager() {
+		data = new DataBaseManager();
 		allCat = new HashMap<Integer, Post>();
 	}
 

@@ -1,6 +1,5 @@
 package java.managers.objects;
 
-import java.connection.DataBaseConnection;
 import java.data.objects.Category;
 import java.info.DataBaseInfo;
 import java.managers.database.DataBaseManager;
@@ -20,8 +19,8 @@ public class CategoryManager extends DataBaseInfo {
 	private Map<Integer, Category> allCat;
 	private DataBaseManager data;
 
-	public CategoryManager(DataBaseConnection con) {
-		data = new DataBaseManager(con);
+	public CategoryManager() {
+		data = new DataBaseManager();
 		allCat = new HashMap<Integer, Category>();
 	}
 
