@@ -22,9 +22,9 @@ public class DataBaseManager {
 	private ResultSet resultSet;
 	private static String database = DataBaseInfo.MYSQL_DATABASE_NAME;
 
-	public DataBaseManager(DataBaseConnection DBConection) {
+	public DataBaseManager() {
 		// TODO Auto-generated constructor stub
-		connection = DBConection.getConnection();
+		connection = DataBaseConnection.getInstance().getConnection();
 		try {
 			statement = (Statement) connection.createStatement();
 			statement.executeQuery("USE " + database);
