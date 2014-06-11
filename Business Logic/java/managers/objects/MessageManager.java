@@ -17,7 +17,7 @@ public class MessageManager {
 	private static int SHOWN_NUMBER_OF_MESSAGES = 20;
 
 	public MessageManager(int receiverID, int senderID, DataBaseConnection DBCon) {
-		DBManager = new DataBaseManager(DBCon);
+		DBManager = new DataBaseManager();
 	}
 
 	public void sendMessage(String messageText) {
