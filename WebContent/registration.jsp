@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Sign In</title>
+        <title>Registration</title>
         <link rel = "icon" href = "Icons/Wineass_W.ico" type = "icon">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
@@ -27,20 +27,19 @@
     <body>
 
         <div class="page-container">
-            <h1>We're tiny</h1>
+            <h1>Welcome to our website</h1>
             <form action="" method="post">
                 <input type="text" name="username" class="username" placeholder="Username">
+                <input type="text" name="email" class="username" placeholder="Email">
+                <input type="text" name="firstname" class="username" placeholder="First Name">
+                <input type="text" name="lastname" class="username" placeholder="Last Name">
+                <input type="text" name="Gender" class="username" placeholder="Sex">
+                <input type="text" name="signature" class="username" placeholder="Signature">
+                <input type="date" name="birthdate" class="username">
                 <input type="password" name="password" class="password" placeholder="Password">
-                <button type="submit">Sign me in</button>
+                <button type="submit">Register me</button>
                 <div class="error"><span>+</span></div>
             </form>
-            <div class="connect">
-                <p>Or connect with:</p>
-                <p>
-                    <a class="facebook" href=""></a>
-                    <a class="twitter" href=""></a>
-                </p>
-            </div>
         </div>
 
         <!-- Javascript -->
