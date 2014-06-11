@@ -9,24 +9,28 @@ import java.util.Date;
 
 public class Theme {
 
-	private String creatorName;
+	private int id;
+	private int creatorId;
+	private int categoryId;
 	private String title;
 	private String description;
 	private Date creationDate;
 	private boolean open;
 
 	/**
-	 * creates new theme
 	 * 
-	 * @param userName
+	 * @param tId
+	 * @param userId
 	 * @param ThemeTitle
 	 * @param desc
 	 * @param crDate
 	 * @param isOpen
 	 */
-	public Theme(String userName, String ThemeTitle, String desc, Date crDate,
-			boolean isOpen) {
-		creatorName = userName;
+	public Theme(int tId, int userId, int catId, String ThemeTitle,
+			String desc, Date crDate, boolean isOpen) {
+		id = tId;
+		creatorId = userId;
+		categoryId = catId;
 		title = ThemeTitle;
 		description = desc;
 		creationDate = crDate;
@@ -34,12 +38,12 @@ public class Theme {
 	}
 
 	/**
-	 * sets username who created this theme
+	 * sets user's id who created this theme
 	 * 
-	 * @param name
+	 * @param userId
 	 */
-	public void setCreatorName(String name) {
-		creatorName = name;
+	public void setCreatorId(int userId) {
+		creatorId = userId;
 	}
 
 	/**
@@ -79,12 +83,29 @@ public class Theme {
 	}
 
 	/**
-	 * returns name of the user who created the theme
 	 * 
-	 * @return String
+	 * @param cId
 	 */
-	public String getCreatorName() {
-		return creatorName;
+	public void setCategoryId(int cId) {
+		categoryId = cId;
+	}
+
+	/**
+	 * returns theme's id
+	 * 
+	 * @return int
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * returns id of the user who created the theme
+	 * 
+	 * @return int
+	 */
+	public int getCreatorId() {
+		return creatorId;
 	}
 
 	/**
@@ -123,23 +144,27 @@ public class Theme {
 		return open;
 	}
 
+	public int getCategoryId() {
+		return categoryId;
+	}
+
 	/**
 	 * equals method for comparing theme objects
 	 */
 	@Override
 	public boolean equals(Object obj) {
 		Theme other = (Theme) obj;
-		if (other.creatorName.equals(this.creatorName)
-				&& other.creationDate.equals(this.creationDate))
+		if (other.getId() == this.getId())
 			return true;
 		return false;
 	}
 
 	@Override
 	public String toString() {
-		String text = "The theme " + title + " is created by " + creatorName
-				+ " in " + creationDate + ". It's about : " + description
-				+ " and the fact that it's open for guests is " + open;
+		String text = id + " theme: userId " + creatorId + " , categoryId "
+				+ categoryId + " , " + "creation date " + creationDate
+				+ " , title " + title + " , descroption  " + description
+				+ " , is open " + open;
 		return text;
 	}
 }

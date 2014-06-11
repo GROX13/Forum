@@ -10,7 +10,9 @@ import java.util.List;
 
 public class Post {
 	
-	private String authorName;
+	private int id;
+	private int themeId;
+	private int userId;
 	private String text;
 	private Date creationDate;
 	private List<String> images;
@@ -18,15 +20,19 @@ public class Post {
 
 	
 	/**
-	 * creates new post
+	 * 
+	 * @param pId
+	 * @param tId
 	 * @param name
 	 * @param postText
 	 * @param date
 	 * @param imgs
 	 * @param video
 	 */
-	public Post(String name, String postText, Date date, List<String> imgs, List<String> video){
-		authorName = name;
+	public Post(int pId, int tId, int usId, String postText, Date date, List<String> imgs, List<String> video){
+		id = pId;
+		themeId = tId;
+		userId = usId;
 		text = postText;
 		creationDate = date;
 		images = imgs;
@@ -34,11 +40,19 @@ public class Post {
 	}
 	
 	/**
-	 * sets name to post's author name
+	 * 
+	 * @param tId
+	 */
+	public void setThemeId(int tId){
+		themeId = tId;
+	}
+	
+	/**
+	 * sets id to post's author id
 	 * @param name
 	 */
-	public void setAuthorName(String name){
-		authorName = name;
+	public void setUserId(int usId){
+		userId = usId;
 	}
 	
 	/**
@@ -74,11 +88,11 @@ public class Post {
 	}
 	
 	/**
-	 * returs post's authorn name
-	 * @return String
+	 * returns post's author id
+	 * @return int
 	 */
-	public String getName(){
-		return authorName;
+	public int getUserId(){
+		return userId;
 	}
 	
 	/**
@@ -95,6 +109,23 @@ public class Post {
 	 */
 	public Date getDate(){
 		return creationDate;
+	}
+	
+	
+	/**
+	 * 
+	 * @return int
+	 */
+	public int getThemeId(){
+		return themeId;
+	}
+	
+	/**
+	 * 
+	 * @return int
+	 */
+	public int getId(){
+		return id;
 	}
 	
 	/**
@@ -116,16 +147,20 @@ public class Post {
 	@Override
 	public boolean equals(Object obj) {
 		Post p = (Post) obj;
-		if (p.authorName.equals(this.authorName)
-				&& p.creationDate.equals(this.creationDate))
+		if (p.getId() == this.getId())
 			return true;
 		return false;
 	}
 
 	@Override
 	public String toString() {
-		String texts = "this post: " + text + " is written by " + authorName
-				+ " in " + creationDate;
+		String texts = id + " post: themeId " + themeId + " , author id " + userId + " , text "
+				+ text + " , creation date " + creationDate + " , images: ";
+		for(int i = 0; i < images.size(); i++)
+			texts += images.get(i) + " , ";
+		texts += "videos: ";
+		for(int j = 0; j < videos.size(); j++)
+			texts += videos.get(j) + " , ";
 		return texts;
 	}
 }
