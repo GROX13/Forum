@@ -2,23 +2,32 @@ package test.managers.objects;
 
 import static org.junit.Assert.*;
 
+import java.sql.Date;
+import java.sql.SQLException;
+
 import org.junit.Test;
+
+import forum.managers.objects.AccountManager;
 
 public class TestAccountManager {
 
 	@Test
 	public void testContainsAccount() {
-		fail("Not yet implemented");
+		
+		
 	}
 
 	@Test
 	public void testMatchesPassword() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
-	public void testCreateAccount() {
-		fail("Not yet implemented");
+	public void testCreateAccount() throws SQLException {
+		AccountManager am = new AccountManager();
+		am.createAccount("ANNA", "bla", null, 
+				"anna", "gorozia", "ana.gorozia@gmail.com", 
+				"signature", "F", new Date(System.currentTimeMillis()), 1);
 	}
 
 }
