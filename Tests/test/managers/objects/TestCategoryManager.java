@@ -1,17 +1,13 @@
 package test.managers.objects;
 
 import static org.junit.Assert.assertEquals;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import forum.connection.DataBaseConnection;
 import forum.data.objects.Category;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
@@ -91,8 +87,9 @@ public class TestCategoryManager extends DataBaseInfo {
 				"SELECT * FROM categories ORDER BY id DESC LIMIT 1;",
 				new ArrayList<Object>());
 		result.next();
-		cm.remove(result.getInt(MYSQL_TABLE_ID));
-		ResultSet res = data.executeQueryStatement("Select * from categories where id = 1",
+		int id = result.getInt(MYSQL_TABLE_ID);
+		cm.remove(id);
+		ResultSet res = data.executeQueryStatement("Select * from categories where id = " + id,
 				new ArrayList<Object>());
 		assertEquals(false, res.next());
 	}

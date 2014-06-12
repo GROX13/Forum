@@ -1,40 +1,40 @@
 package test.managers.objects;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import forum.data.objects.Theme;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 import forum.managers.objects.AccountManager;
 import forum.managers.objects.CategoryManager;
+import forum.managers.objects.PostManager;
 import forum.managers.objects.ThemeManager;
 
-public class TestThemeManager extends DataBaseInfo {
+public class TestPostManager extends DataBaseInfo {
 	private DataBaseManager data;
-	private ThemeManager tm;
+	private PostManager pm;
 
 	@Before
 	public void setUp() {
 		data = new DataBaseManager();
-		tm = new ThemeManager();
+		pm = new PostManager();
 	}
 
 	@Test
 	public void testAdd() throws SQLException {
 		CategoryManager cm = new CategoryManager();
-		cm.add("newCat", "about everything");
+		cm.add("newCategorys", "about everything");
 		AccountManager am = new AccountManager();
-		am.createAccount("gio", "444", "sfddf", "dfgfdg", "fgdfg", "dfgdfg", "fdgdfg", "dfgdf", new Date(3), 0);
+		am.createAccount("giorg", "444", "sfddf", "dfgfdg", "fgdfg", "dfgdfg",
+				"fdgdfg", "0", new Date(3), 0);
+		ThemeManager tm = new ThemeManager();
 		ResultSet resUser = data.executeQueryStatement(
 				"SELECT * FROM users ORDER BY id DESC LIMIT 1",
 				new ArrayList<Object>());
@@ -46,17 +46,22 @@ public class TestThemeManager extends DataBaseInfo {
 		resCat.next();
 		int catId = resUser.getInt(MYSQL_TABLE_ID);
 		tm.add("music", "pop", userId, catId, true);
+		ResultSet resTheme = data.executeQueryStatement(
+				"SELECT * FROM themes ORDER BY id DESC LIMIT 1",
+				new ArrayList<Object>());
+		resTheme.next();
+		int themeId = resUser.getInt(MYSQL_TABLE_ID);
+		pm.add(userId, themeId, "new post", new ArrayList<String>(),
+				new ArrayList<String>());
 		ResultSet res = data.executeQueryStatement(
-				"SELECT * FROM theme ORDER BY id DESC LIMIT 1",
+				"SELECT * FROM posts ORDER BY id DESC LIMIT 1",
 				new ArrayList<Object>());
 		res.next();
 		assertEquals(
 				true,
-				(res.getString(MYSQL_THEME_TITLE).equals("music")
-						&& res.getString(MYSQL_THEME_DESCRIPTION).equals("pop") && res
-						.getInt(MYSQL_THEME_CATEGORYID) == catId)
-						&& res.getInt(MYSQL_THEME_CREATORID) == userId
-						&& res.getBoolean(MYSQL_THEME_IS_OPEN));
+				(res.getString(MYSQL_POSTS_POST_TEXT).equals("new post")
+						&& res.getInt(MYSQL_POSTS_AUTHORID) == userId && res
+						.getInt(MYSQL_POSTS_THEME) == themeId));
 	}
 
 	@Test
@@ -76,8 +81,8 @@ public class TestThemeManager extends DataBaseInfo {
 		ResultSet res = data.executeQueryStatement(
 				"Select * from theme where id = " + id, new ArrayList<>());
 		res.next();
-		assertEquals(true, res.getString(MYSQL_THEME_TITLE)
-				.equals("films") && !res.getBoolean(MYSQL_THEME_IS_OPEN));
+		assertEquals(true, res.getString(MYSQL_THEME_TITLE).equals("films")
+				&& !res.getBoolean(MYSQL_THEME_IS_OPEN));
 	}
 
 	@Test
@@ -110,14 +115,23 @@ public class TestThemeManager extends DataBaseInfo {
 	@Test
 	public void testRemove() throws SQLException {
 		ResultSet result = data.executeQueryStatement(
-				"SELECT * FROM theme ORDER BY id DESC LIMIT 1;",
+				"SELECT * FROM posts ORDER BY id DESC LIMIT 1;",
 				new ArrayList<Object>());
 		result.next();
 		int id = result.getInt(MYSQL_TABLE_ID);
-		tm.remove(id);
-		ResultSet res = data.executeQueryStatement(
-				"Select * from theme where id = " + id, new ArrayList<Object>());
+		pm.remove(id);
+		ResultSet res = data
+				.executeQueryStatement("Select * from theme where id = " + id,
+						new ArrayList<Object>());
 		assertEquals(false, res.next());
+		ResultSet resImgs = data.executeQueryStatement("Select * from "
+				+ MYSQL_TABLE_POST_IMAGES + " where " + MYSQL_POST_FILES_POSTID
+				+ " = " + id, new ArrayList<Object>());
+		assertEquals(false, resImgs.next());
+		ResultSet resVideos = data.executeQueryStatement("Select * from "
+				+ MYSQL_TABLE_POST_VIDEOS + " where " + MYSQL_POST_FILES_POSTID
+				+ " = " + id, new ArrayList<Object>());
+		assertEquals(false, resVideos.next());
 	}
 
 }

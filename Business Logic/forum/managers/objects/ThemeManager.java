@@ -17,7 +17,7 @@ import forum.managers.database.DataBaseManager;
  */
 
 public class ThemeManager extends DataBaseInfo {
-	private Map<Integer, Theme> allCat;
+	private Map<Integer, Theme> allTheme;
 	private DataBaseManager data;
 
 	/**
@@ -25,7 +25,7 @@ public class ThemeManager extends DataBaseInfo {
 	 */
 	public ThemeManager() {
 		data = new DataBaseManager();
-		allCat = new HashMap<Integer, Theme>();
+		allTheme = new HashMap<Integer, Theme>();
 	}
 
 	/**
@@ -69,12 +69,12 @@ public class ThemeManager extends DataBaseInfo {
 						res.getString(MYSQL_THEME_DESCRIPTION),
 						res.getDate(MYSQL_THEME_CREATION_DATE),
 						res.getBoolean(MYSQL_THEME_IS_OPEN));
-				allCat.put(id, newOne);
+				allTheme.put(id, newOne);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return allCat;
+		return allTheme;
 	}
 
 	/**
@@ -104,8 +104,8 @@ public class ThemeManager extends DataBaseInfo {
 		conditionVal.add(id);
 		data.updateDataInDataBase(MYSQL_TABLE_THEME, conditionCol,
 				conditionVal, columns, values);
-		if (allCat.containsKey(id)) {
-			Theme toChange = allCat.get(id);
+		if (allTheme.containsKey(id)) {
+			Theme toChange = allTheme.get(id);
 			for (int i = 0; i < columns.size(); i++) {
 				if (columns.get(i).equals(MYSQL_THEME_TITLE))
 					toChange.setTitle((String) values.get(i));
