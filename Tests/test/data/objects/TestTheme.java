@@ -1,11 +1,13 @@
 package test.data.objects;
 
-import java.data.objects.Theme;
 import java.util.Date;
+
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import data.objects.Theme;
 
 /*
  * unit tests for theme class
@@ -17,19 +19,22 @@ public class TestTheme {
 	 */
 	private Theme newOne;
 	private Theme another;
+	private Theme next;
 
 	@Before
 	public void setUp() {
-		newOne = new Theme("nika", "kino", "", new Date(), true);
+		newOne = new Theme(2, 5, 4, "kino", "", new Date(), true);
 	}
 
 	@Test
 	public void testGetAndSetMothods() {
-		assertEquals("nika", newOne.getCreatorName());
+		assertEquals(5, newOne.getCreatorId());
 		assertEquals("kino", newOne.getTitle());
 
-		newOne.setCreatorName("nick");
-		assertEquals("nick", newOne.getCreatorName());
+		newOne.setCreatorId(3);
+		assertEquals(3, newOne.getCreatorId());
+		newOne.setCategoryId(6);
+		assertEquals(6, newOne.getCategoryId());
 		newOne.setTitle("");
 		assertEquals("", newOne.getTitle());
 		newOne.setDescription("about films");
@@ -44,18 +49,21 @@ public class TestTheme {
 	@Test
 	public void testEquals() {
 		Date d = newOne.getDate();
-		another = new Theme("nika", "", "", d, true);
+		another = new Theme(2, 3, 4, "", "", d, true);
 		assertEquals(true, another.equals(newOne));
-		
-		another.setCreatorName("nick");
-		assertEquals(false, another.equals(newOne));
+
+		next = new Theme(3, 5, 4, "", "", d, false);
+		assertEquals(false, another.equals(next));
 	}
 
 	@Test
 	public void testToString() {
-		String text = "The theme kino is created by nika in "
-				+ newOne.getDate()
-				+ ". It's about :  and the fact that it's open for guests is true";
+		String text = newOne.getId() + " theme: userId "
+				+ newOne.getCreatorId() + " , categoryId "
+				+ newOne.getCategoryId() + " , " + "creation date "
+				+ newOne.getDate() + " , title " + newOne.getTitle()
+				+ " , descroption  " + newOne.getDescription() + " , is open "
+				+ newOne.getOpen();
 		assertEquals(text, newOne.toString());
 	}
 }
