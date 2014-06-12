@@ -37,7 +37,7 @@ public class CategoryManager extends DataBaseInfo {
 
 	public Map getAll() {
 		ResultSet res = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_CATEGORIES, new ArrayList<>());
+				+ MYSQL_TABLE_CATEGORIES, new ArrayList<Object>());
 		try {
 			while (res.next()) {
 				Integer id = res.getInt(MYSQL_TABLE_ID);

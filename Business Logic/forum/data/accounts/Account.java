@@ -40,7 +40,7 @@ public abstract class Account {
 		if (resultSet.next())
 			return false;
 		themeManager.add(theme.getTitle(), theme.getDescription(),
-				theme.getCreatorId(), theme.getDate(), theme.getCategoryId(),
+				theme.getCreatorId(), theme.getCategoryId(),
 				theme.getOpen());
 		return true;
 	}
