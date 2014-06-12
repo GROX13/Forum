@@ -252,4 +252,24 @@ public class DataBaseManager {
 		}
 		return stmt;
 	}
+
+	public int putDataWithRetrevingID(String tableName,
+			ArrayList<String> columns, ArrayList<Object> values) {
+		// TODO Auto-generated method stub
+		try {
+			PreparedStatement pstmt = (PreparedStatement) connection
+					.prepareStatement(prepareInsertStatement(tableName, columns));
+			for (int i = 0; i < values.size(); i++) {
+				pstmt.setObject(i + 1, values.get(i));
+			}
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }
