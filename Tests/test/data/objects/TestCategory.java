@@ -1,10 +1,11 @@
 package test.data.objects;
 
-import java.data.objects.Category;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import forum.data.objects.Category;
 
 /*
  * unit tests for Category object

@@ -1,9 +1,10 @@
-package java.managers.objects;
+package forum.managers.objects;
 
-import java.data.objects.Message;
-import java.info.DataBaseInfo;
-import java.managers.database.DataBaseManager;
 import java.util.ArrayList;
+
+import forum.data.objects.Message;
+import forum.info.DataBaseInfo;
+import forum.managers.database.DataBaseManager;
 
 /**
  * 

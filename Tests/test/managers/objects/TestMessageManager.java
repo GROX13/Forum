@@ -1,4 +1,4 @@
-package java.managers.objects;
+package test.managers.objects;
 
 import static org.junit.Assert.*;
 

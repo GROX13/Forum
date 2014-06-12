@@ -1,4 +1,4 @@
-package java.data.accounts;
+package forum.data.accounts;
 
 /**
  * 

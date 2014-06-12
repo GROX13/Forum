@@ -1,8 +1,7 @@
 package test.data.objects;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.data.objects.Message;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +9,8 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import forum.data.objects.Message;
 
 
 public class TestMessage {

@@ -1,13 +1,14 @@
-package java.managers.database;
+package forum.managers.database;
 
-import java.connection.DataBaseConnection;
-import java.info.DataBaseInfo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+
+import forum.connection.DataBaseConnection;
+import forum.info.DataBaseInfo;
 
 /**
  * Data Base Manager class. Contains public methods which are used to modify or

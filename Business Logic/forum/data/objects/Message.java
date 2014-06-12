@@ -1,4 +1,4 @@
-package java.data.objects;
+package forum.data.objects;
 
 import java.util.ArrayList;
 import java.util.Date;

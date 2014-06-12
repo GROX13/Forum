@@ -1,10 +1,11 @@
-package java.connection;
+package forum.connection;
 
-import java.info.MyDBInfo;
 import java.sql.SQLException;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+
+import forum.info.MyDBInfo;
 
 /**
  * 
@@ -13,6 +14,7 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 public class DataBaseConnection {
 	private static DataBaseConnection instance;
+
 	public static DataBaseConnection getInstance() {
 		if (instance == null) {
 			instance = new DataBaseConnection();
@@ -20,7 +22,6 @@ public class DataBaseConnection {
 		return instance;
 	}
 
-	
 	private static String account = MyDBInfo.MYSQL_USERNAME;
 	private static String password = MyDBInfo.MYSQL_PASSWORD;
 	private static String server = MyDBInfo.MYSQL_DATABASE_SERVER;

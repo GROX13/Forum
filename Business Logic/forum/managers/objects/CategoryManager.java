@@ -1,13 +1,14 @@
-package java.managers.objects;
+package forum.managers.objects;
 
-import java.data.objects.Category;
-import java.info.DataBaseInfo;
-import java.managers.database.DataBaseManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import forum.data.objects.Category;
+import forum.info.DataBaseInfo;
+import forum.managers.database.DataBaseManager;
 
 
 /**

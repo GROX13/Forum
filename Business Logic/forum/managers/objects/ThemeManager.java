@@ -1,8 +1,5 @@
-package java.managers.objects;
+package forum.managers.objects;
 
-import java.data.objects.Theme;
-import java.info.DataBaseInfo;
-import java.managers.database.DataBaseManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,14 +7,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
+import forum.data.objects.Theme;
+import forum.info.DataBaseInfo;
+import forum.managers.database.DataBaseManager;
 
 /**
  * 
  * 
  */
 
-public class ThemeManager extends DataBaseInfo{
+public class ThemeManager extends DataBaseInfo {
 	private Map<Integer, Theme> allCat;
 	private DataBaseManager data;
 
@@ -26,7 +25,8 @@ public class ThemeManager extends DataBaseInfo{
 		allCat = new HashMap<Integer, Theme>();
 	}
 
-	public void add(String name, String desc, int userId, Date date, int catId, boolean open) {
+	public void add(String name, String desc, int userId, Date date, int catId,
+			boolean open) {
 		ArrayList<String> columns = new ArrayList<String>();
 		columns.add(MYSQL_THEME_TITLE);
 		columns.add(MYSQL_THEME_DESCRIPTION);
@@ -50,8 +50,7 @@ public class ThemeManager extends DataBaseInfo{
 		try {
 			while (res.next()) {
 				Integer id = res.getInt(MYSQL_TABLE_ID);
-				Theme newOne = new Theme(id,
-						res.getInt(MYSQL_THEME_CREATORID),
+				Theme newOne = new Theme(id, res.getInt(MYSQL_THEME_CREATORID),
 						res.getInt(MYSQL_THEME_CATEGORYID),
 						res.getString(MYSQL_THEME_TITLE),
 						res.getString(MYSQL_THEME_DESCRIPTION),
@@ -70,30 +69,33 @@ public class ThemeManager extends DataBaseInfo{
 		ArrayList<Object> conditionVal = new ArrayList<Object>();
 		conditionCol.add(MYSQL_TABLE_ID);
 		conditionVal.add(id);
-		data.removeDataFromDataBase(MYSQL_TABLE_THEME, conditionCol, conditionVal);
+		data.removeDataFromDataBase(MYSQL_TABLE_THEME, conditionCol,
+				conditionVal);
 	}
-	
-	public void change(int id, ArrayList<String> columns, ArrayList<Object> values){
+
+	public void change(int id, ArrayList<String> columns,
+			ArrayList<Object> values) {
 		ArrayList<String> conditionCol = new ArrayList<String>();
 		ArrayList<Object> conditionVal = new ArrayList<Object>();
 		conditionCol.add(MYSQL_TABLE_ID);
 		conditionVal.add(id);
-		data.updateDataInDataBase(MYSQL_TABLE_THEME, conditionCol, conditionVal, columns, values);
-		if(allCat.containsKey(id)){
+		data.updateDataInDataBase(MYSQL_TABLE_THEME, conditionCol,
+				conditionVal, columns, values);
+		if (allCat.containsKey(id)) {
 			Theme toChange = allCat.get(id);
-			for(int i = 0; i < columns.size(); i++){
-				if(columns.get(i).equals(MYSQL_THEME_TITLE))
-					toChange.setTitle((String)values.get(i));
-				if(columns.get(i).equals(MYSQL_THEME_DESCRIPTION))
-					toChange.setDescription((String)values.get(i));
-				if(columns.get(i).equals(MYSQL_THEME_IS_OPEN))
-					toChange.setOpen((boolean)values.get(i));
-				if(columns.get(i).equals(MYSQL_THEME_CATEGORYID))
-					toChange.setDescription((String)values.get(i));
-				if(columns.get(i).equals(MYSQL_THEME_CREATION_DATE))
-					toChange.setDate((Date)values.get(i));
-				if(columns.get(i).equals(MYSQL_THEME_CREATORID))
-					toChange.setCreatorId((int)values.get(i));
+			for (int i = 0; i < columns.size(); i++) {
+				if (columns.get(i).equals(MYSQL_THEME_TITLE))
+					toChange.setTitle((String) values.get(i));
+				if (columns.get(i).equals(MYSQL_THEME_DESCRIPTION))
+					toChange.setDescription((String) values.get(i));
+				if (columns.get(i).equals(MYSQL_THEME_IS_OPEN))
+					toChange.setOpen((boolean) values.get(i));
+				if (columns.get(i).equals(MYSQL_THEME_CATEGORYID))
+					toChange.setDescription((String) values.get(i));
+				if (columns.get(i).equals(MYSQL_THEME_CREATION_DATE))
+					toChange.setDate((Date) values.get(i));
+				if (columns.get(i).equals(MYSQL_THEME_CREATORID))
+					toChange.setCreatorId((int) values.get(i));
 			}
 		}
 	}

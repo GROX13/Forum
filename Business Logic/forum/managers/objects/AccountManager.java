@@ -1,12 +1,13 @@
-package java.managers.objects;
+package forum.managers.objects;
 
-import java.info.DataBaseInfo;
-import java.managers.database.DataBaseManager;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import forum.info.DataBaseInfo;
+import forum.managers.database.DataBaseManager;
 
 public class AccountManager {
 	

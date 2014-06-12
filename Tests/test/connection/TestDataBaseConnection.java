@@ -1,21 +1,14 @@
 package test.connection;
 
-import java.connection.DataBaseConnection;
-
-import org.junit.Before;
 import org.junit.Test;
 
+import forum.connection.DataBaseConnection;
 
 public class TestDataBaseConnection {
-	private DataBaseConnection DBC;
-
-	@Before
-	public void testDataBaseConnection() {
-		DBC = new DataBaseConnection();
-	}
 
 	@Test
 	public void testGetConnection() {
+		DataBaseConnection DBC = DataBaseConnection.getInstance();
 		DBC.getConnection();
 	}
 

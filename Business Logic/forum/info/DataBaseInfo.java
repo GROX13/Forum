@@ -1,4 +1,4 @@
-package java.info;
+package forum.info;
 
 /**
  * 

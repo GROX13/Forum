@@ -1,15 +1,18 @@
 package test.managers.database;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.connection.DataBaseConnection;
-import java.info.DataBaseInfo;
-import java.managers.database.DataBaseManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import forum.connection.DataBaseConnection;
+import forum.info.DataBaseInfo;
+import forum.managers.database.DataBaseManager;
 
 /**
  * 

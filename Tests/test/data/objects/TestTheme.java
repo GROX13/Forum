@@ -1,13 +1,13 @@
 package test.data.objects;
 
-import java.util.Date;
+import static org.junit.Assert.assertEquals;
 
-import static org.junit.Assert.*;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import data.objects.Theme;
+import forum.data.objects.Theme;
 
 /*
  * unit tests for theme class

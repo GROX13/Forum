@@ -1,18 +1,21 @@
 package test.managers.objects;
 
-import java.connection.DataBaseConnection;
-import java.data.objects.Category;
-import java.info.DataBaseInfo;
-import java.managers.database.DataBaseManager;
-import java.managers.objects.CategoryManager;
+import static org.junit.Assert.assertEquals;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import forum.connection.DataBaseConnection;
+import forum.data.objects.Category;
+import forum.info.DataBaseInfo;
+import forum.managers.database.DataBaseManager;
+import forum.managers.objects.CategoryManager;
 
 public class TestCategoryManager extends DataBaseInfo {
 
