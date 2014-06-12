@@ -91,7 +91,7 @@ CREATE TABLE warn (
 	last_post INT,
 	start_date DATE,
 	end_date DATE,
-	frequency TIME,
+	frequency INT,
 	FOREIGN KEY (user_id) REFERENCES users(id),
 	FOREIGN KEY (last_post) REFERENCES posts(id)
 );

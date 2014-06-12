@@ -1,5 +1,6 @@
 package forum.data.accounts;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import forum.managers.objects.ThemeManager;
  */
 
 public abstract class Account {
+	private static final int MILLISECONDS_IN_SECOND = 1000;
+	private static final int SECONDS_IN_HOUR = 3600;
 	private ThemeManager themeManager;
 	private DataBaseManager DBManager;
 	private PostManager postManager;
@@ -42,15 +45,36 @@ public abstract class Account {
 		return true;
 	}
 
-	// Postshi listebia mititebuli da postmanagershi ArrayListebi
-	// Postshi admins sheudzlia textis, suratebis an videos shecvla
-	// ID-ebs ver shecvlis
-	// Shemowmeba aris tu ara aseti posti and tema an kategoria romel temashi
-	// unda daiweros
-	public void WritePost(Post post) {
+	public boolean WritePost(Post post) throws SQLException {
 		postManager = new PostManager();
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_USERID);
+		values.add(post.getUserId());
+		ResultSet resultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_BANN, 
+				columns, values);
+		if(resultSet.next()) return false;
+	
+		resultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_WARN,
+				columns, values);
+		
+		if(resultSet.next()){
+			int lastPostId = resultSet.getInt(DataBaseInfo.MYSQL_WARN_LAST_POST);
+			clearArrays();
+			columns.add(DataBaseInfo.MYSQL_TABLE_POSTS + "." + DataBaseInfo.MYSQL_TABLE_ID);
+			values.add(lastPostId);
+			ResultSet lastPostResultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_POSTS, 
+					columns, values);
+			Date lastPostDate = lastPostResultSet.getDate(DataBaseInfo.MYSQL_POSTS_ADD_DATE);
+			Date currentPostDate = post.getDate();
+			int frequency = resultSet.getInt(DataBaseInfo.MYSQL_WARN_FREQUENCY);
+			if((currentPostDate.getTime() - 
+					lastPostDate.getTime())/MILLISECONDS_IN_SECOND/SECONDS_IN_HOUR <= frequency)
+				return false;
+		}
+		
 		postManager.add(post.getUserId(), post.getThemeId(), post.getText(),
 				post.getDate(), post.getImgs(), post.getVideos());
+		return true;
 	}
 
 	public boolean DeletePost(Post post) throws SQLException {

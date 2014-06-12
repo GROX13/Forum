@@ -68,5 +68,6 @@ public class DataBaseInfo {
 	public static final String MYSQL_END_DATE = "end_date";
 
 	public static final String MYSQL_WARN_FREQUENCY = "frequency";
-
+	public static final String MYSQL_WARN_LAST_POST = "last_post";
+	
 }
