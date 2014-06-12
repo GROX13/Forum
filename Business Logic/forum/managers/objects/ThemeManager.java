@@ -12,38 +12,51 @@ import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 
 /**
- * 
- * 
+ * Theme Manager class
+ * adds, removes, changes and gets all themes in database
  */
 
 public class ThemeManager extends DataBaseInfo {
 	private Map<Integer, Theme> allCat;
 	private DataBaseManager data;
 
+	/**
+	 * creates new Theme manager
+	 */
 	public ThemeManager() {
 		data = new DataBaseManager();
 		allCat = new HashMap<Integer, Theme>();
 	}
 
-	public void add(String name, String desc, int userId, Date date, int catId,
+	/**
+	 * adds new Theme in database
+	 * @param name
+	 * @param desc
+	 * @param userId
+	 * @param catId
+	 * @param open
+	 */
+	public void add(String name, String desc, int userId, int catId,
 			boolean open) {
 		ArrayList<String> columns = new ArrayList<String>();
 		columns.add(MYSQL_THEME_TITLE);
 		columns.add(MYSQL_THEME_DESCRIPTION);
-		columns.add(MYSQL_THEME_CREATION_DATE);
 		columns.add(MYSQL_THEME_CREATORID);
 		columns.add(MYSQL_THEME_CATEGORYID);
 		columns.add(MYSQL_THEME_IS_OPEN);
 		ArrayList<Object> values = new ArrayList<Object>();
 		values.add(name);
 		values.add(desc);
-		values.add(date);
 		values.add(userId);
 		values.add(catId);
 		values.add(open);
 		data.putDataInDataBase(MYSQL_TABLE_THEME, columns, values);
 	}
 
+	/**
+	 * gets all themes from database
+	 * @return Map
+	 */
 	public Map getAll() {
 		ResultSet res = data.executeQueryStatement("Select * from "
 				+ MYSQL_TABLE_THEME, new ArrayList<Object>());
@@ -64,6 +77,10 @@ public class ThemeManager extends DataBaseInfo {
 		return allCat;
 	}
 
+	/**
+	 * removes theme from database
+	 * @param id
+	 */
 	public void remove(int id) {
 		ArrayList<String> conditionCol = new ArrayList<String>();
 		ArrayList<Object> conditionVal = new ArrayList<Object>();
@@ -73,6 +90,12 @@ public class ThemeManager extends DataBaseInfo {
 				conditionVal);
 	}
 
+	/**
+	 * changes theme in database
+	 * @param id
+	 * @param columns
+	 * @param values
+	 */
 	public void change(int id, ArrayList<String> columns,
 			ArrayList<Object> values) {
 		ArrayList<String> conditionCol = new ArrayList<String>();
@@ -90,12 +113,6 @@ public class ThemeManager extends DataBaseInfo {
 					toChange.setDescription((String) values.get(i));
 				if (columns.get(i).equals(MYSQL_THEME_IS_OPEN))
 					toChange.setOpen((boolean) values.get(i));
-				if (columns.get(i).equals(MYSQL_THEME_CATEGORYID))
-					toChange.setDescription((String) values.get(i));
-				if (columns.get(i).equals(MYSQL_THEME_CREATION_DATE))
-					toChange.setDate((Date) values.get(i));
-				if (columns.get(i).equals(MYSQL_THEME_CREATORID))
-					toChange.setCreatorId((int) values.get(i));
 			}
 		}
 	}

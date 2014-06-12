@@ -24,17 +24,16 @@ public class TestCategoryManager extends DataBaseInfo {
 
 	@Before
 	public void setUp() {
-		DataBaseConnection con = new DataBaseConnection();
-		data = new DataBaseManager(con);
-		cm = new CategoryManager(con);
+		data = new DataBaseManager();
+		cm = new CategoryManager();
 	}
 
 	@Test
 	public void testAdd() throws SQLException {
 		cm.add("music", "jazz");
 		ResultSet res = data.executeQueryStatement(
-				"SELECT * FROM categories where id=LAST_INSERT_ID()",
-				new ArrayList<>());
+				"SELECT * FROM categories ORDER BY id DESC LIMIT 1",
+				new ArrayList<Object>());
 		res.next();
 		assertEquals(
 				true,
@@ -50,12 +49,12 @@ public class TestCategoryManager extends DataBaseInfo {
 		values.add("films");
 		ResultSet result = data.executeQueryStatement(
 				"SELECT * FROM categories ORDER BY id DESC LIMIT 1;",
-				new ArrayList<>());
+				new ArrayList<Object>());
 		result.next();
 		int id = result.getInt(MYSQL_TABLE_ID);
 		cm.change(id, columns, values);
 		ResultSet res = data.executeQueryStatement("Select * from categories where id = " + id,
-				new ArrayList<>());
+				new ArrayList<Object>());
 		res.next();
 		assertEquals(true, res.getString(MYSQL_CATEGORIES_TITLE).equals("films"));
 	}
@@ -90,11 +89,11 @@ public class TestCategoryManager extends DataBaseInfo {
 	public void testRemove() throws SQLException {
 		ResultSet result = data.executeQueryStatement(
 				"SELECT * FROM categories ORDER BY id DESC LIMIT 1;",
-				new ArrayList<>());
+				new ArrayList<Object>());
 		result.next();
 		cm.remove(result.getInt(MYSQL_TABLE_ID));
 		ResultSet res = data.executeQueryStatement("Select * from categories where id = 1",
-				new ArrayList<>());
+				new ArrayList<Object>());
 		assertEquals(false, res.next());
 	}
 }
