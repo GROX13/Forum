@@ -111,26 +111,33 @@ public class Admin extends Account {
 		values.add(post.getId());
 		postManager.change(post.getId(), columns, values);
 	}
-
-	public void ModifyPostImages(Post post) {
-
-	}
-
-	public void ModifyPostVideos(Post post) {
-
-	}
-
-	public void WarnUser() {
-		// sad vwert im metods romelic
-		// ganaaxldeba yovel TIME droshi
-		// da miscems users dapostvis sashualeba
-		// mokled es ver gavige xval gavarkviot :\
+	
+	public void WarnUser(int userID, int frequency, Date endDate) throws SQLException {
+		clearArrays();
+		values.add(userID);
+		String query = "SELECT * FROM " + DataBaseInfo.MYSQL_TABLE_POSTS 
+		+ "WHERE " + DataBaseInfo.MYSQL_POSTS_AUTHORID + " = ? ORDER BY " + 
+		DataBaseInfo.MYSQL_POSTS_ADD_DATE + " DESC LIMIT 1";
+		ResultSet resultSet = DBManager.executeQueryStatement(query, values);
+		int lastPostID = resultSet.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_USERID);
+		columns.add(DataBaseInfo.MYSQL_WARN_LAST_POST);
+		columns.add(DataBaseInfo.MYSQL_START_DATE);
+		columns.add(DataBaseInfo.MYSQL_END_DATE);
+		columns.add(DataBaseInfo.MYSQL_WARN_FREQUENCY);
+		values.add(userID);
+		values.add(lastPostID);
+		values.add(currentDate());
+		values.add(endDate);
+		values.add(frequency);
+		DBManager.putDataInDataBase(DataBaseInfo.MYSQL_TABLE_WARN, columns, values);
 	}
 
 	public void BannUser(String username, Date bannEndDate) throws SQLException {
 
-		Date bannStartDate = currenDate();
-
+		Date bannStartDate = currentDate();
+		
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_USERS + "."
 				+ DataBaseInfo.MYSQL_USERS_USERNAME);
@@ -154,7 +161,7 @@ public class Admin extends Account {
 				values);
 	}
 
-	private Date currenDate() {
+	private Date currentDate() {
 		Calendar cal = Calendar.getInstance();
 		long date = cal.getTimeInMillis();
 		Date currentDate = new Date(date);

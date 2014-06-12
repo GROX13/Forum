@@ -20,25 +20,29 @@ import forum.managers.objects.ThemeManager;
 public abstract class Account {
 	private static final int MILLISECONDS_IN_SECOND = 1000;
 	private static final int SECONDS_IN_HOUR = 3600;
-	private ThemeManager themeManager;
-	private DataBaseManager DBManager;
-	private PostManager postManager;
-	private ArrayList<Object> values;
-	private ArrayList<String> columns;
+	private ThemeManager themeManager = new ThemeManager();
+	private DataBaseManager DBManager = new DataBaseManager();
+	private PostManager postManager = new PostManager();
+	private ArrayList<Object> values = new ArrayList<Object>();
+	private ArrayList<String> columns = new ArrayList<String>();
 
 	public boolean AddTheme(Theme theme) throws SQLException {
-
-		themeManager = new ThemeManager();
-		DBManager = new DataBaseManager();
-		values = new ArrayList<Object>();
-		columns = new ArrayList<String>();
-		columns.add(DataBaseInfo.MYSQL_TABLE_THEME + "."
-				+ DataBaseInfo.MYSQL_TABLE_ID);
-		values.add(theme.getId());
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_TABLE_BANN + "." + DataBaseInfo.MYSQL_USERID);
+		values.add(theme.getCreatorId());
 		ResultSet resultSet = DBManager.getDataFromDataBase(
-				DataBaseInfo.MYSQL_TABLE_THEME, columns, values);
+				DataBaseInfo.MYSQL_TABLE_BANN, columns, values);
 		if (resultSet.next())
 			return false;
+		
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_TABLE_WARN + "." + DataBaseInfo.MYSQL_USERID);
+		values.add(theme.getCategoryId());
+		resultSet = DBManager.getDataFromDataBase(
+				DataBaseInfo.MYSQL_TABLE_WARN, columns, values);
+		if(resultSet.next())
+			return false;
+		
 		themeManager.add(theme.getTitle(), theme.getDescription(),
 				theme.getCreatorId(), theme.getCategoryId(),
 				theme.getOpen());
@@ -46,14 +50,17 @@ public abstract class Account {
 	}
 
 	public boolean WritePost(Post post) throws SQLException {
-		postManager = new PostManager();
+		
 		clearArrays();
-		columns.add(DataBaseInfo.MYSQL_USERID);
+		columns.add(DataBaseInfo.MYSQL_TABLE_BANN + "." + DataBaseInfo.MYSQL_USERID);
 		values.add(post.getUserId());
 		ResultSet resultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_BANN, 
 				columns, values);
 		if(resultSet.next()) return false;
-	
+		
+		clearArrays();
+		columns.add(DataBaseInfo.MYSQL_TABLE_WARN + "." + DataBaseInfo.MYSQL_USERID);
+		values.add(post.getUserId());
 		resultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_WARN,
 				columns, values);
 		
