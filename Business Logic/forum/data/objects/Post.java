@@ -1,5 +1,6 @@
 package forum.data.objects;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class Post {
 	private int userId;
 	private String text;
 	private Date creationDate;
-	private List<String> images;
-	private List<String> videos;
+	private ArrayList<String> images;
+	private ArrayList<String> videos;
 
 	
 	/**
@@ -29,7 +30,7 @@ public class Post {
 	 * @param imgs
 	 * @param video
 	 */
-	public Post(int pId, int tId, int usId, String postText, Date date, List<String> imgs, List<String> video){
+	public Post(int pId, int tId, int usId, String postText, Date date, ArrayList<String> imgs, ArrayList<String> video){
 		id = pId;
 		themeId = tId;
 		userId = usId;
@@ -75,7 +76,7 @@ public class Post {
 	 * sets images
 	 * @param imgs
 	 */
-	public void setImages(List<String> imgs){
+	public void setImages(ArrayList<String> imgs){
 		images = imgs;
 	}
 	
@@ -83,7 +84,7 @@ public class Post {
 	 * sets videos
 	 * @param video
 	 */
-	public void setVideos(List<String> video){
+	public void setVideos(ArrayList<String> video){
 		videos = video;
 	}
 	
@@ -132,7 +133,7 @@ public class Post {
 	 * returns images
 	 * @return List
 	 */
-	public List<String> getImgs(){
+	public ArrayList<String> getImgs(){
 		return images;
 	}
 	
@@ -140,7 +141,7 @@ public class Post {
 	 * returns videos
 	 * @return
 	 */
-	public List<String> getVideos(){
+	public ArrayList<String> getVideos(){
 		return videos;
 	}
 	

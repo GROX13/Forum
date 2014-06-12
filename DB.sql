@@ -13,7 +13,7 @@ CREATE TABLE users (
 	signiture TEXT,
 	gender CHAR,
 	birth_date DATE,
-	registration_date DATE,
+	registration_date DATE DEFAULT CURRENT_TIMESTAMP,
 	user_type INT,
 	password VARCHAR(32)
 );
@@ -23,7 +23,7 @@ CREATE TABLE message (
 	sender_id INT NOT NULL,
 	receiver_id INT NOT NULL,
 	message TEXT,
-	send_date DATETIME,
+	send_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (sender_id) REFERENCES users(id),
 	FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
@@ -55,7 +55,7 @@ CREATE TABLE theme (
 	category_id INT NOT NULL,
 	title VARCHAR(50),
 	description TEXT,
-	creation_date DATETIME,
+	creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 	is_open BOOL,
 	FOREIGN KEY (category_id) REFERENCES categories(id),
 	FOREIGN KEY (creator_id) REFERENCES users(id)
@@ -66,7 +66,7 @@ CREATE TABLE posts (
 	author_id INT NOT NULL,
 	theme_id INT NOT NULL,
 	post TEXT,
-	add_date DATETIME,
+	add_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (author_id) REFERENCES users(id),
 	FOREIGN KEY (theme_id) REFERENCES theme(id)
 );
@@ -104,13 +104,17 @@ CREATE TABLE bann (
 	FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-
 INSERT INTO users (username, first_name, last_name, email, signiture, gender, user_type) 
 	VALUES ("GROX13", "Giorgi", "Rokhadze", "grokh12@freeuni.edu.ge", "G.Rokhadze", 'm', 1);
 
 INSERT INTO users (username, first_name, last_name, email, signiture, gender, user_type) 
 	VALUES ("Giorgi", "Giorgi", "Rokhadze", "grokh12@freeuni.edu.ge", "G.Rokhadze", 'm', 0);
 
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (2, 1, 'Test message 2');
+
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (2, 1, 'Test message 2');
 
 SELECT * FROM users;
 SELECT * FROM categories;
