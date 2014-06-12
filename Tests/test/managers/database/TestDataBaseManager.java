@@ -87,7 +87,7 @@ public class TestDataBaseManager {
 	}
 
 	@Test
-	public void testPutDataWithRetrevingID() {
+	public void testPutDataWithRetrevingID() throws SQLException {
 		String tableName = DataBaseInfo.MYSQL_TABLE_MESSAGE;
 		ArrayList<String> columns = new ArrayList<String>();
 		columns.add(DataBaseInfo.MYSQL_MESSAGE_SENDER);
@@ -98,9 +98,15 @@ public class TestDataBaseManager {
 		values.add(1);
 		values.add("Test methods BUM");
 		int id = DBManager.putDataWithRetrevingID(tableName, columns, values);
-		assertTrue(id != 0);
+		int id1 = -1;
+		ResultSet rs = DBManager
+				.getDataFromDataBase(tableName, columns, values);
+		while (rs.next()) {
+			id1 = rs.getInt(1);
+		}
+		assertTrue(id == id1);
 	}
-	
+
 	@Test
 	public void testUpdateDataInDataBase() throws SQLException {
 		ArrayList<String> columns = new ArrayList<String>();

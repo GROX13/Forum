@@ -129,7 +129,7 @@ public class DataBaseManager {
 		try {
 			PreparedStatement pstmt = (PreparedStatement) connection
 					.prepareStatement(prepareUpdateStatement(tableName,
-							getCondition(conditionCol), columns));
+							getCondition(conditionCol, ""), columns));
 			int size = values.size();
 			for (int i = 0; i < size; i++) {
 				pstmt.setObject(i + 1, values.get(i));
@@ -162,7 +162,7 @@ public class DataBaseManager {
 		try {
 			PreparedStatement pstmt = (PreparedStatement) connection
 					.prepareStatement("DELETE FROM " + tableName + " WHERE "
-							+ getCondition(conditionCol) + ";");
+							+ getCondition(conditionCol, "") + ";");
 			for (int i = 0; i < conditionVal.size(); i++) {
 				pstmt.setObject(i + 1, conditionVal.get(i));
 			}
@@ -191,7 +191,7 @@ public class DataBaseManager {
 		try {
 			PreparedStatement pstmt = (PreparedStatement) connection
 					.prepareStatement("SELECT * FROM " + tableName + " WHERE "
-							+ getCondition(conditionCol) + ";");
+							+ getCondition(conditionCol, "AND") + ";");
 			for (int i = 0; i < conditionVal.size(); i++) {
 				pstmt.setObject(i + 1, conditionVal.get(i));
 			}
@@ -244,11 +244,14 @@ public class DataBaseManager {
 	/*
 	 * Prepares condition statement for update and remove updates.
 	 */
-	private String getCondition(ArrayList<String> conditionCol) {
+	private String getCondition(ArrayList<String> conditionCol, String cond) {
 		// TODO Auto-generated method stub
 		String stmt = "";
-		for (int i = 0; i < conditionCol.size(); i++) {
-			stmt = stmt + conditionCol.get(i) + " = ? ";
+		if (conditionCol.size() > 0) {
+			for (int i = 0; i < conditionCol.size() - 1; i++) {
+				stmt = stmt + conditionCol.get(i) + " = ? " + cond + " ";
+			}
+			stmt = stmt + conditionCol.get(conditionCol.size() - 1) + " = ?";
 		}
 		return stmt;
 	}
@@ -264,10 +267,10 @@ public class DataBaseManager {
 			for (int i = 0; i < values.size(); i++) {
 				pstmt.setObject(i + 1, values.get(i));
 			}
-			pstmt.executeUpdate(tmp, Statement.RETURN_GENERATED_KEYS);
+			pstmt.executeUpdate(pstmt.asSql(), Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = pstmt.getGeneratedKeys();
 			rs.next();
-			ID = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+			ID = rs.getInt(1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
