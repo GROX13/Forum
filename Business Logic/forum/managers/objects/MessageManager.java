@@ -36,12 +36,30 @@ public class MessageManager {
 		values.add(messageText);
 		int ID = DBManager.putDataWithRetrevingID(
 				DataBaseInfo.MYSQL_TABLE_MESSAGE, columns, values);
-		for (int i = 0; i < messageImg.size(); i++) {
-
-		}
-		for (int i = 0; i < messageImg.size(); i++) {
-
-		}
+		if (messageImg != null)
+			for (int i = 0; i < messageImg.size(); i++) {
+				ArrayList<String> columnsImg = new ArrayList<String>();
+				ArrayList<Object> valuesImg = new ArrayList<Object>();
+				columnsImg.add(DataBaseInfo.MYSQL_IMAGE_FILE);
+				columnsImg.add(DataBaseInfo.MYSQL_MESSAGE_FILES_MESSAGEID);
+				valuesImg.add(messageImg.get(i));
+				valuesImg.add(ID);
+				DBManager.putDataInDataBase(
+						DataBaseInfo.MYSQL_TABLE_MESSAGE_IMAGES, columnsImg,
+						valuesImg);
+			}
+		if (messageVid != null)
+			for (int i = 0; i < messageImg.size(); i++) {
+				ArrayList<String> columnsImg = new ArrayList<String>();
+				ArrayList<Object> valuesImg = new ArrayList<Object>();
+				columnsImg.add(DataBaseInfo.MYSQL_VIDEO_FILE);
+				columnsImg.add(DataBaseInfo.MYSQL_MESSAGE_FILES_MESSAGEID);
+				valuesImg.add(messageImg.get(i));
+				valuesImg.add(ID);
+				DBManager.putDataInDataBase(
+						DataBaseInfo.MYSQL_TABLE_MESSAGE_IMAGES, columnsImg,
+						valuesImg);
+			}
 	}
 
 	public ArrayList<Message> receiveFullConversation() {

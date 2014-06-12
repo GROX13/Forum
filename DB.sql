@@ -13,7 +13,7 @@ CREATE TABLE users (
 	signiture TEXT,
 	gender CHAR,
 	birth_date DATE,
-	registration_date DATE DEFAULT CURRENT_TIMESTAMP,
+	registration_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 	user_type INT,
 	password VARCHAR(32)
 );
@@ -111,10 +111,13 @@ INSERT INTO users (username, first_name, last_name, email, signiture, gender, us
 	VALUES ("Giorgi", "Giorgi", "Rokhadze", "grokh12@freeuni.edu.ge", "G.Rokhadze", 'm', 0);
 
 INSERT INTO message (sender_id, receiver_id, message) 
-	VALUES (2, 1, 'Test message 2');
+	VALUES (1, 2, 'Test message 1');
 
 INSERT INTO message (sender_id, receiver_id, message) 
 	VALUES (2, 1, 'Test message 2');
+
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (2, 1, 'Test message 3');
 
 SELECT * FROM users;
 SELECT * FROM categories;

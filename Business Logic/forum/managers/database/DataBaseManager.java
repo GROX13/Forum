@@ -256,13 +256,18 @@ public class DataBaseManager {
 	public int putDataWithRetrevingID(String tableName,
 			ArrayList<String> columns, ArrayList<Object> values) {
 		// TODO Auto-generated method stub
+		int ID = 0;
 		try {
+			String tmp = prepareInsertStatement(tableName, columns);
 			PreparedStatement pstmt = (PreparedStatement) connection
-					.prepareStatement(prepareInsertStatement(tableName, columns));
+					.prepareStatement(tmp);
 			for (int i = 0; i < values.size(); i++) {
 				pstmt.setObject(i + 1, values.get(i));
 			}
-			pstmt.executeUpdate();
+			pstmt.executeUpdate(tmp, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = pstmt.getGeneratedKeys();
+			rs.next();
+			ID = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -270,6 +275,6 @@ public class DataBaseManager {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return 0;
+		return ID;
 	}
 }

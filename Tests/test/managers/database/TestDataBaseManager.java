@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import forum.connection.DataBaseConnection;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 
@@ -24,7 +23,7 @@ public class TestDataBaseManager {
 
 	@Before
 	public void setUp() {
-		DBManager = new DataBaseManager(new DataBaseConnection());
+		DBManager = new DataBaseManager();
 	}
 
 	@Test
@@ -87,6 +86,21 @@ public class TestDataBaseManager {
 		assertEquals(userType, 0);
 	}
 
+	@Test
+	public void testPutDataWithRetrevingID() {
+		String tableName = DataBaseInfo.MYSQL_TABLE_MESSAGE;
+		ArrayList<String> columns = new ArrayList<String>();
+		columns.add(DataBaseInfo.MYSQL_MESSAGE_SENDER);
+		columns.add(DataBaseInfo.MYSQL_MESSAGE_RECEIVER);
+		columns.add(DataBaseInfo.MYSQL_MESSAGE_MESSAGE);
+		ArrayList<Object> values = new ArrayList<Object>();
+		values.add(2);
+		values.add(1);
+		values.add("Test methods BUM");
+		int id = DBManager.putDataWithRetrevingID(tableName, columns, values);
+		assertTrue(id != 0);
+	}
+	
 	@Test
 	public void testUpdateDataInDataBase() throws SQLException {
 		ArrayList<String> columns = new ArrayList<String>();
@@ -163,6 +177,7 @@ public class TestDataBaseManager {
 		DBManager.removeDataFromDataBase(DataBaseInfo.MYSQL_TABLE_USERS, c, v);
 		DBManager.updateDataInDataBase(DataBaseInfo.MYSQL_TABLE_USERS, c, v, c,
 				v);
+
 	}
 
 	@Test
@@ -175,4 +190,5 @@ public class TestDataBaseManager {
 		DBManager.updateDataInDataBase(DataBaseInfo.MYSQL_TABLE_USERS, c, v, c,
 				v);
 	}
+
 }
