@@ -65,6 +65,8 @@ public class TestThemeManager extends DataBaseInfo {
 		ArrayList<Object> values = new ArrayList<Object>();
 		columns.add(MYSQL_THEME_TITLE);
 		values.add("films");
+		columns.add(MYSQL_THEME_IS_OPEN);
+		values.add(false);
 		ResultSet result = data.executeQueryStatement(
 				"SELECT * FROM theme ORDER BY id DESC LIMIT 1;",
 				new ArrayList<>());
@@ -75,7 +77,7 @@ public class TestThemeManager extends DataBaseInfo {
 				"Select * from theme where id = " + id, new ArrayList<>());
 		res.next();
 		assertEquals(true, res.getString(MYSQL_THEME_TITLE)
-				.equals("films"));
+				.equals("films") && !res.getBoolean(MYSQL_THEME_IS_OPEN));
 	}
 
 	@Test

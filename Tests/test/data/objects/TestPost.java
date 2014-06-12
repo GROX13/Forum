@@ -2,8 +2,8 @@ package test.data.objects;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class TestPost {
 
 	@Before
 	public void setUp() {
-		newOne = new Post(2, 5, 4, "new post", new Date(),
+		newOne = new Post(2, 5, 4, "new post", new Date(0),
 				new ArrayList<String>(), new ArrayList<String>());
 	}
 
@@ -35,7 +35,7 @@ public class TestPost {
 		assertEquals(7, newOne.getThemeId());
 		newOne.setPostText("Hello");
 		assertEquals("Hello", newOne.getText());
-		Date d = new Date();
+		Date d = new Date(0);
 		newOne.setDate(d);
 		assertEquals(d, newOne.getDate());
 		ArrayList<String> imgs = new ArrayList<String>();
@@ -50,12 +50,11 @@ public class TestPost {
 
 	@Test
 	public void testEquals() {
-		Date d = newOne.getDate();
-		another = new Post(2, 5, 4, "new post", new Date(),
+		another = new Post(2, 5, 4, "new post", new Date(0),
 				new ArrayList<String>(), new ArrayList<String>());
 		assertEquals(true, another.equals(newOne));
 
-		next = new Post(3, 5, 4, "new post", new Date(),
+		next = new Post(3, 5, 4, "new post", new Date(0),
 				new ArrayList<String>(), new ArrayList<String>());
 		assertEquals(false, another.equals(next));
 	}
