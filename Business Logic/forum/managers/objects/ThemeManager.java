@@ -3,10 +3,8 @@ package forum.managers.objects;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import forum.data.objects.Theme;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
@@ -57,7 +55,7 @@ public class ThemeManager extends DataBaseInfo {
 	 * gets all themes from database
 	 * @return Map
 	 */
-	public Map getAll() {
+	public Map<Integer, Theme> getAll() {
 		ResultSet res = data.executeQueryStatement("Select * from "
 				+ MYSQL_TABLE_THEME, new ArrayList<Object>());
 		try {

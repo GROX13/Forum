@@ -1,50 +1,43 @@
 package test.managers.objects;
 
 import static org.junit.Assert.assertEquals;
-
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import forum.data.objects.Theme;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
-import forum.managers.objects.AccountManager;
 import forum.managers.objects.CategoryManager;
 import forum.managers.objects.ThemeManager;
 
+// for this test you must have user in users table wuth userId
+// you can change userId 
 public class TestThemeManager extends DataBaseInfo {
 	private DataBaseManager data;
 	private ThemeManager tm;
+	private int userId = 1;
+	private int catId;
+	private CategoryManager cm;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws SQLException {
 		data = new DataBaseManager();
 		tm = new ThemeManager();
-	}
-
-	@Test
-	public void testAdd() throws SQLException {
-		CategoryManager cm = new CategoryManager();
+		cm = new CategoryManager();
 		cm.add("newCat", "about everything");
-		AccountManager am = new AccountManager();
-		am.createAccount("gio", "444", "sfddf", "dfgfdg", "fgdfg", "dfgdfg", "fdgdfg", "dfgdf", new Date(3), 0);
-		ResultSet resUser = data.executeQueryStatement(
-				"SELECT * FROM users ORDER BY id DESC LIMIT 1",
-				new ArrayList<Object>());
-		resUser.next();
-		int userId = resUser.getInt(MYSQL_TABLE_ID);
 		ResultSet resCat = data.executeQueryStatement(
 				"SELECT * FROM categories ORDER BY id DESC LIMIT 1",
 				new ArrayList<Object>());
 		resCat.next();
-		int catId = resUser.getInt(MYSQL_TABLE_ID);
+		catId = resCat.getInt(MYSQL_TABLE_ID);
+	}
+	
+
+	@Test
+	public void testAdd() throws SQLException {
 		tm.add("music", "pop", userId, catId, true);
 		ResultSet res = data.executeQueryStatement(
 				"SELECT * FROM theme ORDER BY id DESC LIMIT 1",
@@ -57,10 +50,13 @@ public class TestThemeManager extends DataBaseInfo {
 						.getInt(MYSQL_THEME_CATEGORYID) == catId)
 						&& res.getInt(MYSQL_THEME_CREATORID) == userId
 						&& res.getBoolean(MYSQL_THEME_IS_OPEN));
+		tm.remove(res.getInt(MYSQL_TABLE_ID));
+		cm.remove(catId);
 	}
 
 	@Test
 	public void testChange() throws SQLException {
+		tm.add("music", "pop", userId, catId, true);
 		ArrayList<String> columns = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		columns.add(MYSQL_THEME_TITLE);
@@ -78,37 +74,51 @@ public class TestThemeManager extends DataBaseInfo {
 		res.next();
 		assertEquals(true, res.getString(MYSQL_THEME_TITLE)
 				.equals("films") && !res.getBoolean(MYSQL_THEME_IS_OPEN));
+		tm.remove(res.getInt(MYSQL_TABLE_ID));
+		cm.remove(catId);
 	}
 
 	@Test
-	public void testChangeAfterGetAll() {
-		Map<String, Theme> all = tm.getAll();
-		Iterator iter = all.entrySet().iterator();
-		Theme temp = null;
-		if (iter.hasNext()) {
-			Map.Entry<String, Theme> entry = (Map.Entry<String, Theme>) iter
-					.next();
-			temp = entry.getValue();
-		}
+	public void testGetAllAndChange() throws SQLException {
+		tm.add("music", "pop", userId, catId, true);
+		tm.add("art", "modern", userId, catId, true);
+		Map<Integer, Theme> all = tm.getAll();
+		
+		ResultSet result = data.executeQueryStatement(
+				"SELECT * FROM theme ORDER BY id DESC LIMIT 2;",
+				new ArrayList<Object>());
+		result.next();
+		int firstId = result.getInt(MYSQL_TABLE_ID);
+		result.next();
+		int secondId = result.getInt(MYSQL_TABLE_ID);
+		assertEquals(true, all.containsKey(firstId));
+		assertEquals(true, all.containsKey(secondId));
+	
 		ArrayList<String> columns = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		columns.add(MYSQL_THEME_TITLE);
-		String title = temp.getTitle() + "...";
-		values.add(title);
-		tm.change(temp.getId(), columns, values);
-		assertEquals(true, temp.getTitle().equals(title));
+		values.add("city");
+		tm.change(firstId, columns, values);
+		assertEquals(true, all.get(firstId).getTitle().equals("city"));
 
 		columns.remove(0);
 		values.remove(0);
 		columns.add(MYSQL_THEME_DESCRIPTION);
-		String desc = temp.getDescription() + "...";
-		values.add(desc);
-		tm.change(temp.getId(), columns, values);
-		assertEquals(true, temp.getDescription().equals(desc));
+		columns.add(MYSQL_THEME_IS_OPEN);
+		values.add("romance");
+		values.add(false);
+		tm.change(secondId, columns, values);
+		assertEquals(true, all.get(secondId).getDescription().equals("romance"));
+		assertEquals(false, all.get(secondId).getOpen());
+		
+		tm.remove(firstId);
+		tm.remove(secondId);
+		cm.remove(catId);
 	}
 
 	@Test
 	public void testRemove() throws SQLException {
+		tm.add("music", "pop", userId, catId, true);
 		ResultSet result = data.executeQueryStatement(
 				"SELECT * FROM theme ORDER BY id DESC LIMIT 1;",
 				new ArrayList<Object>());
@@ -118,6 +128,7 @@ public class TestThemeManager extends DataBaseInfo {
 		ResultSet res = data.executeQueryStatement(
 				"Select * from theme where id = " + id, new ArrayList<Object>());
 		assertEquals(false, res.next());
+		cm.remove(catId);
 	}
 
 }
