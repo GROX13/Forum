@@ -26,6 +26,8 @@ public class TestCategory {
 
 	@Test
 	public void testSetGetMethods() {
+		assertEquals(10, newOne.getId());
+		
 		newOne.setTitle("art");
 		assertEquals("art", newOne.getTitle());
 

@@ -20,28 +20,26 @@ public class TestTheme {
 	private Theme newOne;
 	private Theme another;
 	private Theme next;
+	private Date d;
 
 	@Before
 	public void setUp() {
-		newOne = new Theme(2, 5, 4, "kino", "", new Date(), true);
+		d = new Date();
+		newOne = new Theme(2, 5, 4, "kino", "", d, true);
 	}
 
 	@Test
 	public void testGetAndSetMothods() {
 		assertEquals(5, newOne.getCreatorId());
 		assertEquals("kino", newOne.getTitle());
+		assertEquals(4, newOne.getCategoryId());
+		assertEquals(2, newOne.getId());
+		assertEquals(d, newOne.getDate());
 
-		newOne.setCreatorId(3);
-		assertEquals(3, newOne.getCreatorId());
-		newOne.setCategoryId(6);
-		assertEquals(6, newOne.getCategoryId());
 		newOne.setTitle("");
 		assertEquals("", newOne.getTitle());
 		newOne.setDescription("about films");
 		assertEquals("about films", newOne.getDescription());
-		Date d = new Date();
-		newOne.setDate(d);
-		assertEquals(d, newOne.getDate());
 		newOne.setOpen(false);
 		assertEquals(false, newOne.getOpen());
 	}

@@ -1,13 +1,10 @@
 package test.data.objects;
 
 import static org.junit.Assert.assertEquals;
-
 import java.sql.Date;
 import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import forum.data.objects.Post;
 
 public class TestPost {
@@ -17,10 +14,12 @@ public class TestPost {
 	private Post newOne;
 	private Post another;
 	private Post next;
+	private Date d;
 
 	@Before
 	public void setUp() {
-		newOne = new Post(2, 5, 4, "new post", new Date(0),
+		d = new Date(0);
+		newOne = new Post(2, 5, 4, "new post", d,
 				new ArrayList<String>(), new ArrayList<String>());
 	}
 
@@ -28,16 +27,12 @@ public class TestPost {
 	public void testGetAndSetMothods() {
 		assertEquals(2, newOne.getId());
 		assertEquals("new post", newOne.getText());
+		assertEquals(5, newOne.getThemeId());
+		assertEquals(4, newOne.getUserId());
+		assertEquals(d, newOne.getDate());
 
-		newOne.setUserId(3);
-		assertEquals(3, newOne.getUserId());
-		newOne.setThemeId(7);
-		assertEquals(7, newOne.getThemeId());
 		newOne.setPostText("Hello");
 		assertEquals("Hello", newOne.getText());
-		Date d = new Date(0);
-		newOne.setDate(d);
-		assertEquals(d, newOne.getDate());
 		ArrayList<String> imgs = new ArrayList<String>();
 		imgs.add("new image");
 		newOne.setImages(imgs);

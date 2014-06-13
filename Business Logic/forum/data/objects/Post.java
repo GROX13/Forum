@@ -20,7 +20,7 @@ public class Post {
 
 	
 	/**
-	 * 
+	 * creates new post
 	 * @param pId
 	 * @param tId
 	 * @param name
@@ -39,21 +39,6 @@ public class Post {
 		videos = video;
 	}
 	
-	/**
-	 * 
-	 * @param tId
-	 */
-	public void setThemeId(int tId){
-		themeId = tId;
-	}
-	
-	/**
-	 * sets id to post's author id
-	 * @param name
-	 */
-	public void setUserId(int usId){
-		userId = usId;
-	}
 	
 	/**
 	 * sets text
@@ -63,13 +48,6 @@ public class Post {
 		text = postText;
 	}
 	
-	/**
-	 * sets date
-	 * @param date
-	 */
-	public void setDate(Date date){
-		creationDate = date;
-	}
 	
 	/**
 	 * sets images
@@ -113,7 +91,7 @@ public class Post {
 	
 	
 	/**
-	 * 
+	 * returns theme id
 	 * @return int
 	 */
 	public int getThemeId(){
@@ -121,7 +99,7 @@ public class Post {
 	}
 	
 	/**
-	 * 
+	 * returns post's id
 	 * @return int
 	 */
 	public int getId(){
@@ -144,6 +122,10 @@ public class Post {
 		return videos;
 	}
 	
+	/**
+	 * equals for two posts
+	 * posts are equal if there ids are equal
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		Post p = (Post) obj;
@@ -152,6 +134,9 @@ public class Post {
 		return false;
 	}
 
+	/**
+	 * post toString
+	 */
 	@Override
 	public String toString() {
 		String texts = id + " post: themeId " + themeId + " , author id " + userId + " , text "

@@ -37,14 +37,6 @@ public class Theme {
 		open = isOpen;
 	}
 
-	/**
-	 * sets user's id who created this theme
-	 * 
-	 * @param userId
-	 */
-	public void setCreatorId(int userId) {
-		creatorId = userId;
-	}
 
 	/**
 	 * sets title name
@@ -64,14 +56,6 @@ public class Theme {
 		description = desc;
 	}
 
-	/**
-	 * sets criation date
-	 * 
-	 * @param date
-	 */
-	public void setDate(Date date) {
-		creationDate = date;
-	}
 
 	/**
 	 * is you set true guests can see the theme
@@ -82,13 +66,6 @@ public class Theme {
 		open = isOpen;
 	}
 
-	/**
-	 * 
-	 * @param cId
-	 */
-	public void setCategoryId(int cId) {
-		categoryId = cId;
-	}
 
 	/**
 	 * returns theme's id
@@ -144,6 +121,10 @@ public class Theme {
 		return open;
 	}
 
+	/**
+	 * gets theme's category id
+	 * @return int
+	 */
 	public int getCategoryId() {
 		return categoryId;
 	}
@@ -159,6 +140,9 @@ public class Theme {
 		return false;
 	}
 
+	/**
+	 * Theme's toString method
+	 */
 	@Override
 	public String toString() {
 		String text = id + " theme: userId " + creatorId + " , categoryId "
