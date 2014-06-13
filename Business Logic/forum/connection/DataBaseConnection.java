@@ -13,25 +13,17 @@ import forum.info.MyDBInfo;
  */
 
 public class DataBaseConnection {
+	private DataSource datasource;
 	private static DataBaseConnection instance;
-
-	public static DataBaseConnection getInstance() {
-		if (instance == null) {
-			instance = new DataBaseConnection();
-		}
-		return instance;
-	}
-
 	private static String account = MyDBInfo.MYSQL_USERNAME;
 	private static String password = MyDBInfo.MYSQL_PASSWORD;
 	private static String server = MyDBInfo.MYSQL_DATABASE_SERVER;
 
-	private java.sql.Connection connection;
-	private DataSource datasource;
-
+	/*
+	 * 
+	 */
 	private DataBaseConnection() {
 		// TODO Auto-generated constructor stub
-
 		PoolProperties p = new PoolProperties();
 		p.setUrl("jdbc:mysql://" + server);
 		p.setDriverClassName("com.mysql.jdbc.Driver");
@@ -58,7 +50,22 @@ public class DataBaseConnection {
 		datasource.setPoolProperties(p);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public static DataBaseConnection getInstance() {
+		if (instance == null)
+			instance = new DataBaseConnection();
+		return instance;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
 	public java.sql.Connection getConnection() {
+		java.sql.Connection connection = null;
 		try {
 			connection = datasource.getConnection();
 		} catch (SQLException e) {
