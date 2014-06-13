@@ -35,10 +35,12 @@ public class TestCategoryManager extends DataBaseInfo {
 				true,
 				(res.getString(MYSQL_CATEGORIES_TITLE).equals("music") && res
 						.getString(MYSQL_CATEGORIES_DESCRIPTION).equals("jazz")));
+		cm.remove(res.getInt(MYSQL_TABLE_ID));
 	}
 
 	@Test
 	public void testChange() throws SQLException {
+		cm.add("music", "jazz");
 		ArrayList<String> columns = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		columns.add(MYSQL_CATEGORIES_TITLE);
@@ -53,36 +55,45 @@ public class TestCategoryManager extends DataBaseInfo {
 				new ArrayList<Object>());
 		res.next();
 		assertEquals(true, res.getString(MYSQL_CATEGORIES_TITLE).equals("films"));
+		cm.remove(res.getInt(MYSQL_TABLE_ID));
 	}
 	
 	@Test
-	public void testChangeAfterGetAll(){
-		Map<String, Category> all = cm.getAll();
-		Iterator iter = all.entrySet().iterator();
-		Category temp = null;
-		if(iter.hasNext()){
-			Map.Entry<String, Category> entry = (Map.Entry<String, Category>)iter.next();
-			temp = entry.getValue();
-		}
+	public void testGetAllAndChange() throws SQLException{
+		cm.add("music", "jazz");
+		cm.add("films", "drama");
+		Map<Integer, Category> all = cm.getAll();
+		ResultSet result = data.executeQueryStatement(
+				"SELECT * FROM categories ORDER BY id DESC LIMIT 2;",
+				new ArrayList<Object>());
+		result.next();
+		int firstId = result.getInt(MYSQL_TABLE_ID);
+		result.next();
+		int secondId = result.getInt(MYSQL_TABLE_ID);
+		assertEquals(true, all.containsKey(firstId));
+		assertEquals(true, all.containsKey(secondId));
+		
 		ArrayList<String> columns = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		columns.add(MYSQL_CATEGORIES_TITLE);
-		String title = temp.getTitle() + "...";
-		values.add(title);
-		cm.change(temp.getId(), columns, values);
-		assertEquals(true, temp.getTitle().equals(title));
+		values.add("art");
+		cm.change(firstId, columns, values);
+		assertEquals(true, all.get(firstId).getTitle().equals("art"));
 		
 		columns.remove(0);
 		values.remove(0);
 		columns.add(MYSQL_CATEGORIES_DESCRIPTION);
-		String desc = temp.getDescription() + "...";
-		values.add(desc);
-		cm.change(temp.getId(), columns, values);
-		assertEquals(true, temp.getDescription().equals(desc));
+		values.add("modern");
+		cm.change(secondId, columns, values);
+		assertEquals(true, all.get(secondId).getDescription().equals("modern"));
+		
+		cm.remove(firstId);
+		cm.remove(secondId);
 	}
 
 	@Test
 	public void testRemove() throws SQLException {
+		cm.add("music", "jazz");
 		ResultSet result = data.executeQueryStatement(
 				"SELECT * FROM categories ORDER BY id DESC LIMIT 1;",
 				new ArrayList<Object>());
