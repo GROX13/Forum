@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
