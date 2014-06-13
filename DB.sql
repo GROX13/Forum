@@ -3,6 +3,7 @@ DROP DATABASE IF EXISTS forum;
 CREATE DATABASE forum;
 USE forum;
 
+
 CREATE TABLE users (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	avatar TEXT,
@@ -124,3 +125,5 @@ SELECT * FROM categories;
 SELECT * FROM message;
 SELECT * FROM message_images;
 SELECT * FROM message_videos;
+SELECT * FROM post_images;
+SELECT * FROM post_videos;

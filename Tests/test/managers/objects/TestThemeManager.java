@@ -34,7 +34,6 @@ public class TestThemeManager extends DataBaseInfo {
 		resCat.next();
 		catId = resCat.getInt(MYSQL_TABLE_ID);
 	}
-	
 
 	@Test
 	public void testAdd() throws SQLException {
@@ -72,8 +71,8 @@ public class TestThemeManager extends DataBaseInfo {
 		ResultSet res = data.executeQueryStatement(
 				"Select * from theme where id = " + id, new ArrayList<>());
 		res.next();
-		assertEquals(true, res.getString(MYSQL_THEME_TITLE)
-				.equals("films") && !res.getBoolean(MYSQL_THEME_IS_OPEN));
+		assertEquals(true, res.getString(MYSQL_THEME_TITLE).equals("films")
+				&& !res.getBoolean(MYSQL_THEME_IS_OPEN));
 		tm.remove(res.getInt(MYSQL_TABLE_ID));
 		cm.remove(catId);
 	}
@@ -82,10 +81,11 @@ public class TestThemeManager extends DataBaseInfo {
 	public void testGetAllAndChange() throws SQLException {
 		tm.add("music", "pop", userId, catId, true);
 		tm.add("art", "modern", userId, catId, true);
-		Map<Integer, Theme> all = tm.getAll();
-		
+		Map<Integer, Theme> all = tm.getAll(catId);
+
 		ResultSet result = data.executeQueryStatement(
-				"SELECT * FROM theme ORDER BY id DESC LIMIT 2;",
+				"SELECT * FROM theme where " + MYSQL_THEME_CATEGORYID + " = "
+						+ catId + " ORDER BY id DESC LIMIT 2;",
 				new ArrayList<Object>());
 		result.next();
 		int firstId = result.getInt(MYSQL_TABLE_ID);
@@ -93,7 +93,7 @@ public class TestThemeManager extends DataBaseInfo {
 		int secondId = result.getInt(MYSQL_TABLE_ID);
 		assertEquals(true, all.containsKey(firstId));
 		assertEquals(true, all.containsKey(secondId));
-	
+
 		ArrayList<String> columns = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		columns.add(MYSQL_THEME_TITLE);
@@ -110,7 +110,7 @@ public class TestThemeManager extends DataBaseInfo {
 		tm.change(secondId, columns, values);
 		assertEquals(true, all.get(secondId).getDescription().equals("romance"));
 		assertEquals(false, all.get(secondId).getOpen());
-		
+
 		tm.remove(firstId);
 		tm.remove(secondId);
 		cm.remove(catId);
@@ -125,8 +125,9 @@ public class TestThemeManager extends DataBaseInfo {
 		result.next();
 		int id = result.getInt(MYSQL_TABLE_ID);
 		tm.remove(id);
-		ResultSet res = data.executeQueryStatement(
-				"Select * from theme where id = " + id, new ArrayList<Object>());
+		ResultSet res = data
+				.executeQueryStatement("Select * from theme where id = " + id,
+						new ArrayList<Object>());
 		assertEquals(false, res.next());
 		cm.remove(catId);
 	}

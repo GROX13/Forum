@@ -10,8 +10,7 @@ import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 
 /**
- * Theme Manager class
- * adds, removes, changes and gets all themes in database
+ * Theme Manager class adds, removes, changes and gets all themes in database
  */
 
 public class ThemeManager extends DataBaseInfo {
@@ -28,6 +27,7 @@ public class ThemeManager extends DataBaseInfo {
 
 	/**
 	 * adds new Theme in database
+	 * 
 	 * @param name
 	 * @param desc
 	 * @param userId
@@ -52,12 +52,15 @@ public class ThemeManager extends DataBaseInfo {
 	}
 
 	/**
-	 * gets all themes from database
-	 * @return Map
+	 * gets all posts for your category
+	 * 
+	 * @param cId
+	 * @return Map<Integer, Theme>
 	 */
-	public Map<Integer, Theme> getAll() {
+	public Map<Integer, Theme> getAll(int cId) {
 		ResultSet res = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_THEME, new ArrayList<Object>());
+				+ MYSQL_TABLE_THEME + " where " + MYSQL_THEME_CATEGORYID
+				+ " = " + cId, new ArrayList<Object>());
 		try {
 			while (res.next()) {
 				Integer id = res.getInt(MYSQL_TABLE_ID);
@@ -77,6 +80,7 @@ public class ThemeManager extends DataBaseInfo {
 
 	/**
 	 * removes theme from database
+	 * 
 	 * @param id
 	 */
 	public void remove(int id) {
@@ -90,6 +94,7 @@ public class ThemeManager extends DataBaseInfo {
 
 	/**
 	 * changes theme in database
+	 * 
 	 * @param id
 	 * @param columns
 	 * @param values
