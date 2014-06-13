@@ -105,11 +105,11 @@ CREATE TABLE bann (
 	FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-INSERT INTO users (username, first_name, last_name, email, signiture, gender, user_type) 
-	VALUES ("GROX13", "Giorgi", "Rokhadze", "grokh12@freeuni.edu.ge", "G.Rokhadze", 'm', 1);
+INSERT INTO users (username, first_name, last_name, email, signiture, gender, user_type, password) 
+	VALUES ("GROX13", "Giorgi", "Rokhadze", "grokh12@freeuni.edu.ge", "G.Rokhadze", 'm', 1, 'asdasd');
 
-INSERT INTO users (username, first_name, last_name, email, signiture, gender, user_type) 
-	VALUES ("Giorgi", "Giorgi", "Rokhadze", "grokh12@freeuni.edu.ge", "G.Rokhadze", 'm', 0);
+INSERT INTO users (username, first_name, last_name, email, signiture, gender, user_type, password) 
+	VALUES ("Giorgi", "Giorgi", "Rokhadze", "grokh12@freeuni.edu.ge", "G.Rokhadze", 'm', 0, '123qwe');
 
 INSERT INTO message (sender_id, receiver_id, message) 
 	VALUES (1, 2, 'Test message 1');
@@ -119,6 +119,24 @@ INSERT INTO message (sender_id, receiver_id, message)
 
 INSERT INTO message (sender_id, receiver_id, message) 
 	VALUES (2, 1, 'Test message 3');
+
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (1, 2, 'Test message 4');
+
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (2, 1, 'Test message 5');
+
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (1, 2, 'Test message 6');
+
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (1, 2, 'Test message 7');
+
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (2, 1, 'Test message 8');
+
+INSERT INTO message (sender_id, receiver_id, message) 
+	VALUES (1, 2, 'Test message 9');
 
 SELECT * FROM users;
 SELECT * FROM categories;
