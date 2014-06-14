@@ -1,12 +1,15 @@
 package forum.managers.objects;
 
+import forum.info.DataBaseInfo;
+import forum.managers.database.DataBaseManager;
+
 public class ProfileManager {
-	
+	private DataBaseManager DBManager;
 	public ProfileManager(){
-		
+		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 	}
 	
-	public void modifyUserType(){
+	public void modifyUserType(int userID, int userType){
 		
 	}
 	
