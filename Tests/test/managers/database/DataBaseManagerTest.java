@@ -16,6 +16,7 @@ import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 
 /**
+ * 
  * @author Giorgi
  * 
  */
