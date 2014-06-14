@@ -25,6 +25,9 @@ public class DataBaseManager {
 	private java.sql.Connection connection;
 
 	/**
+	 * Data access typically refers to software and activities related to
+	 * storing, retrieving, or acting on data housed in a database or other
+	 * repository.
 	 * 
 	 * @param database
 	 */
@@ -34,6 +37,10 @@ public class DataBaseManager {
 	}
 
 	/**
+	 * The SELECT statement is used to select data from a database. The SQL
+	 * SELECT command is used to fetch data from MySQL database. This method is
+	 * same as SELECT * FROM table_name. It will return whole content of given
+	 * table.
 	 * 
 	 * @param tableName
 	 * @return
@@ -54,6 +61,14 @@ public class DataBaseManager {
 	}
 
 	/**
+	 * We have seen SQL SELECT command to fetch data from MySQL table. We can
+	 * use a conditional clause called WHERE clause to filter out results. Using
+	 * WHERE clause, we can specify a selection criteria to select required
+	 * records from a table. The WHERE clause works like an if condition in any
+	 * programming language. This clause is used to compare given value with the
+	 * field value available in MySQL table. If given value from outside is
+	 * equal to the available field value in MySQL table, then it returns that
+	 * row.
 	 * 
 	 * @param tableName
 	 * @param fields
@@ -81,6 +96,11 @@ public class DataBaseManager {
 	}
 
 	/**
+	 * The SQL SELECT command is used to fetch data from MySQL database. The
+	 * WHERE clause works like an if condition in any programming language. This
+	 * clause is used to compare given value with the field value available in
+	 * MySQL table. If given value from outside is equal to the available field
+	 * value in MySQL table, then it returns that row.
 	 * 
 	 * @param tableName
 	 * @param fields
@@ -124,6 +144,9 @@ public class DataBaseManager {
 	}
 
 	/**
+	 * To insert data into MySQL table, you would need to use SQL INSERT INTO
+	 * command. To insert string data types, it is required to keep all the
+	 * values into double or single quote, for example:- "value".
 	 * 
 	 * @param tableName
 	 * @param fields
@@ -146,6 +169,10 @@ public class DataBaseManager {
 	}
 
 	/**
+	 * There may be a requirement where existing data in a MySQL table needs to
+	 * be modified. You can do so by using SQL UPDATE command. This will modify
+	 * any field value of any MySQL table. The WHERE clause is very useful when
+	 * you want to update selected rows in a table.
 	 * 
 	 * @param tableName
 	 * @param fields
@@ -172,6 +199,9 @@ public class DataBaseManager {
 	}
 
 	/**
+	 * If you want to delete a record from any MySQL table, then you can use SQL
+	 * command DELETE FROM. The WHERE clause is very useful when you want to
+	 * delete selected rows in a table.
 	 * 
 	 * @param tableName
 	 * @param fields
@@ -187,19 +217,48 @@ public class DataBaseManager {
 					.prepareStatement("DELETE FROM " + tableName + " WHERE "
 							+ prepareCondition(fields, clause));
 			statementSetValues(pstmt, values);
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public int executeAdministration(String tableName) {
-		return 0;
+	/**
+	 * To insert data into MySQL table, you would need to use SQL INSERT INTO
+	 * command. To insert string data types, it is required to keep all the
+	 * values into double or single quote, for example:- "value". This method
+	 * also returns ID of inserted row.
+	 * 
+	 * @param tableName
+	 * @param fields
+	 * @param values
+	 * @return
+	 */
+	public int executeAdministration(String tableName,
+			ArrayList<String> fields, ArrayList<Object> values) {
+		int id = 0;
+		try {
+			if (connection.isClosed())
+				setUpConnection();
+			PreparedStatement pstmt = (PreparedStatement) connection
+					.prepareStatement("INSERT INTO " + tableName + " "
+							+ prepareInsert(fields),
+							Statement.RETURN_GENERATED_KEYS);
+			statementSetValues(pstmt, values);
+			pstmt.executeUpdate();
+			ResultSet rs = pstmt.getGeneratedKeys();
+			rs.next();
+			id = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
 	}
 
 	/*
-	 * 
+	 * Set up connection to use given database.
 	 */
 	private void setUpConnection() {
 		try {
@@ -213,8 +272,8 @@ public class DataBaseManager {
 	}
 
 	/*
-	 * 
- 	 */
+	 * Prepares condition for where clause.
+	 */
 	private String prepareCondition(ArrayList<String> fields,
 			ArrayList<String> clause) {
 		// TODO Auto-generated method stub
@@ -229,7 +288,8 @@ public class DataBaseManager {
 	}
 
 	/*
-	 * 
+	 * Prepares insert script for execute insert or execute administration
+	 * method.
 	 */
 	private String prepareInsert(ArrayList<String> fields) {
 		// TODO Auto-generated method stub
@@ -245,6 +305,9 @@ public class DataBaseManager {
 		return query + " VALUES " + queryString;
 	}
 
+	/*
+	 * Prepares update script for execute update method.
+	 */
 	private String prepareUpdate(ArrayList<String> fields) {
 		// TODO Auto-generated method stub
 		String update = "";
@@ -257,7 +320,7 @@ public class DataBaseManager {
 	}
 
 	/*
-	 * 
+	 * Sets values in prepared statement.
 	 */
 	private void statementSetValues(PreparedStatement pstmt,
 			ArrayList<Object> values) {
