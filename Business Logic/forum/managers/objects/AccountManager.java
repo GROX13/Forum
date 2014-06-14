@@ -20,7 +20,12 @@ public class AccountManager {
 		values = new ArrayList<Object>();
 		columns = new ArrayList<String>();
 	}
-
+	
+	/**
+	 * Checks database for passed user name
+	 * @param username
+	 * @return
+	 */
 	public boolean containsAccount(String username) throws SQLException {
 		
 		String query = "select username FROM users WHERE users.username = ? ; ";
@@ -34,6 +39,13 @@ public class AccountManager {
 			return true;
 		return false;
 	}
+	
+	/**
+	 * Checks if passed password matches the user's password from database
+	 * @param user-name
+	 * @param password
+	 * @return
+	 */
 
 	public boolean matchesPassword(String username, String password)
 			throws SQLException {
@@ -51,7 +63,22 @@ public class AccountManager {
 			return true;
 		return false;
 	}
-
+	
+	/**
+	 * Creates and adds new account to database
+	 * @param username
+	 * @param password
+	 * @param avatar
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param signature
+	 * @param gender
+	 * @param birthDate
+	 * @param userType
+	 * @return 
+	 */
+	
 	public boolean createAccount(String username, String password,
 			String avatar, String firstName, String lastName, String email,
 			String signature, String gender, Date birthDate, int userType) throws SQLException {

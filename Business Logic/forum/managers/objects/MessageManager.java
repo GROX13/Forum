@@ -34,7 +34,7 @@ public class MessageManager {
 		values.add(sender);
 		values.add(receiver);
 		values.add(messageText);
-		int ID = DBManager.putDataWithRetrevingID(
+		int ID = DBManager.executeInsert(
 				DataBaseInfo.MYSQL_TABLE_MESSAGE, columns, values);
 		if (messageImg != null)
 			for (int i = 0; i < messageImg.size(); i++) {
@@ -44,7 +44,7 @@ public class MessageManager {
 				columnsImg.add(DataBaseInfo.MYSQL_MESSAGE_FILES_MESSAGEID);
 				valuesImg.add(messageImg.get(i));
 				valuesImg.add(ID);
-				DBManager.putDataInDataBase(
+				DBManager.executeInsert(
 						DataBaseInfo.MYSQL_TABLE_MESSAGE_IMAGES, columnsImg,
 						valuesImg);
 			}
@@ -56,7 +56,7 @@ public class MessageManager {
 				columnsImg.add(DataBaseInfo.MYSQL_MESSAGE_FILES_MESSAGEID);
 				valuesImg.add(messageImg.get(i));
 				valuesImg.add(ID);
-				DBManager.putDataInDataBase(
+				DBManager.executeInsert(
 						DataBaseInfo.MYSQL_TABLE_MESSAGE_IMAGES, columnsImg,
 						valuesImg);
 			}

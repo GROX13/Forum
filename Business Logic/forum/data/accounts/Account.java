@@ -28,6 +28,15 @@ public abstract class Account {
 	private ArrayList<Object> values = new ArrayList<Object>();
 	private ArrayList<String> columns = new ArrayList<String>();
 	
+	/**
+	 * Adds new theme to the Database
+	 * Checks if user is banned or warned,
+	 * In this case theme can't be created
+	 * @param theme
+	 * @return
+	 * @throws SQLException
+	 */
+	
 	public boolean AddTheme(Theme theme) throws SQLException {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_BANN + "." + DataBaseInfo.MYSQL_USERID);
@@ -51,6 +60,16 @@ public abstract class Account {
 		return true;
 	}
 
+	/**
+	 * Adds new post to the database
+	 * Checks if user is banned and in this case
+	 * post can't be created.
+	 * Checks if user is warned and if he/she can
+	 * create the post at that time.
+	 * @param post
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean WritePost(Post post) throws SQLException {
 		
 		clearArrays();
@@ -85,6 +104,14 @@ public abstract class Account {
 				post.getImgs(), post.getVideos());
 		return true;
 	}
+	
+	/**
+	 * Deletes post from database
+	 * Checks if this post exists
+	 * @param post
+	 * @return
+	 * @throws SQLException
+	 */
 
 	public boolean DeletePost(Post post) throws SQLException {
 		clearArrays();
@@ -98,12 +125,26 @@ public abstract class Account {
 		return true;
 	}
 	
+	/**
+	 * Adds in Database in table of messages
+	 * New massage.
+	 * @param message
+	 */
+	
 	public void sendMessage(Message message){
 		MessageManager messageManager = new MessageManager(message.getMessageReceiverID(),
 				message.getMessageSenderID());
 		messageManager.sendMessage(message.getMessageText(),message.getMessageImages(),
 				message.getMessageVideos());
 	}
+	
+	/**
+	 * Gets all messages from database 
+	 * That had been sent between
+	 * Receiver and sender
+	 * @param message
+	 * @return
+	 */
 	
 	public ArrayList<Message> seeFullConversation(Message message){
 		MessageManager messageManager = new MessageManager(message.getMessageReceiverID(),

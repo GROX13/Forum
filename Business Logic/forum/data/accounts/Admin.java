@@ -33,6 +33,14 @@ public class Admin extends Account {
 		columns = new ArrayList<String>();
 	}
 
+	/**
+	 * Adds category to the Database
+	 * Checks if the category with 
+	 * That title doesn't exist in database
+	 * @param category
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean AddCategory(Category category) throws SQLException {
 
 		clearArrays();
@@ -51,6 +59,10 @@ public class Admin extends Account {
 		return true;
 	}
 
+	/**
+	 * Changes category title
+	 * @param category
+	 */
 	public void ModifyCategoryTitle(Category category) {
 
 		clearArrays();
@@ -59,6 +71,10 @@ public class Admin extends Account {
 		categoryManager.change(category.getId(), columns, values);
 	}
 
+	/**
+	 * Changes category description
+	 * @param category
+	 */
 	public void ModifyCategoryDescription(Category category) {
 
 		clearArrays();
@@ -67,11 +83,21 @@ public class Admin extends Account {
 		categoryManager.change(category.getId(), columns, values);
 
 	}
-
+	
+	/**
+	 * Removes category from database
+	 * @param category
+	 */
 	public void DeleteCategory(Category category) {
 		categoryManager.remove(category.getId());
 	}
 
+	/**
+	 * Removes theme from Database
+	 * @param theme
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean DeleteTheme(Theme theme) throws SQLException {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_ID);
@@ -83,14 +109,22 @@ public class Admin extends Account {
 		themeManager.remove(theme.getId());
 		return true;
 	}
-
+	
+	/**
+	 * Changes theme title
+	 * @param theme
+	 */
 	public void ModifyThemeTitle(Theme theme) {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_THEME_TITLE);
 		values.add(theme.getTitle());
 		themeManager.change(theme.getId(), columns, values);
 	}
-
+	
+	/**
+	 * Changes theme description
+	 * @param theme
+	 */
 	public void ModifyThemeDescription(Theme theme) {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_THEME_DESCRIPTION);
@@ -98,6 +132,11 @@ public class Admin extends Account {
 		themeManager.change(theme.getId(), columns, values);
 	}
 
+	/**
+	 * Changes theme status, is it
+	 * Open for guest or not
+	 * @param theme
+	 */
 	public void ModifyThemeStatus(Theme theme) {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_THEME_IS_OPEN);
@@ -105,13 +144,56 @@ public class Admin extends Account {
 		themeManager.change(theme.getId(), columns, values);
 	}
 
+	/**
+	 * Changes text of the post
+	 * @param post
+	 */
 	public void ModifyPostText(Post post) {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_POSTS_POST_TEXT);
-		values.add(post.getId());
+		values.add(post.getText());
 		postManager.change(post.getId(), columns, values);
 	}
 	
+	/**
+	 * Changes images or videos of the post
+	 * @param post
+	 * @param newFiles
+	 * @param tableName
+	 */
+	public void ChangePostImagesOrVideos(Post post, ArrayList<String> newFiles, String tableName){
+		
+	}
+	
+	/**
+	 * Adds image or video to the post
+	 * @param post
+	 * @param files
+	 * @param tableName
+	 */
+	public void AddImagesOrVideosToPost(Post post, ArrayList<String> files, String tableName){
+		
+	}
+	
+	/**
+	 * Removes image or vide from the post
+	 * @param post
+	 * @param files
+	 * @param tableName
+	 */
+	public void RemoveImagesOrVideosFromPost(Post post, ArrayList<String> files, String tableName){
+		
+	}
+	
+	/**
+	 * Warns user 
+	 * Puts info about frequency of posting
+	 * and end date of warning
+	 * @param userID
+	 * @param frequency
+	 * @param endDate
+	 * @throws SQLException
+	 */
 	public void WarnUser(int userID, int frequency, Date endDate) throws SQLException {
 		clearArrays();
 		values.add(userID);
@@ -133,7 +215,16 @@ public class Admin extends Account {
 		values.add(frequency);
 		DBManager.putDataInDataBase(DataBaseInfo.MYSQL_TABLE_WARN, columns, values);
 	}
-
+	
+	/**
+	 * Bans user
+	 * Puts info about end date of ban
+	 * into the database
+	 * @param username
+	 * @param bannEndDate
+	 * @throws SQLException
+	 */
+	
 	public void BannUser(String username, Date bannEndDate) throws SQLException {
 
 		Date bannStartDate = currentDate();
