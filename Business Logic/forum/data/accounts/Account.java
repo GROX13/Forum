@@ -5,10 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import forum.data.objects.Message;
 import forum.data.objects.Post;
 import forum.data.objects.Theme;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
+import forum.managers.objects.MessageManager;
 import forum.managers.objects.PostManager;
 import forum.managers.objects.ThemeManager;
 
@@ -25,7 +27,7 @@ public abstract class Account {
 	private PostManager postManager = new PostManager();
 	private ArrayList<Object> values = new ArrayList<Object>();
 	private ArrayList<String> columns = new ArrayList<String>();
-
+	
 	public boolean AddTheme(Theme theme) throws SQLException {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_BANN + "." + DataBaseInfo.MYSQL_USERID);
@@ -80,7 +82,7 @@ public abstract class Account {
 		}
 		
 		postManager.add(post.getUserId(), post.getThemeId(), post.getText(),
-				post.getDate(), post.getImgs(), post.getVideos());
+				post.getImgs(), post.getVideos());
 		return true;
 	}
 
@@ -95,7 +97,20 @@ public abstract class Account {
 		postManager.remove(post.getId());
 		return true;
 	}
-
+	
+	public void sendMessage(Message message){
+		MessageManager messageManager = new MessageManager(message.getMessageReceiverID(),
+				message.getMessageSenderID());
+		messageManager.sendMessage(message.getMessageText(),message.getMessageImages(),
+				message.getMessageVideos());
+	}
+	
+	public ArrayList<Message> seeFullConversation(Message message){
+		MessageManager messageManager = new MessageManager(message.getMessageReceiverID(),
+				message.getMessageSenderID());
+		return messageManager.receiveFullConversation();
+	}
+	
 	private void clearArrays() {
 		values.clear();
 		columns.clear();
