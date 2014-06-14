@@ -16,6 +16,10 @@ public class ProfileManager {
 	private ArrayList<String> conditionFields;
 	public ProfileManager(){
 		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
+		fields = new ArrayList<String>();
+		values = new ArrayList<Object>();
+		clause = new ArrayList<String>();
+		conditionFields = new ArrayList<String>();
 	}
 	
 	/**
@@ -34,7 +38,7 @@ public class ProfileManager {
 		values.add(userType);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -63,7 +67,7 @@ public class ProfileManager {
 		values.add(username);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -85,7 +89,7 @@ public class ProfileManager {
 		values.add(password);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -107,7 +111,7 @@ public class ProfileManager {
 		values.add(signature);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -129,7 +133,7 @@ public class ProfileManager {
 		values.add(gender);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -151,7 +155,7 @@ public class ProfileManager {
 		values.add(birthDate);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -173,7 +177,7 @@ public class ProfileManager {
 		values.add(email);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -195,7 +199,7 @@ public class ProfileManager {
 		values.add(avatar);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -217,7 +221,7 @@ public class ProfileManager {
 		values.add(firstname);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -239,7 +243,7 @@ public class ProfileManager {
 		values.add(lastname);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_USERID);
+				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
@@ -254,23 +258,25 @@ public class ProfileManager {
 	}
 	
 	private boolean userExists(int userID) throws SQLException {
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERID);
+	/*	clearArrays();
+		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
 		values.add(userID);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
 				fields, values, clause);
-		if(resultSet.next()) return true;
-		return false;
+	//	if(resultSet.next()) */
+		return true;
+		//return false;
 	}
 	
 	private boolean usernameAlreadyExists(String username) throws SQLException {
-		clearArrays();
+	/*	clearArrays();
 		fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
 		values.add(username);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
-				fields, values, clause);
-		if(resultSet.next()) return true;
-		return false;
+				fields, values, clause);*/
+		//if(resultSet.next()) 
+		return true;
+		//return false;
 	}
 
 	
