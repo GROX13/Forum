@@ -6,16 +6,10 @@ public class ProfileManager {
 		
 	}
 	
-	/*
-	 * Only admin can change
-	 */
 	public void modifyUserType(){
 		
 	}
 	
-	/*
-	 * Only Admin can change users' usernames
-	 */
 	public void ModifyUsername(){
 		
 	}
