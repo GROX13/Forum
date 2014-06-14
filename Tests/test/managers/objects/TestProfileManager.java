@@ -27,7 +27,7 @@ public class TestProfileManager {
 		
 		ResultSet rs = DBManager.executeSelectWhere(
 				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
-		
+		rs.next();
 		System.out.println("ID: " + rs.getString(1));
 	}
 
