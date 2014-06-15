@@ -24,16 +24,44 @@ public class TestProfileManager {
 		
 		fields.add("id");
 		values.add(1);
-		
+		ProfileManager pm = new ProfileManager();
+		pm.modifyUserType(1, 1);
 		ResultSet rs = DBManager.executeSelectWhere(
 				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
 		rs.next();
-		System.out.println("ID: " + rs.getString(1));
+		assertEquals(1, rs.getInt(DataBaseInfo.MYSQL_USERS_TYPE));
+		pm.modifyUserType(1, 0);
+		rs = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
+		rs.next();
+		assertEquals(0, rs.getInt(DataBaseInfo.MYSQL_USERS_TYPE));
+		
 	}
 
 	@Test
-	public void testModifyUsername() {
+	public void testModifyUsername() throws SQLException {
+		DataBaseManager DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 		
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		ArrayList<String> clause = new ArrayList<String>();
+		
+		fields.add("id");
+		values.add(1);
+		ProfileManager pm = new ProfileManager();
+		pm.ModifyUsername(1, "BLA");
+		ResultSet rs = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
+		rs.next();
+		assertEquals("BLA", rs.getString(DataBaseInfo.MYSQL_USERS_USERNAME));
+		
+		pm.ModifyUsername(1, "BLA1");
+		rs = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
+		rs.next();
+		assertEquals("BLA1", rs.getString(DataBaseInfo.MYSQL_USERS_USERNAME));
+		
+		pm.ModifyUsername(1, "GROX13");
 	}
 
 	@Test

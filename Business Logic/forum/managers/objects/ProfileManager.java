@@ -258,25 +258,25 @@ public class ProfileManager {
 	}
 	
 	private boolean userExists(int userID) throws SQLException {
-	/*	clearArrays();
+		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
 		values.add(userID);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
 				fields, values, clause);
-	//	if(resultSet.next()) */
+		if(resultSet.next()) 
 		return true;
-		//return false;
+		return false;
 	}
 	
 	private boolean usernameAlreadyExists(String username) throws SQLException {
-	/*	clearArrays();
+		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
 		values.add(username);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
-				fields, values, clause);*/
-		//if(resultSet.next()) 
+				fields, values, clause);
+		if(resultSet.next()) 
 		return true;
-		//return false;
+		return false;
 	}
 
 	
