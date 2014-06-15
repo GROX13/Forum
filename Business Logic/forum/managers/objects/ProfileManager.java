@@ -81,7 +81,7 @@ public class ProfileManager {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyPassword(int userID, int password) throws SQLException{
+	public boolean modifyPassword(int userID, String password) throws SQLException{
 		if(!userExists(userID))
 			return false;
 		clearArrays();
