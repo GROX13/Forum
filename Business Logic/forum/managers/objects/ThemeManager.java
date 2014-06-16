@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import forum.data.objects.Theme;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
@@ -48,7 +49,7 @@ public class ThemeManager extends DataBaseInfo {
 		values.add(userId);
 		values.add(catId);
 		values.add(open);
-		data.executeInsert(name, fields, values);
+		data.executeInsert(MYSQL_TABLE_THEME, fields, values);
 	}
 
 	/**
@@ -104,10 +105,12 @@ public class ThemeManager extends DataBaseInfo {
 	 * @param values
 	 */
 	public void change(int id, ArrayList<String> fields,
-			ArrayList<Object> values) {
+			ArrayList<Object> value) {
 		ArrayList<String> conditionFields = new ArrayList<String>();
 		ArrayList<String> clause = new ArrayList<String>();
 		conditionFields.add(MYSQL_TABLE_ID);
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> values = (ArrayList<Object>) value.clone();
 		values.add(id);
 		data.executeUpdate(MYSQL_TABLE_THEME, fields, values, conditionFields, clause);
 		

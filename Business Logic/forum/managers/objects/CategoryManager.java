@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import forum.data.objects.Category;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
@@ -82,10 +83,12 @@ public class CategoryManager extends DataBaseInfo {
 	 * @param fields
 	 * @param values
 	 */
-	public void change(int id, ArrayList<String> fields, ArrayList<Object> values){
+	public void change(int id, ArrayList<String> fields, ArrayList<Object> value){
 		ArrayList<String> conditionFields = new ArrayList<String>();
 		ArrayList<String> clause = new ArrayList<String>();
 		conditionFields.add(MYSQL_TABLE_ID);
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> values = (ArrayList<Object>) value.clone();
 		values.add(id);
 		data.executeUpdate(MYSQL_TABLE_CATEGORIES, fields, values, conditionFields, clause);
 		if(allCat.containsKey(id)){

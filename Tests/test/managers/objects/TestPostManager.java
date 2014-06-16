@@ -1,12 +1,15 @@
 package test.managers.objects;
 
 import static org.junit.Assert.*;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import forum.data.objects.Post;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
@@ -24,25 +27,29 @@ public class TestPostManager extends DataBaseInfo {
 	private ThemeManager tm;
 	private int tId;
 	private int userId = 1;
+	private ArrayList<String> fields = new ArrayList<String>();
+	private ArrayList<Object> values = new ArrayList<Object>();
+	private ArrayList<String> clause = new ArrayList<String>();
 
 	@Before
 	public void setUp() throws SQLException {
-		data = new DataBaseManager();
+		data = new DataBaseManager(MYSQL_DATABASE_NAME);
 		pm = new PostManager();
 
+		int k = 1;
+		fields.add(String.valueOf(k));
+		values.add(k);
 		cm = new CategoryManager();
 		cm.add("newCategory", "about everything");
-		ResultSet resCat = data.executeQueryStatement(
-				"SELECT * FROM categories ORDER BY id DESC LIMIT 1",
-				new ArrayList<Object>());
+		ResultSet resCat = data.executeOrderedSelect(MYSQL_TABLE_CATEGORIES,
+				fields, values, clause, MYSQL_TABLE_ID, 0, 1, false);
 		resCat.next();
 		catId = resCat.getInt(MYSQL_TABLE_ID);
 
 		tm = new ThemeManager();
 		tm.add("music", "pop", userId, catId, true);
-		ResultSet resTheme = data.executeQueryStatement(
-				"SELECT * FROM theme ORDER BY id DESC LIMIT 1",
-				new ArrayList<Object>());
+		ResultSet resTheme = data.executeOrderedSelect(MYSQL_TABLE_THEME,
+				fields, values, clause, MYSQL_TABLE_ID, 0, 1, false);
 		resTheme.next();
 		tId = resTheme.getInt(MYSQL_TABLE_ID);
 	}
@@ -54,9 +61,8 @@ public class TestPostManager extends DataBaseInfo {
 		imgs.add("newImage");
 		videos.add("newVideo");
 		pm.add(userId, tId, "new post", imgs, videos);
-		ResultSet res = data.executeQueryStatement(
-				"SELECT * FROM posts ORDER BY id DESC LIMIT 1",
-				new ArrayList<Object>());
+		ResultSet res = data.executeOrderedSelect(MYSQL_TABLE_POSTS,
+				fields, values, clause, MYSQL_TABLE_ID, 0, 1, false);
 		res.next();
 		int id = res.getInt(MYSQL_TABLE_ID);
 		assertEquals(
@@ -64,16 +70,22 @@ public class TestPostManager extends DataBaseInfo {
 				(res.getString(MYSQL_POSTS_POST_TEXT).equals("new post")
 						&& res.getInt(MYSQL_POSTS_AUTHORID) == userId && res
 						.getInt(MYSQL_POSTS_THEME) == tId));
-
-		ResultSet resImgs = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_POST_IMAGES + " where " + MYSQL_POST_FILES_POSTID
-				+ " = " + id, new ArrayList<Object>());
+		
+		ArrayList<String> columnImg = new ArrayList<String>();
+		ArrayList<Object> valueImg = new ArrayList<Object>();
+		columnImg.add(MYSQL_POST_FILES_POSTID);
+		valueImg.add(id);
+		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_IMAGES, columnImg,
+				valueImg, clause);
 		resImgs.next();
 		assertEquals("newImage", resImgs.getString(MYSQL_IMAGE_FILE));
 
-		ResultSet resVideos = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_POST_VIDEOS + " where " + MYSQL_POST_FILES_POSTID
-				+ " = " + id, new ArrayList<Object>());
+		ArrayList<String> columnVd = new ArrayList<String>();
+		ArrayList<Object> valueVd = new ArrayList<Object>();
+		columnVd.add(MYSQL_POST_FILES_POSTID);
+		valueVd.add(id);
+		ResultSet resVideos = data.executeSelectWhere(MYSQL_TABLE_POST_VIDEOS, columnVd,
+				valueVd, clause);
 		resVideos.next();
 		assertEquals("newVideo", resVideos.getString(MYSQL_VIDEO_FILE));
 
@@ -91,28 +103,35 @@ public class TestPostManager extends DataBaseInfo {
 		pm.add(userId, tId, "new post", imgs, videos);
 
 		ArrayList<String> columns = new ArrayList<String>();
-		ArrayList<Object> values = new ArrayList<Object>();
+		ArrayList<Object> value = new ArrayList<Object>();
 		ArrayList<String> newImgs = new ArrayList<String>();
 		newImgs.add("img");
 		columns.add(MYSQL_TABLE_POST_IMAGES);
 		columns.add(MYSQL_POSTS_POST_TEXT);
-		values.add(newImgs);
-		values.add("my post");
-		ResultSet result = data.executeQueryStatement(
-				"SELECT * FROM posts ORDER BY id DESC LIMIT 1;",
-				new ArrayList<>());
+		value.add(newImgs);
+		value.add("my post");
+		ResultSet result = data.executeOrderedSelect(MYSQL_TABLE_POSTS,
+				fields, values, clause, MYSQL_TABLE_ID, 0, 1, false);
 		result.next();
 		int id = result.getInt(MYSQL_TABLE_ID);
-		pm.change(id, columns, values);
-		ResultSet res = data.executeQueryStatement(
-				"Select * from posts where id = " + id, new ArrayList<>());
+		pm.change(id, columns, value);
+		
+		ArrayList<String> columnGet = new ArrayList<String>();
+		ArrayList<Object> valueGet = new ArrayList<Object>();
+		columnGet.add(MYSQL_TABLE_ID);
+		valueGet.add(id);
+		ResultSet res = data.executeSelectWhere(MYSQL_TABLE_POSTS, columnGet,
+				valueGet, clause);
 		res.next();
 		assertEquals(true,
 				res.getString(MYSQL_POSTS_POST_TEXT).equals("my post"));
 
-		ResultSet resImgs = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_POST_IMAGES + " where " + MYSQL_POST_FILES_POSTID
-				+ " = " + id, new ArrayList<>());
+		ArrayList<String> columnImg = new ArrayList<String>();
+		ArrayList<Object> valueImg = new ArrayList<Object>();
+		columnImg.add(MYSQL_POST_FILES_POSTID);
+		valueImg.add(id);
+		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_IMAGES, columnImg,
+				valueImg, clause);
 		resImgs.next();
 		assertEquals(true,
 				resImgs.getString(MYSQL_IMAGE_FILE).equals("img"));
@@ -134,10 +153,13 @@ public class TestPostManager extends DataBaseInfo {
 		
 		Map<Integer, Post> all = pm.getAll(tId);
 		
-		ResultSet result = data.executeQueryStatement(
-				"SELECT * FROM posts where " + MYSQL_POSTS_THEME + " = "
-						+ tId + " ORDER BY id DESC LIMIT 2;",
-				new ArrayList<Object>());
+		ArrayList<String> field = new ArrayList<String>();
+		ArrayList<Object> valueNew = new ArrayList<Object>();
+		field.add(MYSQL_POSTS_THEME);
+		valueNew.add(tId);
+		ResultSet result = data.executeOrderedSelect(MYSQL_TABLE_POSTS, field,
+				valueNew, clause, MYSQL_TABLE_ID, 0, 2, false);
+
 		result.next();
 		int firstId = result.getInt(MYSQL_TABLE_ID);
 		result.next();
@@ -180,23 +202,34 @@ public class TestPostManager extends DataBaseInfo {
 		videos.add("newVideo");
 		pm.add(userId, tId, "new post", imgs, videos);
 		
-		ResultSet result = data.executeQueryStatement(
-				"SELECT * FROM posts ORDER BY id DESC LIMIT 1;",
-				new ArrayList<Object>());
+		ResultSet result = data.executeOrderedSelect(MYSQL_TABLE_POSTS,
+				fields, values, clause, MYSQL_TABLE_ID, 0, 1, false);
 		result.next();
 		int id = result.getInt(MYSQL_TABLE_ID);
 		pm.remove(id);
-		ResultSet res = data
-				.executeQueryStatement("Select * from theme where id = " + id,
-						new ArrayList<Object>());
+		
+		ArrayList<String> columnGet = new ArrayList<String>();
+		ArrayList<Object> valueGet = new ArrayList<Object>();
+		columnGet.add(MYSQL_TABLE_ID);
+		valueGet.add(id);
+		ResultSet res = data.executeSelectWhere(MYSQL_TABLE_POSTS, columnGet,
+				valueGet, clause);
 		assertEquals(false, res.next());
-		ResultSet resImgs = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_POST_IMAGES + " where " + MYSQL_POST_FILES_POSTID
-				+ " = " + id, new ArrayList<Object>());
+		
+		ArrayList<String> columnImg = new ArrayList<String>();
+		ArrayList<Object> valueImg = new ArrayList<Object>();
+		columnImg.add(MYSQL_POST_FILES_POSTID);
+		valueImg.add(id);
+		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_IMAGES, columnImg,
+				valueImg, clause);
 		assertEquals(false, resImgs.next());
-		ResultSet resVideos = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_POST_VIDEOS + " where " + MYSQL_POST_FILES_POSTID
-				+ " = " + id, new ArrayList<Object>());
+		
+		ArrayList<String> columnVd = new ArrayList<String>();
+		ArrayList<Object> valueVd = new ArrayList<Object>();
+		columnVd.add(MYSQL_POST_FILES_POSTID);
+		valueVd.add(id);
+		ResultSet resVideos = data.executeSelectWhere(MYSQL_TABLE_POST_VIDEOS, columnVd,
+				valueVd, clause);
 		assertEquals(false, resVideos.next());
 		
 		tm.remove(tId);
