@@ -23,7 +23,7 @@ public class CategoryManager extends DataBaseInfo {
 	 * creates new category manager
 	 */
 	public CategoryManager() {
-		data = new DataBaseManager();
+		data = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 		allCat = new HashMap<Integer, Category>();
 	}
 
@@ -33,13 +33,13 @@ public class CategoryManager extends DataBaseInfo {
 	 * @param desc
 	 */
 	public void add(String name, String desc) {
-		ArrayList<String> columns = new ArrayList<String>();
-		columns.add(MYSQL_CATEGORIES_TITLE);
-		columns.add(MYSQL_CATEGORIES_DESCRIPTION);
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add(MYSQL_CATEGORIES_TITLE);
+		fields.add(MYSQL_CATEGORIES_DESCRIPTION);
 		ArrayList<Object> values = new ArrayList<Object>();
 		values.add(name);
 		values.add(desc);
-		data.putDataInDataBase(MYSQL_TABLE_CATEGORIES, columns, values);
+		data.executeInsert(DataBaseInfo.MYSQL_TABLE_CATEGORIES, fields, values);
 	}
 
 	/**
@@ -48,8 +48,7 @@ public class CategoryManager extends DataBaseInfo {
 	 * @return Map<Integer, Category>
 	 */
 	public Map<Integer, Category> getAll() {
-		ResultSet res = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_CATEGORIES, new ArrayList<Object>());
+		ResultSet res = data.executeSelect(MYSQL_TABLE_CATEGORIES);
 		try {
 			while (res.next()) {
 				Integer id = res.getInt(MYSQL_TABLE_ID);
@@ -69,31 +68,32 @@ public class CategoryManager extends DataBaseInfo {
 	 * @param id
 	 */
 	public void remove(int id) {
-		ArrayList<String> conditionCol = new ArrayList<String>();
-		ArrayList<Object> conditionVal = new ArrayList<Object>();
-		conditionCol.add(MYSQL_TABLE_ID);
-		conditionVal.add(id);
-		data.removeDataFromDataBase(MYSQL_TABLE_CATEGORIES, conditionCol, conditionVal);
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		ArrayList<String> clause = new ArrayList<String>();
+		fields.add(MYSQL_TABLE_ID);
+		values.add(id);
+		data.executeRemove(MYSQL_TABLE_CATEGORIES, fields, clause, values);
 	}
 	
 	/**
 	 * changes category
 	 * @param id
-	 * @param columns
+	 * @param fields
 	 * @param values
 	 */
-	public void change(int id, ArrayList<String> columns, ArrayList<Object> values){
-		ArrayList<String> conditionCol = new ArrayList<String>();
-		ArrayList<Object> conditionVal = new ArrayList<Object>();
-		conditionCol.add(MYSQL_TABLE_ID);
-		conditionVal.add(id);
-		data.updateDataInDataBase(MYSQL_TABLE_CATEGORIES, conditionCol, conditionVal, columns, values);
+	public void change(int id, ArrayList<String> fields, ArrayList<Object> values){
+		ArrayList<String> conditionFields = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
+		conditionFields.add(MYSQL_TABLE_ID);
+		values.add(id);
+		data.executeUpdate(MYSQL_TABLE_CATEGORIES, fields, values, conditionFields, clause);
 		if(allCat.containsKey(id)){
 			Category toChange = allCat.get(id);
-			for(int i = 0; i < columns.size(); i++){
-				if(columns.get(i).equals(MYSQL_CATEGORIES_TITLE))
+			for(int i = 0; i < fields.size(); i++){
+				if(fields.get(i).equals(MYSQL_CATEGORIES_TITLE))
 					toChange.setTitle((String)values.get(i));
-				if(columns.get(i).equals(MYSQL_CATEGORIES_DESCRIPTION))
+				if(fields.get(i).equals(MYSQL_CATEGORIES_DESCRIPTION))
 					toChange.setDescription((String)values.get(i));
 			}
 		}
