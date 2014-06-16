@@ -19,7 +19,7 @@ public class MessageManager {
 	private static final int SHOWN_NUMBER_OF_MESSAGES = 20;
 
 	public MessageManager(int receiverID, int senderID) {
-		DBManager = new DataBaseManager();
+		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 		receiver = receiverID;
 		sender = senderID;
 	}
@@ -34,7 +34,7 @@ public class MessageManager {
 		values.add(sender);
 		values.add(receiver);
 		values.add(messageText);
-		int ID = DBManager.executeInsert(
+		int ID = DBManager.executeAdministration(
 				DataBaseInfo.MYSQL_TABLE_MESSAGE, columns, values);
 		if (messageImg != null)
 			for (int i = 0; i < messageImg.size(); i++) {

@@ -23,7 +23,7 @@ public class Profile {
 		this.username = username;
 	}
 	
-	public void SetPasword(String password){
+	public void SetPassword(String password){
 		this.password = password;
 	}
 	

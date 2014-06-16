@@ -2,78 +2,41 @@ package test.managers.objects;
 
 import static org.junit.Assert.*;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Map;
 
 import org.junit.Test;
 
+import forum.data.objects.Profile;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 import forum.managers.objects.ProfileManager;
 
-public class TestProfileManager {
+public class TestProfileManager extends DataBaseInfo {
 
 	@Test
-	public void testModifyUserType() throws SQLException {
-		DataBaseManager DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
+	public void testChange() throws SQLException {
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		ArrayList<Object> values = new ArrayList<Object>();
-		ArrayList<String> clause = new ArrayList<String>();
+		ProfileManager pm = new ProfileManager();
+		Map<Integer, Profile> allProfiles = pm.getAll();
 		
-		fields.add("id");
-		values.add(1);
+		//Test password changing
+		pm.change(1, MYSQL_USERS_PASSWORD, "bla");
+		assertEquals("bla", allProfiles.get(1).GetPasword());
+		pm.change(1, MYSQL_USERS_PASSWORD, "asdasd");
+		allProfiles = pm.getAll();
+		assertEquals("asdasd", allProfiles.get(1).GetPasword());
 		
-		ResultSet rs = DBManager.executeSelectWhere(
-				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
-		rs.next();
-		System.out.println("ID: " + rs.getString(1));
-	}
-
-	@Test
-	public void testModifyUsername() {
-		
-	}
-
-	@Test
-	public void testModifyPassword() {
-		
-	}
-
-	@Test
-	public void testModifySignature() {
-		
-	}
-
-	@Test
-	public void testModifyGender() {
-		
-	}
-
-	@Test
-	public void testModifyBirthdate() {
-		
-	}
-
-	@Test
-	public void testModifyEmail() {
-		
-	}
-
-	@Test
-	public void testModifyAvatar() {
-		
-	}
-
-	@Test
-	public void testModifyFirstname() {
-		
-	}
-
-	@Test
-	public void testModifyLastname() {
-		
+		//Test user type changing
+		pm.change(1, MYSQL_USERS_TYPE, 0);
+		assertEquals(0, allProfiles.get(1).GetUserType());
+		pm.change(1, MYSQL_USERS_TYPE, 1);
+		allProfiles = pm.getAll();
+		assertEquals(1, allProfiles.get(1).GetUserType());
 	}
 
 }

@@ -4,249 +4,100 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import forum.data.objects.Category;
+import forum.data.objects.Profile;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 
-public class ProfileManager {
+public class ProfileManager extends DataBaseInfo{
 	private DataBaseManager DBManager;
 	private ArrayList<String> fields;
 	private ArrayList<Object> values;
 	private ArrayList<String> clause;
 	private ArrayList<String> conditionFields;
+	private Map<Integer, Profile> allProfiles;
 	public ProfileManager(){
 		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 		fields = new ArrayList<String>();
 		values = new ArrayList<Object>();
 		clause = new ArrayList<String>();
 		conditionFields = new ArrayList<String>();
+		allProfiles = new HashMap<Integer, Profile>();
+	}
+	
+	public Map<Integer, Profile> getAll() {
+		ResultSet res = DBManager.executeSelect(DataBaseInfo.MYSQL_TABLE_USERS);
+		try {
+			while (res.next()) {
+				Integer id = res.getInt(MYSQL_TABLE_ID);
+				Profile newOne = new Profile(res.getString(MYSQL_USERS_USERNAME));
+				newOne.SetAvatar(res.getString(MYSQL_USERS_AVATAR));
+				newOne.SetBirthDate(res.getDate(MYSQL_USERS_BIRTH_DATE));
+				newOne.SetEmail(res.getString(MYSQL_USERS_EMAIL));
+				newOne.SetFirstName(res.getString(MYSQL_USERS_FIRST_NAME));
+				newOne.SetGender(res.getString(MYSQL_USERS_GENDER));
+				newOne.SetLastName(res.getString(MYSQL_USERS_LAST_NAME));
+				newOne.SetPassword(res.getString(MYSQL_USERS_PASSWORD));
+				newOne.SetSignature(res.getString(MYSQL_USERS_SIGNATURE));
+				newOne.SetUserType(res.getInt(MYSQL_USERS_TYPE));
+				allProfiles.put(id, newOne);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return allProfiles;
 	}
 	
 	/**
-	 * Only admin can use this option
-	 * Changes user type in Database
+	 * 
 	 * @param userID
-	 * @param userType
+	 * @param field
+	 * @param value
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyUserType(int userID, int userType) throws SQLException{
+	public boolean change(int userID, String field, Object value) throws SQLException{
 		if(!userExists(userID))
 			return false;
 		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_TYPE);
-		values.add(userType);
+		fields.add(field);
+		values.add(value);
 		values.add(userID);
 		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
 				DataBaseInfo.MYSQL_TABLE_ID);
 		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
 				fields, values,
 				conditionFields, clause);
-		return true;
 		
-	}
-
-	/**
-	 * Only admin can use this option
-	 * Checks if this user is in Database
-	 * Checks if username already exists
-	 * Changes username of the passed user in Database
-	 * @param userID
-	 * @param username
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean ModifyUsername(int userID, String username) throws SQLException{
 		
-		if(!userExists(userID))
-			return false;
-		if(usernameAlreadyExists(username))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
-		values.add(username);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
-		return true;
-	}
-	
-	/**
-	 * Changes password of the user
-	 * @param userID
-	 * @param password
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean modifyPassword(int userID, int password) throws SQLException{
-		if(!userExists(userID))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_PASSWORD);
-		values.add(password);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
-		return true;
-	}
-	
-	/**
-	 * Changes signature of the user
-	 * @param userID
-	 * @param signature
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean modifySignature(int userID, String signature) throws SQLException{
-		if(!userExists(userID))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_SIGNATURE);
-		values.add(signature);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
-		return true;
-	}
-	
-	/**
-	 * Changes gender of the user
-	 * @param userID
-	 * @param gender
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean modifyGender(int userID, String gender) throws SQLException{
-		if(!userExists(userID))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_GENDER);
-		values.add(gender);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
-		return true;
-	}
-	
-	/**
-	 * Changes birth date of the user
-	 * @param userID
-	 * @param birthDate
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean modifyBirthdate(int userID, Date birthDate) throws SQLException{
-		if(!userExists(userID))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_BIRTH_DATE);
-		values.add(birthDate);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
-		return true;
-	}
-	
-	/**
-	 * Changes email of the user
-	 * @param userID
-	 * @param email
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean modifyEmail(int userID, String email) throws SQLException{
-		if(!userExists(userID))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_EMAIL);
-		values.add(email);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
-		return true;
-	}
-	
-	/**
-	 * Changes avatar of the user
-	 * @param userID
-	 * @param avatar
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean modifyAvatar(int userID, String avatar) throws SQLException{
-		if(!userExists(userID))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_AVATAR);
-		values.add(avatar);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
-		return true;
-	}
-	
-	/**
-	 * Changes first name of the user
-	 * @param userID
-	 * @param firstname
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean modifyFirstname(int userID, String firstname) throws SQLException{
-		if(!userExists(userID))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_FIRST_NAME);
-		values.add(firstname);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
-		return true;
-	}
-	
-	/**
-	 * Changes last name of the user
-	 * @param userID
-	 * @param lastname
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean modifyLastname(int userID, String lastname) throws SQLException{
-		if(!userExists(userID))
-			return false;
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_LAST_NAME);
-		values.add(lastname);
-		values.add(userID);
-		conditionFields.add(DataBaseInfo.MYSQL_TABLE_USERS + "." + 
-				DataBaseInfo.MYSQL_TABLE_ID);
-		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_USERS, 
-				fields, values,
-				conditionFields, clause);
+		if(allProfiles.containsKey(userID)){
+			Profile toChange = allProfiles.get(userID);
+			if(field.equals(MYSQL_USERS_AVATAR))
+				toChange.SetAvatar((String) value);
+			if(field.equals(MYSQL_USERS_BIRTH_DATE))
+				toChange.SetBirthDate((Date) value);
+			if(field.equals(MYSQL_USERS_EMAIL))
+				toChange.SetEmail((String) value);
+			if(field.equals(MYSQL_USERS_FIRST_NAME))
+				toChange.SetFirstName((String) value);
+			if(field.equals(MYSQL_USERS_GENDER))
+				toChange.SetGender((String) value);
+			if(field.equals(MYSQL_USERS_LAST_NAME))
+				toChange.SetLastName((String) value);
+			if(field.equals(MYSQL_USERS_PASSWORD))
+				toChange.SetPassword((String) value);
+			if(field.equals(MYSQL_USERS_SIGNATURE))
+				toChange.SetSignature((String) value);
+			if(field.equals(MYSQL_USERS_TYPE))
+				toChange.SetUserType((Integer) value);
+			if(field.equals(MYSQL_USERS_USERNAME))
+				toChange.SetUserType((Integer) value);
+			allProfiles.put(userID, toChange);
+		}
+		
 		return true;
 	}
 	
@@ -258,25 +109,25 @@ public class ProfileManager {
 	}
 	
 	private boolean userExists(int userID) throws SQLException {
-	/*	clearArrays();
+		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
 		values.add(userID);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
 				fields, values, clause);
-	//	if(resultSet.next()) */
+		if(resultSet.next()) 
 		return true;
-		//return false;
+		return false;
 	}
 	
 	private boolean usernameAlreadyExists(String username) throws SQLException {
-	/*	clearArrays();
+		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
 		values.add(username);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
-				fields, values, clause);*/
-		//if(resultSet.next()) 
+				fields, values, clause);
+		if(resultSet.next()) 
 		return true;
-		//return false;
+		return false;
 	}
 
 	

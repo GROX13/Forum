@@ -19,7 +19,7 @@ public class TestCategoryManager extends DataBaseInfo {
 
 	@Before
 	public void setUp() {
-		data = new DataBaseManager();
+		data = new DataBaseManager(MYSQL_DATABASE_NAME);
 		cm = new CategoryManager();
 	}
 

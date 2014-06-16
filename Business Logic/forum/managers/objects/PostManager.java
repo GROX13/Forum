@@ -22,7 +22,7 @@ public class PostManager extends DataBaseInfo {
 	 * creates new post manager
 	 */
 	public PostManager() {
-		data = new DataBaseManager();
+		data = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 		allPost = new HashMap<Integer, Post>();
 	}
 
@@ -37,16 +37,15 @@ public class PostManager extends DataBaseInfo {
 	 */
 	public void add(int userId, int themeId, String text,
 			ArrayList<String> imgs, ArrayList<String> videos) {
-		ArrayList<String> columns = new ArrayList<String>();
-		columns.add(MYSQL_POSTS_AUTHORID);
-		columns.add(MYSQL_POSTS_THEME);
-		columns.add(MYSQL_POSTS_POST_TEXT);
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add(MYSQL_POSTS_AUTHORID);
+		fields.add(MYSQL_POSTS_THEME);
+		fields.add(MYSQL_POSTS_POST_TEXT);
 		ArrayList<Object> values = new ArrayList<Object>();
 		values.add(userId);
 		values.add(themeId);
 		values.add(text);
-		int id = data
-				.putDataWithRetrevingID(MYSQL_TABLE_POSTS, columns, values);
+		int id = data.executeAdministration(MYSQL_TABLE_POSTS, fields, values);
 		putFiles(id, imgs, MYSQL_TABLE_POST_IMAGES, MYSQL_IMAGE_FILE);
 		putFiles(id, videos, MYSQL_TABLE_POST_VIDEOS, MYSQL_VIDEO_FILE);
 	}
@@ -58,16 +57,16 @@ public class PostManager extends DataBaseInfo {
 	 * @param table
 	 * @param column
 	 */
-	private void putFiles(int id, ArrayList<String> file, String table,
+	private void putFiles(int id, ArrayList<String> file, String tableName,
 			String column) {
-		ArrayList<String> columns = new ArrayList<String>();
-		columns.add(column);
-		columns.add(MYSQL_POST_FILES_POSTID);
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add(column);
+		fields.add(MYSQL_POST_FILES_POSTID);
 		for (int i = 0; i < file.size(); i++) {
 			ArrayList<Object> values = new ArrayList<Object>();
 			values.add(file.get(i));
 			values.add(id);
-			data.putDataInDataBase(table, columns, values);
+			data.executeInsert(tableName, fields, values);
 		}
 	}
 
@@ -78,9 +77,15 @@ public class PostManager extends DataBaseInfo {
 	 * @return Map<Integer, Post>
 	 */
 	public Map<Integer, Post> getAll(int tId) {
-		ResultSet res = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_POSTS + " where " + MYSQL_POSTS_THEME + " = "
-				+ tId, new ArrayList<Object>());
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		fields.add(DataBaseInfo.MYSQL_POSTS_THEME);
+		values.add(tId);
+		
+		ResultSet res = data.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_POSTS, 
+				fields, values, clause);
+
 		try {
 			while (res.next()) {
 				Integer id = res.getInt(MYSQL_TABLE_ID);
@@ -106,8 +111,15 @@ public class PostManager extends DataBaseInfo {
 	 * @return ArrayList<String>
 	 */
 	private ArrayList<String> getFiles(Integer id, String table, String column) {
-		ResultSet res = data.executeQueryStatement("Select * from " + table
-				+ " where id = " + id, new ArrayList<Object>());
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
+		values.add(id);
+		
+		ResultSet res = data.executeSelectWhere(table, 
+				fields, values, clause);
+		
 		ArrayList<String> files = new ArrayList<String>();
 		try {
 			while (res.next()) {
@@ -125,60 +137,58 @@ public class PostManager extends DataBaseInfo {
 	 * @param id
 	 */
 	public void remove(int id) {
-		ArrayList<String> conditionCol = new ArrayList<String>();
-		ArrayList<Object> conditionVal = new ArrayList<Object>();
-		conditionCol.add(MYSQL_POST_FILES_POSTID);
-		conditionVal.add(id);
-		data.removeDataFromDataBase(MYSQL_TABLE_POST_IMAGES, conditionCol,
-				conditionVal);
-		data.removeDataFromDataBase(MYSQL_TABLE_POST_VIDEOS, conditionCol,
-				conditionVal);
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
+		values.add(id);
+		data.executeRemove(DataBaseInfo.MYSQL_TABLE_POST_IMAGES, fields, clause, values);
+		data.executeRemove(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS, fields, clause, values);
 		
-		conditionCol.remove(0);
-		conditionCol.add(MYSQL_TABLE_ID);
-		data.removeDataFromDataBase(MYSQL_TABLE_POSTS, conditionCol,
-				conditionVal);
+		fields.remove(0);
+		fields.add(MYSQL_TABLE_ID);
+		data.executeRemove(DataBaseInfo.MYSQL_TABLE_POSTS, fields, clause, values);
 	}
 
 	/**
-	 * changes post in database, images and videos columns are
+	 * changes post in database, images and videos fields are
 	 * MYSQL_TABLE_POST_IMAGES and MYSQL_TABLE_POST_VIDEOS
 	 * 
 	 * @param id
-	 * @param columns
+	 * @param fields
 	 * @param values
 	 * @param imgs
 	 * @param videos
 	 */
 	@SuppressWarnings("unchecked")
-	public void change(int id, ArrayList<String> columns,
+	public void change(int id, ArrayList<String> fields,
 			ArrayList<Object> values) {
 		String text = "";
 		ArrayList<String> imgs = new ArrayList<String>();
 		ArrayList<String> videos = new ArrayList<String>();
-		for (int i = 0; i < columns.size(); i++) {
-			if (columns.get(i).equals(MYSQL_POSTS_POST_TEXT))
+		for (int i = 0; i < fields.size(); i++) {
+			if (fields.get(i).equals(MYSQL_POSTS_POST_TEXT))
 				text = (String) values.get(i);
-			if (columns.get(i).equals(MYSQL_TABLE_POST_IMAGES))
+			if (fields.get(i).equals(MYSQL_TABLE_POST_IMAGES))
 				imgs = (ArrayList<String>) values.get(i);
-			if (columns.get(i).equals(MYSQL_TABLE_POST_VIDEOS))
+			if (fields.get(i).equals(MYSQL_TABLE_POST_VIDEOS))
 				videos = (ArrayList<String>) values.get(i);
 		}
-		if (columns.contains(MYSQL_POSTS_POST_TEXT)) {
+		if (fields.contains(MYSQL_POSTS_POST_TEXT)) {
 			changeText(text, id);
 			if (allPost.containsKey(id)) {
 				Post toChange = allPost.get(id);
 				toChange.setPostText(text);
 			}
 		}
-		if (columns.contains(MYSQL_TABLE_POST_IMAGES)) {
+		if (fields.contains(MYSQL_TABLE_POST_IMAGES)) {
 			changeFiles(imgs, MYSQL_TABLE_POST_IMAGES, id, MYSQL_IMAGE_FILE);
 			if (allPost.containsKey(id)) {
 				Post toChange = allPost.get(id);
 				toChange.setImages(imgs);
 			}
 		}
-		if (columns.contains(MYSQL_TABLE_POST_VIDEOS)) {
+		if (fields.contains(MYSQL_TABLE_POST_VIDEOS)) {
 			changeFiles(videos, MYSQL_TABLE_POST_VIDEOS, id, MYSQL_VIDEO_FILE);
 			if (allPost.containsKey(id)) {
 				Post toChange = allPost.get(id);
@@ -194,16 +204,16 @@ public class PostManager extends DataBaseInfo {
 	 * @param id
 	 */
 	private void changeText(String text, int id) {
-		ArrayList<String> conditionCol = new ArrayList<String>();
-		ArrayList<Object> conditionVal = new ArrayList<Object>();
-		ArrayList<String> column = new ArrayList<String>();
-		column.add(MYSQL_POSTS_POST_TEXT);
-		ArrayList<Object> value = new ArrayList<Object>();
-		value.add(text);
-		conditionCol.add(MYSQL_TABLE_ID);
-		conditionVal.add(id);
-		data.updateDataInDataBase(MYSQL_TABLE_POSTS, conditionCol,
-				conditionVal, column, value);
+		ArrayList<String> conditionFields = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
+		fields.add(MYSQL_POSTS_POST_TEXT);
+		values.add(text);
+		conditionFields.add(MYSQL_TABLE_ID);
+		values.add(id);
+		data.executeUpdate(MYSQL_TABLE_POSTS, fields, values, conditionFields, clause);
+	
 	}
 
 	/**
@@ -215,18 +225,19 @@ public class PostManager extends DataBaseInfo {
 	 */
 	private void changeFiles(ArrayList<String> files, String mysqlTable, int id, String column) {
 		ArrayList<String> conditionCol = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
 		ArrayList<Object> conditionVal = new ArrayList<Object>();
 		conditionCol.add(MYSQL_POST_FILES_POSTID);
 		conditionVal.add(id);
-		data.removeDataFromDataBase(mysqlTable, conditionCol, conditionVal);
-		ArrayList<String> columns = new ArrayList<String>();
-		columns.add(column);
-		columns.add(MYSQL_POST_FILES_POSTID);
+		data.executeRemove(mysqlTable, conditionCol, clause, conditionVal);
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add(column);
+		fields.add(MYSQL_POST_FILES_POSTID);
 		for (int i = 0; i < files.size(); i++) {
 			ArrayList<Object> values = new ArrayList<Object>();
 			values.add(files.get(i));
 			values.add(id);
-			data.putDataInDataBase(mysqlTable, columns, values);
+			data.executeInsert(mysqlTable, fields, values);
 		}
 	}
 }
