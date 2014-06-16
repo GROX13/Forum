@@ -48,7 +48,7 @@ public class ThemeManager extends DataBaseInfo {
 		values.add(userId);
 		values.add(catId);
 		values.add(open);
-		data.executeInsert(name, fields, values);
+		data.executeInsert(MYSQL_TABLE_THEME, fields, values);
 	}
 
 	/**

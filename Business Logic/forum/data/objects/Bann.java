@@ -93,18 +93,19 @@ public class Bann {
 
 	
 	
-	private void removeBann() {
+	public void removeBann() {
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		ArrayList<String> clause = new ArrayList<String>();
 		fields.add(DataBaseInfo.MYSQL_USERID);
-		values.add(id);
+		values.add(userID);
 		DBManager.executeRemove(DataBaseInfo.MYSQL_TABLE_BANN, fields, clause, values);
+		isBanned = false;
 	}
 	
 	 
 	private void update() throws SQLException {
-		// TODO Auto-generated method stub
+		
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		ArrayList<String> clause = new ArrayList<String>();
@@ -112,16 +113,15 @@ public class Bann {
 		values.add(userID);
 		ResultSet rs = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_BANN,
 				fields, values, clause);
-		if (rs != null) {
-			
-			while (rs.next()) {
-				id = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
-				start_date = rs.getDate(DataBaseInfo.MYSQL_START_DATE);
-				end_date = rs.getDate(DataBaseInfo.MYSQL_END_DATE);
-			}
+	
+		if (rs.next()) {
+			id = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+			start_date = rs.getDate(DataBaseInfo.MYSQL_START_DATE);
+			end_date = rs.getDate(DataBaseInfo.MYSQL_END_DATE);
+		
 			
 			Date now = currentDate();
-			if (end_date.compareTo(now) == -1) {
+			if (end_date.toString().equals(now.toString())) {
 				removeBann();
 			} else {
 				isBanned = true;

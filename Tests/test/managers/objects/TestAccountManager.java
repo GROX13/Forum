@@ -1,16 +1,9 @@
 package test.managers.objects;
 
 import static org.junit.Assert.*;
-
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import org.junit.Test;
-
-import forum.info.DataBaseInfo;
-import forum.managers.database.DataBaseManager;
 import forum.managers.objects.AccountManager;
 
 public class TestAccountManager {

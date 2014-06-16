@@ -33,7 +33,7 @@ public class Warn {
 		clause = new ArrayList<String>();
 	}
 
-	public boolean isWarned(){
+	public boolean isWarned() throws SQLException{
 		update();
 		return warned;
 	}
@@ -82,13 +82,14 @@ public class Warn {
 
  
 	 
-	private void removeWarn() {
+	public void removeWarn() {
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		ArrayList<String> clause = new ArrayList<String>();
 		fields.add(DataBaseInfo.MYSQL_USERID);
 		values.add(id);
 		DBManager.executeRemove(DataBaseInfo.MYSQL_TABLE_WARN, fields, clause, values);
+		warned = false;
 	}
 	
 	public void WarnUser(int frequency, Date endDate) throws SQLException {
@@ -99,20 +100,21 @@ public class Warn {
 		ResultSet resultSet = DBManager.executeOrderedSelect(DataBaseInfo.MYSQL_TABLE_POSTS, fields, 
 				values, clause, DataBaseInfo.MYSQL_POSTS_ADD_DATE, 0, 1, false);
 		
-		resultSet.next();
-		int lastPostID = resultSet.getInt(DataBaseInfo.MYSQL_TABLE_ID);
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERID);
-		fields.add(DataBaseInfo.MYSQL_WARN_LAST_POST);
-		fields.add(DataBaseInfo.MYSQL_START_DATE);
-		fields.add(DataBaseInfo.MYSQL_END_DATE);
-		fields.add(DataBaseInfo.MYSQL_WARN_FREQUENCY);
-		values.add(userID);
-		values.add(lastPostID);
-		values.add(currentDate());
-		values.add(endDate);
-		values.add(frequency);
-		DBManager.executeInsert(DataBaseInfo.MYSQL_TABLE_WARN, fields, values);
+		if(resultSet.next()){
+			int lastPostID = resultSet.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+			clearArrays();
+			fields.add(DataBaseInfo.MYSQL_USERID);
+			fields.add(DataBaseInfo.MYSQL_WARN_LAST_POST);
+			fields.add(DataBaseInfo.MYSQL_START_DATE);
+			fields.add(DataBaseInfo.MYSQL_END_DATE);
+			fields.add(DataBaseInfo.MYSQL_WARN_FREQUENCY);
+			values.add(userID);
+			values.add(lastPostID);
+			values.add(currentDate());
+			values.add(endDate);
+			values.add(frequency);
+			DBManager.executeInsert(DataBaseInfo.MYSQL_TABLE_WARN, fields, values);
+		}
 	}
 	
 	private Date currentDate() {
@@ -147,8 +149,7 @@ public class Warn {
 		return true;
 		
 	}
-	private void update() {
-		// TODO Auto-generated method stub
+	private void update() throws SQLException {
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		ArrayList<String> clause = new ArrayList<String>();
@@ -156,17 +157,12 @@ public class Warn {
 		values.add(userID);
 		ResultSet rs = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_WARN,
 				fields, values, clause);
-		if (rs != null) {
-			try {
-				while (rs.next()) {
-					id = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
-					start_date = rs.getDate(DataBaseInfo.MYSQL_START_DATE);
-					end_date = rs.getDate(DataBaseInfo.MYSQL_END_DATE);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (rs.next()) {
+			
+			id = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+			start_date = rs.getDate(DataBaseInfo.MYSQL_START_DATE);
+			end_date = rs.getDate(DataBaseInfo.MYSQL_END_DATE);
+			
 			Date now = currentDate();
 			if (end_date.compareTo(now) == -1) {
 				removeWarn();

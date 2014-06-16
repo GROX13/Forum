@@ -59,6 +59,11 @@ public class Admin extends User {
 
 		return true;
 	}
+	
+	public Category viewCategory(int categoryID){
+		Category category = categoryManager.getAll().get(categoryID);
+		return category;
+	}
 
 	/**
 	 * Changes category title
@@ -89,8 +94,8 @@ public class Admin extends User {
 	 * Removes category from database
 	 * @param category
 	 */
-	public void DeleteCategory(Category category) {
-		categoryManager.remove(category.getId());
+	public void DeleteCategory(int categoryID) {
+		categoryManager.remove(categoryID);
 	}
 
 	/**
