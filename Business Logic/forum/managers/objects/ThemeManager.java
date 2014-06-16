@@ -21,7 +21,7 @@ public class ThemeManager extends DataBaseInfo {
 	 * creates new Theme manager
 	 */
 	public ThemeManager() {
-		data = new DataBaseManager();
+		data = new DataBaseManager(MYSQL_DATABASE_NAME);
 		allTheme = new HashMap<Integer, Theme>();
 	}
 
@@ -36,19 +36,19 @@ public class ThemeManager extends DataBaseInfo {
 	 */
 	public void add(String name, String desc, int userId, int catId,
 			boolean open) {
-		ArrayList<String> columns = new ArrayList<String>();
-		columns.add(MYSQL_THEME_TITLE);
-		columns.add(MYSQL_THEME_DESCRIPTION);
-		columns.add(MYSQL_THEME_CREATORID);
-		columns.add(MYSQL_THEME_CATEGORYID);
-		columns.add(MYSQL_THEME_IS_OPEN);
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add(MYSQL_THEME_TITLE);
+		fields.add(MYSQL_THEME_DESCRIPTION);
+		fields.add(MYSQL_THEME_CREATORID);
+		fields.add(MYSQL_THEME_CATEGORYID);
+		fields.add(MYSQL_THEME_IS_OPEN);
 		ArrayList<Object> values = new ArrayList<Object>();
 		values.add(name);
 		values.add(desc);
 		values.add(userId);
 		values.add(catId);
 		values.add(open);
-		data.putDataInDataBase(MYSQL_TABLE_THEME, columns, values);
+		data.executeInsert(name, fields, values);
 	}
 
 	/**
@@ -58,9 +58,12 @@ public class ThemeManager extends DataBaseInfo {
 	 * @return Map<Integer, Theme>
 	 */
 	public Map<Integer, Theme> getAll(int cId) {
-		ResultSet res = data.executeQueryStatement("Select * from "
-				+ MYSQL_TABLE_THEME + " where " + MYSQL_THEME_CATEGORYID
-				+ " = " + cId, new ArrayList<Object>());
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		fields.add(MYSQL_THEME_CATEGORYID);
+		values.add(cId);
+		ResultSet res = data.executeSelectWhere(MYSQL_TABLE_THEME, fields, values, clause);
 		try {
 			while (res.next()) {
 				Integer id = res.getInt(MYSQL_TABLE_ID);
@@ -84,38 +87,39 @@ public class ThemeManager extends DataBaseInfo {
 	 * @param id
 	 */
 	public void remove(int id) {
-		ArrayList<String> conditionCol = new ArrayList<String>();
-		ArrayList<Object> conditionVal = new ArrayList<Object>();
-		conditionCol.add(MYSQL_TABLE_ID);
-		conditionVal.add(id);
-		data.removeDataFromDataBase(MYSQL_TABLE_THEME, conditionCol,
-				conditionVal);
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		
+		fields.add(MYSQL_TABLE_ID);
+		values.add(id);
+		data.executeRemove(MYSQL_TABLE_THEME, fields, clause, values);
 	}
 
 	/**
 	 * changes theme in database
 	 * 
 	 * @param id
-	 * @param columns
+	 * @param fields
 	 * @param values
 	 */
-	public void change(int id, ArrayList<String> columns,
+	public void change(int id, ArrayList<String> fields,
 			ArrayList<Object> values) {
-		ArrayList<String> conditionCol = new ArrayList<String>();
-		ArrayList<Object> conditionVal = new ArrayList<Object>();
-		conditionCol.add(MYSQL_TABLE_ID);
-		conditionVal.add(id);
-		data.updateDataInDataBase(MYSQL_TABLE_THEME, conditionCol,
-				conditionVal, columns, values);
+		ArrayList<String> conditionFields = new ArrayList<String>();
+		ArrayList<String> clause = new ArrayList<String>();
+		conditionFields.add(MYSQL_TABLE_ID);
+		values.add(id);
+		data.executeUpdate(MYSQL_TABLE_THEME, fields, values, conditionFields, clause);
+		
 		if (allTheme.containsKey(id)) {
 			Theme toChange = allTheme.get(id);
-			for (int i = 0; i < columns.size(); i++) {
-				if (columns.get(i).equals(MYSQL_THEME_TITLE))
+			for (int i = 0; i < fields.size(); i++) {
+				if (fields.get(i).equals(MYSQL_THEME_TITLE))
 					toChange.setTitle((String) values.get(i));
-				if (columns.get(i).equals(MYSQL_THEME_DESCRIPTION))
+				if (fields.get(i).equals(MYSQL_THEME_DESCRIPTION))
 					toChange.setDescription((String) values.get(i));
-				if (columns.get(i).equals(MYSQL_THEME_IS_OPEN))
-					toChange.setOpen((boolean) values.get(i));
+				if (fields.get(i).equals(MYSQL_THEME_IS_OPEN))
+					toChange.setOpen((Boolean) values.get(i));
 			}
 		}
 	}
