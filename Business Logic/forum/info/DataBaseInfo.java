@@ -70,4 +70,8 @@ public class DataBaseInfo {
 	public static final String MYSQL_WARN_FREQUENCY = "frequency";
 	public static final String MYSQL_WARN_LAST_POST = "last_post";
 	
+	public static final String MYSQL_CLAUSE_AND = "AND";
+	public static final String MYSQL_CLAUSE_OR = "OR";
+	
+	
 }
