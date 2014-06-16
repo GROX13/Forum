@@ -88,7 +88,7 @@ CREATE TABLE post_videos (
 
 CREATE TABLE warn (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	user_id INT NOT NULL,
+	user_id INT NOT NULL UNIQUE,
 	last_post INT,
 	start_date DATE,
 	end_date DATE,
@@ -99,7 +99,7 @@ CREATE TABLE warn (
 
 CREATE TABLE bann (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	user_id INT NOT NULL,
+	user_id INT NOT NULL UNIQUE,
 	start_date DATE,
 	end_date DATE,
 	FOREIGN KEY (user_id) REFERENCES users(id)

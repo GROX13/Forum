@@ -15,7 +15,7 @@ import forum.managers.objects.CategoryManager;
 import forum.managers.objects.PostManager;
 import forum.managers.objects.ThemeManager;
 
-public class Admin extends Account {
+public class Admin extends User {
 
 	private ThemeManager themeManager;
 	private DataBaseManager DBManager;
@@ -24,8 +24,12 @@ public class Admin extends Account {
 	private ArrayList<Object> values;
 	private ArrayList<String> columns;
 
-	public Admin() {
-		DBManager = new DataBaseManager();
+	public Admin(int id, char gender, Date birth_date, Date registration_date,
+			String avatar, String username, String first_name,
+			String last_name, String email, String signiture) {
+		super(id, gender, birth_date, registration_date, avatar, username,
+				first_name, last_name, email, signiture);
+		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 		categoryManager = new CategoryManager();
 		themeManager = new ThemeManager();
 		postManager = new PostManager();
@@ -34,15 +38,14 @@ public class Admin extends Account {
 	}
 
 	/**
-	 * Adds category to the Database
-	 * Checks if the category with 
-	 * That title doesn't exist in database
+	 * Adds category to the Database Checks if the category with That title
+	 * doesn't exist in database
+	 * 
 	 * @param category
 	 * @return
 	 * @throws SQLException
 	 */
 	public boolean AddCategory(Category category) throws SQLException {
-
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_CATEGORIES + "."
 				+ DataBaseInfo.MYSQL_CATEGORIES_TITLE);
@@ -61,6 +64,7 @@ public class Admin extends Account {
 
 	/**
 	 * Changes category title
+	 * 
 	 * @param category
 	 */
 	public void ModifyCategoryTitle(Category category) {
@@ -73,6 +77,7 @@ public class Admin extends Account {
 
 	/**
 	 * Changes category description
+	 * 
 	 * @param category
 	 */
 	public void ModifyCategoryDescription(Category category) {
@@ -83,9 +88,10 @@ public class Admin extends Account {
 		categoryManager.change(category.getId(), columns, values);
 
 	}
-	
+
 	/**
 	 * Removes category from database
+	 * 
 	 * @param category
 	 */
 	public void DeleteCategory(Category category) {
@@ -94,6 +100,7 @@ public class Admin extends Account {
 
 	/**
 	 * Removes theme from Database
+	 * 
 	 * @param theme
 	 * @return
 	 * @throws SQLException
@@ -109,9 +116,10 @@ public class Admin extends Account {
 		themeManager.remove(theme.getId());
 		return true;
 	}
-	
+
 	/**
 	 * Changes theme title
+	 * 
 	 * @param theme
 	 */
 	public void ModifyThemeTitle(Theme theme) {
@@ -120,9 +128,10 @@ public class Admin extends Account {
 		values.add(theme.getTitle());
 		themeManager.change(theme.getId(), columns, values);
 	}
-	
+
 	/**
 	 * Changes theme description
+	 * 
 	 * @param theme
 	 */
 	public void ModifyThemeDescription(Theme theme) {
@@ -133,8 +142,8 @@ public class Admin extends Account {
 	}
 
 	/**
-	 * Changes theme status, is it
-	 * Open for guest or not
+	 * Changes theme status, is it Open for guest or not
+	 * 
 	 * @param theme
 	 */
 	public void ModifyThemeStatus(Theme theme) {
@@ -146,6 +155,7 @@ public class Admin extends Account {
 
 	/**
 	 * Changes text of the post
+	 * 
 	 * @param post
 	 */
 	public void ModifyPostText(Post post) {
@@ -154,52 +164,59 @@ public class Admin extends Account {
 		values.add(post.getText());
 		postManager.change(post.getId(), columns, values);
 	}
-	
+
 	/**
 	 * Changes images or videos of the post
+	 * 
 	 * @param post
 	 * @param newFiles
 	 * @param tableName
 	 */
-	public void ChangePostImagesOrVideos(Post post, ArrayList<String> newFiles, String tableName){
-		
+	public void ChangePostImagesOrVideos(Post post, ArrayList<String> newFiles,
+			String tableName) {
+
 	}
-	
+
 	/**
 	 * Adds image or video to the post
+	 * 
 	 * @param post
 	 * @param files
 	 * @param tableName
 	 */
-	public void AddImagesOrVideosToPost(Post post, ArrayList<String> files, String tableName){
-		
+	public void AddImagesOrVideosToPost(Post post, ArrayList<String> files,
+			String tableName) {
+
 	}
-	
+
 	/**
 	 * Removes image or vide from the post
+	 * 
 	 * @param post
 	 * @param files
 	 * @param tableName
 	 */
-	public void RemoveImagesOrVideosFromPost(Post post, ArrayList<String> files, String tableName){
-		
+	public void RemoveImagesOrVideosFromPost(Post post,
+			ArrayList<String> files, String tableName) {
+
 	}
-	
+
 	/**
-	 * Warns user 
-	 * Puts info about frequency of posting
-	 * and end date of warning
+	 * Warns user Puts info about frequency of posting and end date of warning
+	 * 
 	 * @param userID
 	 * @param frequency
 	 * @param endDate
 	 * @throws SQLException
 	 */
-	public void WarnUser(int userID, int frequency, Date endDate) throws SQLException {
+	public void WarnUser(int userID, int frequency, Date endDate)
+			throws SQLException {
 		clearArrays();
 		values.add(userID);
-		String query = "SELECT * FROM " + DataBaseInfo.MYSQL_TABLE_POSTS 
-		+ "WHERE " + DataBaseInfo.MYSQL_POSTS_AUTHORID + " = ? ORDER BY " + 
-		DataBaseInfo.MYSQL_POSTS_ADD_DATE + " DESC LIMIT 1";
+		String query = "SELECT * FROM " + DataBaseInfo.MYSQL_TABLE_POSTS
+				+ "WHERE " + DataBaseInfo.MYSQL_POSTS_AUTHORID
+				+ " = ? ORDER BY " + DataBaseInfo.MYSQL_POSTS_ADD_DATE
+				+ " DESC LIMIT 1";
 		ResultSet resultSet = DBManager.executeQueryStatement(query, values);
 		int lastPostID = resultSet.getInt(DataBaseInfo.MYSQL_TABLE_ID);
 		clearArrays();
@@ -213,22 +230,22 @@ public class Admin extends Account {
 		values.add(currentDate());
 		values.add(endDate);
 		values.add(frequency);
-		DBManager.putDataInDataBase(DataBaseInfo.MYSQL_TABLE_WARN, columns, values);
+		DBManager.putDataInDataBase(DataBaseInfo.MYSQL_TABLE_WARN, columns,
+				values);
 	}
-	
+
 	/**
-	 * Bans user
-	 * Puts info about end date of ban
-	 * into the database
+	 * Bans user Puts info about end date of ban into the database
+	 * 
 	 * @param username
 	 * @param bannEndDate
 	 * @throws SQLException
 	 */
-	
+
 	public void BannUser(String username, Date bannEndDate) throws SQLException {
 
 		Date bannStartDate = currentDate();
-		
+
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_USERS + "."
 				+ DataBaseInfo.MYSQL_USERS_USERNAME);
