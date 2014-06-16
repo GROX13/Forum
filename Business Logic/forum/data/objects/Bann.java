@@ -4,27 +4,31 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 
 public class Bann {
 	private int id;
-	private int user_id;
+	private int userID;
 	private Date start_date;
 	private Date end_date;
 	private boolean isBanned = false;
-
-	private DataBaseManager DBM = new DataBaseManager(
-			DataBaseInfo.MYSQL_DATABASE_NAME);
+	private ArrayList<Object> values;
+	private ArrayList<String> fields;
+	private ArrayList<String> clause;
+	private DataBaseManager DBManager;
 
 	public Bann(int userID) {
-		// TODO Auto-generated constructor stub
-		user_id = userID;
-		update();
+		this.userID = userID;
+		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
+		values = new ArrayList<Object>();
+		fields = new ArrayList<String>();
+		clause = new ArrayList<String>();
 	}
 
-	public boolean isBanned() {
+	public boolean isBanned() throws SQLException {
 		update();
 		return isBanned;
 	}
@@ -40,7 +44,7 @@ public class Bann {
 	 * @return the user_id
 	 */
 	public int getUser_id() {
-		return user_id;
+		return userID;
 	}
 
 	/**
@@ -56,43 +60,67 @@ public class Bann {
 	public Date getEnd_date() {
 		return end_date;
 	}
+	
+	public void BannUser(Date bannEndDate) throws SQLException {
+		Date bannStartDate = currentDate();
+		
+		clearArrays();
 
-	/*
-	 * 
-	 */
+		clearArrays();
+		fields.add(DataBaseInfo.MYSQL_USERID);
+		fields.add(DataBaseInfo.MYSQL_START_DATE);
+		fields.add(DataBaseInfo.MYSQL_END_DATE);
+
+		values.add(userID);
+		values.add(bannStartDate);
+		values.add(bannEndDate);
+
+		DBManager.executeInsert(DataBaseInfo.MYSQL_TABLE_BANN, fields, values);
+	}
+	
+	private void clearArrays() {
+		values.clear();
+		fields.clear();
+		clause.clear();
+	}
+	
+	private Date currentDate() {
+		Calendar cal = Calendar.getInstance();
+		long date = cal.getTimeInMillis();
+		Date currentDate = new Date(date);
+		return currentDate;
+	}
+
+	
+	
 	private void removeBann() {
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		ArrayList<String> clause = new ArrayList<String>();
 		fields.add(DataBaseInfo.MYSQL_USERID);
 		values.add(id);
-		DBM.executeRemove(DataBaseInfo.MYSQL_TABLE_BANN, fields, clause, values);
+		DBManager.executeRemove(DataBaseInfo.MYSQL_TABLE_BANN, fields, clause, values);
 	}
-
-	/*
-	 * 
-	 */
-	private void update() {
+	
+	 
+	private void update() throws SQLException {
 		// TODO Auto-generated method stub
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		ArrayList<String> clause = new ArrayList<String>();
 		fields.add(DataBaseInfo.MYSQL_USERID);
-		values.add(user_id);
-		ResultSet rs = DBM.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_BANN,
+		values.add(userID);
+		ResultSet rs = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_BANN,
 				fields, values, clause);
 		if (rs != null) {
-			try {
-				while (rs.next()) {
-					id = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
-					start_date = rs.getDate(DataBaseInfo.MYSQL_START_DATE);
-					end_date = rs.getDate(DataBaseInfo.MYSQL_END_DATE);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			
+			while (rs.next()) {
+				id = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+				start_date = rs.getDate(DataBaseInfo.MYSQL_START_DATE);
+				end_date = rs.getDate(DataBaseInfo.MYSQL_END_DATE);
 			}
-			Date now = (Date) new java.util.Date();
+			
+			Date now = currentDate();
 			if (end_date.compareTo(now) == -1) {
 				removeBann();
 			} else {
@@ -100,5 +128,4 @@ public class Bann {
 			}
 		}
 	}
-
 }
