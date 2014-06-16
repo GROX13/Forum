@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import forum.data.objects.Category;
 import forum.data.objects.Profile;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
@@ -112,17 +110,6 @@ public class ProfileManager extends DataBaseInfo{
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
 		values.add(userID);
-		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
-				fields, values, clause);
-		if(resultSet.next()) 
-		return true;
-		return false;
-	}
-	
-	private boolean usernameAlreadyExists(String username) throws SQLException {
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
-		values.add(username);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
 				fields, values, clause);
 		if(resultSet.next()) 

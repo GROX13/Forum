@@ -17,6 +17,7 @@ public class Profile {
 	private String email;
 	private Date birthDate;
 	private int userType;
+	private int userID;
 	private String gender;
 	
 	public Profile(String username){
@@ -59,6 +60,10 @@ public class Profile {
 		this.gender = gender;
 	}
 	
+	public void SetUserID(int userID){
+		this.userID = userID;
+	}
+	
 	public String UserName(){
 		return username;
 	}
@@ -99,4 +104,7 @@ public class Profile {
 		return gender;
 	}
 	
+	public int GetUserID(){
+		return userID;
+	}
 }
