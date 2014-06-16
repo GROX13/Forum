@@ -23,7 +23,7 @@ public abstract class Account {
 	private static final int MILLISECONDS_IN_SECOND = 1000;
 	private static final int SECONDS_IN_HOUR = 3600;
 	private ThemeManager themeManager = new ThemeManager();
-	private DataBaseManager DBManager = new DataBaseManager();
+	private DataBaseManager DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 	private PostManager postManager = new PostManager();
 	private ArrayList<Object> values = new ArrayList<Object>();
 	private ArrayList<String> columns = new ArrayList<String>();
@@ -41,16 +41,16 @@ public abstract class Account {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_BANN + "." + DataBaseInfo.MYSQL_USERID);
 		values.add(theme.getCreatorId());
-		ResultSet resultSet = DBManager.getDataFromDataBase(
-				DataBaseInfo.MYSQL_TABLE_BANN, columns, values);
+		ResultSet resultSet = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_BANN, columns, values, new ArrayList<String>());
 		if (resultSet.next())
 			return false;
 		
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_WARN + "." + DataBaseInfo.MYSQL_USERID);
 		values.add(theme.getCategoryId());
-		resultSet = DBManager.getDataFromDataBase(
-				DataBaseInfo.MYSQL_TABLE_WARN, columns, values);
+		resultSet = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_WARN, columns, values, new ArrayList<String>());
 		if(resultSet.next())
 			return false;
 		
@@ -75,23 +75,23 @@ public abstract class Account {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_BANN + "." + DataBaseInfo.MYSQL_USERID);
 		values.add(post.getUserId());
-		ResultSet resultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_BANN, 
-				columns, values);
+		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_BANN, 
+				columns, values, new ArrayList<String>());
 		if(resultSet.next()) return false;
 		
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_WARN + "." + DataBaseInfo.MYSQL_USERID);
 		values.add(post.getUserId());
-		resultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_WARN,
-				columns, values);
+		resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_WARN,
+				columns, values, new ArrayList<String>());
 		
 		if(resultSet.next()){
 			int lastPostId = resultSet.getInt(DataBaseInfo.MYSQL_WARN_LAST_POST);
 			clearArrays();
 			columns.add(DataBaseInfo.MYSQL_TABLE_POSTS + "." + DataBaseInfo.MYSQL_TABLE_ID);
 			values.add(lastPostId);
-			ResultSet lastPostResultSet = DBManager.getDataFromDataBase(DataBaseInfo.MYSQL_TABLE_POSTS, 
-					columns, values);
+			ResultSet lastPostResultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_POSTS, 
+					columns, values, new ArrayList<String>());
 			Date lastPostDate = lastPostResultSet.getDate(DataBaseInfo.MYSQL_POSTS_ADD_DATE);
 			Date currentPostDate = post.getDate();
 			int frequency = resultSet.getInt(DataBaseInfo.MYSQL_WARN_FREQUENCY);
@@ -117,8 +117,8 @@ public abstract class Account {
 		clearArrays();
 		columns.add(DataBaseInfo.MYSQL_TABLE_ID);
 		values.add(post.getId());
-		ResultSet resultSet = DBManager.getDataFromDataBase(
-				DataBaseInfo.MYSQL_TABLE_POSTS, columns, values);
+		ResultSet resultSet = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_POSTS, columns, values, new ArrayList<String>());
 		if (resultSet.next())
 			return false;
 		postManager.remove(post.getId());
