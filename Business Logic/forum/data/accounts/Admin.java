@@ -45,19 +45,19 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean AddCategory(Category category) throws SQLException {
+	public boolean AddCategory(String categoryTitle, String categoryDescription) throws SQLException {
 
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_TABLE_CATEGORIES + "."
 				+ DataBaseInfo.MYSQL_CATEGORIES_TITLE);
-		values.add(category.getTitle());
+		values.add(categoryTitle);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_CATEGORIES, 
 				fields, values, clause);
 
 		if (resultSet.next())
 			return false;
 
-		categoryManager.add(category.getTitle(), category.getDescription());
+		categoryManager.add(categoryTitle, categoryDescription);
 
 		return true;
 	}
@@ -153,45 +153,51 @@ public class Admin extends User {
 	 * Changes theme title
 	 * @param theme
 	 */
-	public void ModifyThemeTitle(Theme theme) {
+	public void ModifyThemeTitle(int themeID, String themeTitle) {
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_THEME_TITLE);
-		values.add(theme.getTitle());
-		themeManager.change(theme.getId(), fields, values);
+		values.add(themeTitle);
+		themeManager.change(themeID, fields, values);
 	}
 	
 	/**
 	 * Changes theme description
 	 * @param theme
 	 */
-	public void ModifyThemeDescription(Theme theme) {
+	public void ModifyThemeDescription(int themeID, String themeDescription) {
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_THEME_DESCRIPTION);
-		values.add(theme.getDescription());
-		themeManager.change(theme.getId(), fields, values);
+		values.add(themeDescription);
+		themeManager.change(themeID, fields, values);
 	}
 
 	/**
-	 * Changes theme status, is it
-	 * Open for guest or not
-	 * @param theme
+	 * 
+	 * @param themeID
+	 * @param themeOpen
 	 */
-	public void ModifyThemeStatus(Theme theme) {
+	public void ModifyThemeOpen(int themeID, boolean themeOpen) {
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_THEME_IS_OPEN);
-		values.add(theme.getOpen());
-		themeManager.change(theme.getId(), fields, values);
+		values.add(themeOpen);
+		themeManager.change(themeID, fields, values);
 	}
 
 	/**
-	 * Changes text of the post
-	 * @param post
+	 * 
+	 * @param postID
+	 * @param postText
+	 * @return
+	 * @throws SQLException
 	 */
-	public void ModifyPostText(Post post) {
+	public boolean ModifyPostText(int postID, String postText) throws SQLException {
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
+			return false;
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_POSTS_POST_TEXT);
-		values.add(post.getText());
-		postManager.change(post.getId(), fields, values);
+		values.add(postText);
+		postManager.change(postID, fields, values);
+		return true;
 	}
 	
 	/**

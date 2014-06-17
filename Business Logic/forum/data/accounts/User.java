@@ -1,9 +1,13 @@
 package forum.data.accounts;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
+
 import forum.data.objects.Bann;
+import forum.data.objects.Category;
 import forum.data.objects.Message;
 import forum.data.objects.Post;
 import forum.data.objects.Profile;
@@ -11,6 +15,7 @@ import forum.data.objects.Theme;
 import forum.data.objects.Warn;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
+import forum.managers.objects.CategoryManager;
 import forum.managers.objects.MessageManager;
 import forum.managers.objects.PostManager;
 import forum.managers.objects.ProfileManager;
@@ -26,7 +31,7 @@ public class User {
 	private DataBaseManager DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 	private PostManager postManager = new PostManager();
 	private ArrayList<Object> values = new ArrayList<Object>();
-	private ArrayList<String> columns = new ArrayList<String>();
+	private ArrayList<String> fields = new ArrayList<String>();
 	
 	/**
 	 * Adds new theme to the Database
@@ -37,20 +42,65 @@ public class User {
 	 * @throws SQLException
 	 */
 	
-	public boolean AddTheme(Theme theme) throws SQLException {
+	public boolean AddTheme(String themeTitle, String themeDescription, 
+			int themeCreatorID, int themeCategoryID, boolean themeIsOpen) throws SQLException {
 		clearArrays();
-		Bann bann = new Bann(theme.getCreatorId());
-		Warn warn = new Warn(theme.getCreatorId());
+		
+		fields.add(DataBaseInfo.MYSQL_TABLE_THEME + "." + DataBaseInfo.MYSQL_THEME_TITLE);
+		values.add(themeTitle);
+		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_THEME, 
+				fields, values, new ArrayList<String>());
+
+		if (resultSet.next()) return false;
+		
+		Bann bann = new Bann(themeCreatorID);
+		Warn warn = new Warn(themeCreatorID);
 		
 		if(bann.isBanned()) return false;
 		if(warn.isWarned()) return false;
 		
-		themeManager.add(theme.getTitle(), theme.getDescription(),
-				theme.getCreatorId(), theme.getCategoryId(),
-				theme.getOpen());
+		
+		themeManager.add(themeTitle, themeDescription,
+				themeCreatorID, themeCategoryID,
+				themeIsOpen);
 		return true;
 	}
 
+	public Theme viewTheme(int themeID) throws SQLException{
+		Theme theme = null;
+		
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_THEME, themeID))
+			return theme;
+		
+		CategoryManager cm = new CategoryManager();
+		Map<Integer, Category> categoryMap = cm.getAll();
+		for(Integer id : categoryMap.keySet()){
+			if(themeManager.getAll(id).containsKey(themeID)){
+				theme = themeManager.getAll(id).get(themeID);
+				break;
+			}
+		}
+		return theme;
+	}
+	
+	public Post viewPost(int postID){
+		Post post = null;
+		CategoryManager cm = new CategoryManager();
+		Map<Integer, Category> categoryMap = cm.getAll();
+		for(Integer categoryKey : categoryMap.keySet()){
+			Map<Integer, Theme> themeMap = themeManager.getAll(categoryKey);
+			for(Integer themeKey : themeMap.keySet()){
+				if(postManager.getAll(themeKey).containsKey(postID)){
+					post = postManager.getAll(themeKey).get(postID);
+					break;
+				}
+				
+			}
+		}
+		return post;
+		
+	}
+	
 	/**
 	 * Adds new post to the database
 	 * Checks if user is banned and in this case
@@ -61,17 +111,19 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean WritePost(Post post) throws SQLException {
+	public boolean WritePost(int postUserID, int postThemeID, 
+			String postText, Date postDate, ArrayList<String> postImages, ArrayList<String> postVideos)
+	throws SQLException {
 		
 		clearArrays();
-		Bann bann = new Bann(post.getUserId());
-		Warn warn = new Warn(post.getUserId());
+		Bann bann = new Bann(postUserID);
+		Warn warn = new Warn(postUserID);
 
 		if(bann.isBanned()) return false;
-		if(!warn.canPost(post.getDate())) return false;
+		if(!warn.canPost(postDate)) return false;
 		
-		postManager.add(post.getUserId(), post.getThemeId(), post.getText(),
-				post.getImgs(), post.getVideos());
+		postManager.add(postUserID, postThemeID, postText,
+				postImages, postVideos);
 		return true;
 	}
 	
@@ -83,15 +135,11 @@ public class User {
 	 * @throws SQLException
 	 */
 
-	public boolean DeletePost(Post post) throws SQLException {
-		clearArrays();
-		columns.add(DataBaseInfo.MYSQL_TABLE_ID);
-		values.add(post.getId());
-		ResultSet resultSet = DBManager.executeSelectWhere(
-				DataBaseInfo.MYSQL_TABLE_POSTS, columns, values, new ArrayList<String>());
-		if (resultSet.next())
+	public boolean DeletePost(int postID) throws SQLException {
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
 			return false;
-		postManager.remove(post.getId());
+
+		postManager.remove(postID);
 		return true;
 	}
 	
@@ -101,11 +149,24 @@ public class User {
 	 * @param message
 	 */
 	
-	public void sendMessage(Message message){
-		MessageManager messageManager = new MessageManager(message.getMessageReceiverID(),
-				message.getMessageSenderID());
-		messageManager.sendMessage(message.getMessageText(),message.getMessageImages(),
-				message.getMessageVideos());
+	public void sendMessage(int messageReceiverID, int messageSenderID,
+			String messageText, ArrayList<String> messageImages,
+			ArrayList<String> messageVideos){
+		MessageManager messageManager = new MessageManager(messageReceiverID, messageSenderID);
+		messageManager.sendMessage(messageText,messageImages, messageVideos);
+	}
+	
+	/**
+	 * 
+	 * @param userID
+	 * @return
+	 * @throws SQLException
+	 */
+	public Profile getProfile(int userID) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_USERS, userID))
+			return null;
+		return pm.getAll().get(userID);
 	}
 	
 	/**
@@ -128,10 +189,9 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyUsername(Profile profile) throws SQLException{
+	public boolean ModifyUsername(int userID, String userName) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_USERNAME,
-				profile.UserName());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_USERNAME, userName);
 	}
 	
 	/**
@@ -140,10 +200,9 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyPassword(Profile profile) throws SQLException{
+	public boolean modifyPassword(int userID, String password) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_PASSWORD,
-				profile.GetPasword());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_PASSWORD, password);
 	}
 	/**
 	 * 
@@ -151,10 +210,9 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifySignature(Profile profile) throws SQLException{
+	public boolean modifySignature(int userID, String signature) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_SIGNATURE, 
-				profile.GetSignature());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_SIGNATURE, signature);
 	}
 	
 	/**
@@ -163,10 +221,9 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyGender(Profile profile) throws SQLException{
+	public boolean modifyGender(int userID, String gender) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_GENDER,
-				profile.GetGender());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_GENDER, gender);
 	}
 	/**
 	 * 
@@ -174,10 +231,9 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyBirthdate(Profile profile) throws SQLException{
+	public boolean modifyBirthdate(int userID, Date birthDate) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_BIRTH_DATE, 
-				profile.GetBirthDate());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_BIRTH_DATE, birthDate);
 	}
 	
 	/**
@@ -186,10 +242,9 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyEmail(Profile profile) throws SQLException{
+	public boolean modifyEmail(int userID, String email) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_EMAIL,
-				profile.GetEmail());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_EMAIL, email);
 	}
 	/**
 	 * 
@@ -197,10 +252,9 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyAvatar(Profile profile) throws SQLException{
+	public boolean modifyAvatar(int userID, String avatar) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_AVATAR,
-				profile.GetAvatar());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_AVATAR, avatar);
 	}
 	
 	/**
@@ -209,10 +263,9 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyFirstname(Profile profile) throws SQLException{
+	public boolean modifyFirstname(int userID, String firstName) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_FIRST_NAME,
-				profile.GetFirstName());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_FIRST_NAME, firstName);
 	}
 	
 	/**
@@ -221,15 +274,24 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyLastname(Profile profile) throws SQLException{
+	public boolean modifyLastname(int userID, String lastName) throws SQLException{
 		ProfileManager pm = new ProfileManager();
-		return pm.change(profile.GetUserID(), DataBaseInfo.MYSQL_USERS_LAST_NAME,
-				profile.GetLastName());
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_LAST_NAME, lastName);
 	}
 	
 	private void clearArrays() {
 		values.clear();
-		columns.clear();
+		fields.clear();
 		
+	}
+	
+	private boolean isInDatabase(String table, int id) throws SQLException {
+		clearArrays();
+		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
+		values.add(id);
+		ResultSet resultSet = DBManager.executeSelectWhere(
+				table, fields, values, new ArrayList<String>());
+		if(resultSet.next()) return true;
+		return false;
 	}
 }

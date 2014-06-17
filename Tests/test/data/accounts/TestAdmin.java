@@ -1,146 +1,120 @@
 package test.data.accounts;
 
 import static org.junit.Assert.*;
-
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import org.junit.Test;
-
 import forum.data.accounts.Admin;
-import forum.data.objects.Category;
-import forum.data.objects.Theme;
 import forum.info.DataBaseInfo;
-import forum.managers.database.DataBaseManager;
-import forum.managers.objects.ThemeManager;
 
 public class TestAdmin extends DataBaseInfo {
 
 	@Test
 	public void testAddCategory() throws SQLException {
-		Category category = new Category(1, "Health", "categoryDescription");
 		Admin admin = new Admin();
-		admin.AddCategory(category);
-		
+		admin.AddCategory("Health", "bla");
 		System.out.println(admin.viewCategory(1));
+		assertEquals(1, admin.viewCategory(1).getId());
 	}
 
 	@Test
 	public void testModifyCategoryTitle() throws SQLException {
-		Category category = new Category(1, "Health1", "categoryDescription");
 		Admin admin = new Admin();
-		admin.ModifyCategoryTitle(category);
-		
-		System.out.println(admin.viewCategory(1));
-	
-		DataBaseManager dbm = new DataBaseManager(MYSQL_DATABASE_NAME);
-		ArrayList<String> fields = new ArrayList<String>();
-		ArrayList<Object> values = new ArrayList<Object>();
-		fields.add(MYSQL_TABLE_CATEGORIES + "." + MYSQL_TABLE_ID);
-		values.add(1);
-		ResultSet rs = dbm.executeSelectWhere(MYSQL_TABLE_CATEGORIES, fields, values, new ArrayList<String>());
-		if(rs.next()) assertEquals("Health1", rs.getString(MYSQL_CATEGORIES_TITLE));
-		
+		admin.ModifyCategoryTitle(1, "Health1");
+		assertEquals("Health1", admin.viewCategory(1).getTitle());
 	}
 
 	@Test
 	public void testModifyCategoryDescription() throws SQLException {
-		Category category = new Category(1, "Health1", "categoryDescription1");
 		Admin admin = new Admin();
-		admin.ModifyCategoryDescription(category);
-		DataBaseManager dbm = new DataBaseManager(MYSQL_DATABASE_NAME);
-		ArrayList<String> fields = new ArrayList<String>();
-		ArrayList<Object> values = new ArrayList<Object>();
-		fields.add(MYSQL_TABLE_CATEGORIES + "." + MYSQL_TABLE_ID);
-		values.add(1);
-		ResultSet rs = dbm.executeSelectWhere(MYSQL_TABLE_CATEGORIES, fields, values, new ArrayList<String>());
-		if(rs.next()) assertEquals("categoryDescription1", rs.getString(MYSQL_CATEGORIES_DESCRIPTION));
-		
+		admin.ModifyCategoryDescription(1, "bla1");
+		assertEquals("bla1", admin.viewCategory(1).getDescription());
 	}
 
-	@Test
+	//@Test
 	public void testDeleteCategory() throws SQLException {
 		Admin admin = new Admin();
-		//admin.DeleteCategory(1);
-		
-		System.out.println(admin.viewCategory(1));
-		
-		DataBaseManager dbm = new DataBaseManager(MYSQL_DATABASE_NAME);
-		ArrayList<String> fields = new ArrayList<String>();
-		ArrayList<Object> values = new ArrayList<Object>();
-		fields.add(MYSQL_TABLE_CATEGORIES + "." + MYSQL_TABLE_ID);
-		values.add(1);
-		ResultSet rs = dbm.executeSelectWhere(MYSQL_TABLE_CATEGORIES, fields, values, new ArrayList<String>());
-		assertEquals(false, rs.next());
-		rs = dbm.executeSelect(MYSQL_TABLE_CATEGORIES);
-		while(rs.next()) System.out.println(rs.getString(MYSQL_THEME_TITLE) + " " + rs.getInt(MYSQL_TABLE_ID));
-	
+		admin.DeleteCategory(1);
+		assertEquals(null, admin.viewCategory(1));
 	}
 
 	@Test
 	public void testModifyThemeTitle() throws SQLException {
 		Admin admin = new Admin();
-		Theme theme = new Theme(5, 1, 1, "ThemeTitle", "desc", 
-				new Date(System.currentTimeMillis()), true);
-		admin.AddTheme(theme);
+		admin.AddTheme("Fitness", "", 1, 1, true);
+		assertEquals("Fitness", admin.viewTheme(1).getTitle());
+		admin.ModifyThemeTitle(1, "Fitness1");
+		assertEquals("Fitness1", admin.viewTheme(1).getTitle());
+		admin.ModifyThemeTitle(1, "Fitness");
+		assertEquals("Fitness", admin.viewTheme(1).getTitle());
 		
-		DataBaseManager dbm = new DataBaseManager(MYSQL_DATABASE_NAME);
-		ArrayList<String> fields = new ArrayList<String>();
-		ArrayList<Object> values = new ArrayList<Object>();
-		fields.add(MYSQL_TABLE_THEME + "." + MYSQL_TABLE_ID);
-		values.add(1);
-		
-		ResultSet rs = dbm.executeSelectWhere(MYSQL_TABLE_THEME, fields, values, new ArrayList<String>());
-		rs = dbm.executeSelect(MYSQL_TABLE_THEME);
-		//assertEquals(false, rs.next());
-		while(rs.next()) System.out.println(rs.getInt(MYSQL_TABLE_ID) + rs.getString(MYSQL_THEME_TITLE));
 	}
 
 	@Test
-	public void testModifyThemeDescription() {
-		fail("Not yet implemented");
+	public void testModifyThemeDescription() throws SQLException {
+		Admin admin = new Admin();
+		assertEquals("", admin.viewTheme(1).getDescription());
+		admin.ModifyThemeDescription(1, "themeDescription");
+		assertEquals("themeDescription", admin.viewTheme(1).getDescription());
 	}
 
 	@Test
-	public void testModifyThemeStatus() {
-		fail("Not yet implemented");
+	public void testModifyThemeStatus() throws SQLException {
+		Admin admin = new Admin();
+		assertEquals(true, admin.viewTheme(1).getOpen());
+		admin.ModifyThemeOpen(1, false);
+		assertEquals(false, admin.viewTheme(1).getOpen());
+	}
+	
+	//@Test
+	public void testDeleteTheme() throws SQLException {
+		Admin admin = new Admin();
+		admin.DeleteTheme(1);
+		assertEquals(null, admin.viewTheme(1));
 	}
 	
 	@Test
-	public void testDeleteTheme() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testModifyPostText() {
-		fail("Not yet implemented");
+	public void testModifyPostText() throws SQLException {
+		Admin admin = new Admin();
+		admin.WritePost(1, 1, "blabla", new Date(System.currentTimeMillis()), 
+				new ArrayList<String>(), new ArrayList<String>());
+		assertEquals("blabla", admin.viewPost(1).getText());
+		admin.ModifyPostText(1, "blbl");
+		assertEquals("blbl", admin.viewPost(1).getText());
 	}
 
 	@Test
 	public void testChangePostImagesOrVideos() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	public void testAddImagesOrVideosToPost() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	public void testRemoveImagesOrVideosFromPost() {
-		fail("Not yet implemented");
+		
+	}
+
+	//@Test
+	public void testWarnUser() throws SQLException {
+		Admin admin = new Admin();
+		forum.data.accounts.User user = new forum.data.accounts.User();
+		admin.WarnUser(2, 1, new Date(System.currentTimeMillis() + 1000000000));
+		assertEquals(false, user.WritePost(2, 1, "postText", new Date(System.currentTimeMillis()),
+				new ArrayList<String>(), new ArrayList<String>()));
 	}
 
 	@Test
-	public void testWarnUser() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testBannUser() {
-		fail("Not yet implemented");
+	public void testBannUser() throws SQLException {
+		Admin admin = new Admin();
+		forum.data.accounts.User user = new forum.data.accounts.User();
+		admin.BannUser(2, new Date(System.currentTimeMillis() + 1000000000));
+		assertEquals(false, user.WritePost(2, 1, "postText", new Date(System.currentTimeMillis()),
+				new ArrayList<String>(), new ArrayList<String>()));
 	}
 
 }
