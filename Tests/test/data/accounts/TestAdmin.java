@@ -63,7 +63,7 @@ public class TestAdmin extends DataBaseInfo {
 	@Test
 	public void testDeleteCategory() throws SQLException {
 		Admin admin = new Admin();
-		admin.DeleteCategory(1);
+		//admin.DeleteCategory(1);
 		
 		System.out.println(admin.viewCategory(1));
 		
@@ -81,7 +81,21 @@ public class TestAdmin extends DataBaseInfo {
 
 	@Test
 	public void testModifyThemeTitle() throws SQLException {
+		Admin admin = new Admin();
+		Theme theme = new Theme(5, 1, 1, "ThemeTitle", "desc", 
+				new Date(System.currentTimeMillis()), true);
+		admin.AddTheme(theme);
 		
+		DataBaseManager dbm = new DataBaseManager(MYSQL_DATABASE_NAME);
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		fields.add(MYSQL_TABLE_THEME + "." + MYSQL_TABLE_ID);
+		values.add(1);
+		
+		ResultSet rs = dbm.executeSelectWhere(MYSQL_TABLE_THEME, fields, values, new ArrayList<String>());
+		rs = dbm.executeSelect(MYSQL_TABLE_THEME);
+		//assertEquals(false, rs.next());
+		while(rs.next()) System.out.println(rs.getInt(MYSQL_TABLE_ID) + rs.getString(MYSQL_THEME_TITLE));
 	}
 
 	@Test

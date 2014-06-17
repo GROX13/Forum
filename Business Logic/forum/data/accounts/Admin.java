@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
+
 import forum.data.objects.Bann;
 import forum.data.objects.Category;
 import forum.data.objects.Post;
@@ -60,7 +62,9 @@ public class Admin extends User {
 		return true;
 	}
 	
-	public Category viewCategory(int categoryID){
+	public Category viewCategory(int categoryID) throws SQLException{
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+			return null;
 		Category category = categoryManager.getAll().get(categoryID);
 		return category;
 	}
@@ -68,34 +72,58 @@ public class Admin extends User {
 	/**
 	 * Changes category title
 	 * @param category
+	 * @return 
+	 * @throws SQLException 
 	 */
-	public void ModifyCategoryTitle(Category category) {
-
+	public boolean ModifyCategoryTitle(int categoryID, String categoryTitle) throws SQLException {
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+			return false;
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_CATEGORIES_TITLE);
-		values.add(category.getTitle());
-		categoryManager.change(category.getId(), fields, values);
+		values.add(categoryTitle);
+		categoryManager.change(categoryID, fields, values);
+		return true;
 	}
 
 	/**
 	 * Changes category description
 	 * @param category
+	 * @return 
+	 * @throws SQLException 
 	 */
-	public void ModifyCategoryDescription(Category category) {
-
+	public boolean ModifyCategoryDescription(int categoryID, String categoryDescription) throws SQLException {
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+			return false;
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_CATEGORIES_DESCRIPTION);
-		values.add(category.getDescription());
-		categoryManager.change(category.getId(), fields, values);
+		values.add(categoryDescription);
+		categoryManager.change(categoryID, fields, values);
+		return true;
 
 	}
 	
 	/**
 	 * Removes category from database
 	 * @param category
+	 * @throws SQLException 
 	 */
-	public void DeleteCategory(int categoryID) {
+	public boolean DeleteCategory(int categoryID) throws SQLException {
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+			return false;
+		Map<Integer, Theme> mapOfThemes = themeManager.getAll(categoryID);
+		
+		for(Integer themeID : mapOfThemes.keySet()){
+			
+			Map<Integer, Post> mapOfPosts = postManager.getAll(themeID);
+			
+			for(Integer postID : mapOfPosts.keySet()){
+				postManager.remove(postID);
+			}
+			
+			themeManager.remove(themeID);
+		}
 		categoryManager.remove(categoryID);
+		return true;
 	}
 
 	/**
@@ -104,18 +132,23 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean DeleteTheme(Theme theme) throws SQLException {
-		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
-		values.add(theme.getId());
-		ResultSet resultSet = DBManager.executeSelectWhere(
-				DataBaseInfo.MYSQL_TABLE_THEME, fields, values, clause);
-		if (resultSet.next())
+	public boolean DeleteTheme(int themeID) throws SQLException {
+		
+		
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_THEME, themeID))
 			return false;
-		themeManager.remove(theme.getId());
+		
+		Map<Integer, Post> mapOfPosts = postManager.getAll(themeID);
+		
+		for(Integer postID : mapOfPosts.keySet()){
+			postManager.remove(postID);
+		}
+		
+		themeManager.remove(themeID);
+		
 		return true;
 	}
-	
+
 	/**
 	 * Changes theme title
 	 * @param theme
@@ -223,5 +256,15 @@ public class Admin extends User {
 		values.clear();
 		fields.clear();
 		clause.clear();
+	}
+	
+	private boolean isInDatabase(String table, int id) throws SQLException {
+		clearArrays();
+		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
+		values.add(id);
+		ResultSet resultSet = DBManager.executeSelectWhere(
+				table, fields, values, clause);
+		if(resultSet.next()) return true;
+		return false;
 	}
 }
