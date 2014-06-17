@@ -14,7 +14,7 @@
 <body>
 	<p>Categories</p>
 	<ul>
-		<% CategoryManager cm = (CategoryManager)request.getServletContext().getAttribute("categories"); %>
+	    <% CategoryManager cm = (CategoryManager)request.getServletContext().getAttribute("categories"); %>
 		<% Map<Integer, Category> all = cm.getAll(); %>
 		<% Iterator<Map.Entry<Integer, Category>> iter = all.entrySet().iterator(); %>
 		<% while(iter.hasNext()){ %>
@@ -22,7 +22,7 @@
 		<%		int id = entry.getKey(); %>
 		<%		Category value = entry.getValue(); %>
 		<li><a href = <%= "themes.jsp?" +  id %>><%= value.getTitle() %></a></li>
-		<% } %>
+		<% } %> 
 	</ul>
 </body>
 </html>

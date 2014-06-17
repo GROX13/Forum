@@ -11,13 +11,14 @@ import forum.managers.objects.CategoryManager;
  *
  */
 @WebListener
-public class dataListener implements ServletContextListener {
+public class CategoryDataListener implements ServletContextListener {
 	private CategoryManager cm;
     /**
      * Default constructor. 
      */
-    public dataListener() {
+    public CategoryDataListener() {
         // TODO Auto-generated constructor stub
+    	cm = new CategoryManager();
     }
 
 	/**
@@ -25,7 +26,7 @@ public class dataListener implements ServletContextListener {
      */
     public void contextInitialized(ServletContextEvent arg0) {
         // TODO Auto-generated method stub
-    	cm = new CategoryManager();
+    	
     	arg0.getServletContext().setAttribute("categories", cm);
     }
 
