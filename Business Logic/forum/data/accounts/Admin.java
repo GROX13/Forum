@@ -205,9 +205,18 @@ public class Admin extends User {
 	 * @param post
 	 * @param newFiles
 	 * @param tableName
+	 * @return 
+	 * @throws SQLException 
 	 */
-	public void ChangePostImagesOrVideos(Post post, ArrayList<String> newFiles, String tableName){
-		
+	public boolean ChangePostImagesOrVideos(int postID, ArrayList<String> newFiles, 
+			String columnName) throws SQLException{
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
+			return false;
+		clearArrays();
+		fields.add(columnName);
+		values.add(newFiles);
+		postManager.change(postID, fields, values);
+		return true;
 	}
 	
 	/**
@@ -215,19 +224,70 @@ public class Admin extends User {
 	 * @param post
 	 * @param files
 	 * @param tableName
+	 * @return 
+	 * @throws SQLException 
 	 */
-	public void AddImagesOrVideosToPost(Post post, ArrayList<String> files, String tableName){
-		
+	public boolean AddImagesOrVideosToPost(int postID, ArrayList<String> files, 
+			String tableName) throws SQLException{
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
+			return false;
+		clearArrays();
+		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
+		values.add(postID);
+		ResultSet rs = DBManager.executeSelectWhere(tableName, fields,
+				values, new ArrayList<String>());
+		while(rs.next()){
+			if(tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_IMAGES))
+				files.add(rs.getString(DataBaseInfo.MYSQL_IMAGE_FILE));
+			if(tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS))
+				files.add(rs.getString(DataBaseInfo.MYSQL_VIDEO_FILE));
+		}
+		clearArrays();
+		fields.add(tableName);
+		values.add(files);
+		postManager.change(postID, fields, values);
+		return true;
 	}
 	
 	/**
-	 * Removes image or vide from the post
+	 * Removes images/image or videos/video from the post
 	 * @param post
 	 * @param files
 	 * @param tableName
+	 * @return 
+	 * @throws SQLException 
 	 */
-	public void RemoveImagesOrVideosFromPost(Post post, ArrayList<String> files, String tableName){
+	public boolean RemoveImagesOrVideosFromPost(int postID, ArrayList<String> files, 
+			String tableName) throws SQLException{
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
+			return false;
 		
+		clearArrays();
+		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
+		values.add(postID);
+		ResultSet rs = DBManager.executeSelectWhere(tableName, fields,
+				values, new ArrayList<String>());
+		ArrayList<String> modified = new ArrayList<String>();
+		while(rs.next()){
+			
+			if(tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_IMAGES)){
+				String fileName = rs.getString(DataBaseInfo.MYSQL_IMAGE_FILE);
+				if(!files.contains(fileName))
+					modified.add(fileName);
+			}	
+				
+			if(tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS)){
+				String fileName = rs.getString(DataBaseInfo.MYSQL_VIDEO_FILE);
+				if(!files.contains(fileName))
+					modified.add(fileName);
+			}
+		}
+		
+		clearArrays();
+		fields.add(tableName);
+		values.add(modified);
+		postManager.change(postID, modified, values);
+		return true;
 	}
 	
 	/**
