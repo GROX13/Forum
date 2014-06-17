@@ -11,14 +11,14 @@
 		<form action = "HandleLogin" method = "post">	
 			<p>
 				<label for = "username"> User name: </label>	
-				<input type = "text" id = "username" name = "userName" required>
+				<input type = "text" id = "username" name = "username" required>
 			</p>
 			<p>		
 				<label for = "password"> Password: </label>		
 				<input type = "password" id = "password" name = "password" required>
 			</p>
 			<p> 
-				<a href ="registrationtemp.jsp"> Create New Account </a>
+				<a href ="registration.jsp"> Create New Account </a>
 			</p>
 			<p> 
 				<a href ="#"> Login As Guest </a>
