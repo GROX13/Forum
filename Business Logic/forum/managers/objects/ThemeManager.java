@@ -59,6 +59,7 @@ public class ThemeManager extends DataBaseInfo {
 	 * @return Map<Integer, Theme>
 	 */
 	public Map<Integer, Theme> getAll(int cId) {
+		data = new DataBaseManager(MYSQL_DATABASE_NAME);
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<String> clause = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
