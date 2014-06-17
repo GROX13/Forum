@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebListener;
 
 import forum.managers.objects.AccountManager;
 import forum.managers.objects.CategoryManager;
+import forum.managers.objects.ThemeManager;
 
 /**
  * Application Lifecycle Listener implementation class dataListener
@@ -29,8 +30,10 @@ public class ServletListener implements ServletContextListener {
 		// TODO Auto-generated method stub
 		AccountManager am = new AccountManager();
 		CategoryManager cm = new CategoryManager();
+		ThemeManager tm = new ThemeManager();
 		arg0.getServletContext().setAttribute("categories", cm);
 		arg0.getServletContext().setAttribute("account_manager", am);
+		arg0.getServletContext().setAttribute("themes", tm);
 	}
 
 	/**
