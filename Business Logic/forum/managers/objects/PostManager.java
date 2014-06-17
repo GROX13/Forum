@@ -77,6 +77,7 @@ public class PostManager extends DataBaseInfo {
 	 * @return Map<Integer, Post>
 	 */
 	public Map<Integer, Post> getAll(int tId) {
+		allPost = new HashMap<Integer, Post>();
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<String> clause = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();

@@ -49,6 +49,7 @@ public class CategoryManager extends DataBaseInfo {
 	 * @return Map<Integer, Category>
 	 */
 	public Map<Integer, Category> getAll() {
+		allCat = new HashMap<Integer, Category>();
 		ResultSet res = data.executeSelect(MYSQL_TABLE_CATEGORIES);
 		try {
 			while (res.next()) {
