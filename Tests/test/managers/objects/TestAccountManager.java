@@ -25,6 +25,9 @@ public class TestAccountManager {
 		assertEquals(false, am.matchesPassword("ANNA", "bla1"));
 		assertEquals(true, am.matchesPassword("ANNA", "bla"));
 		assertEquals(true, am.matchesPassword("GROX13", "asdasd"));
+		am.createAccount("Mari", "bla", null, 
+				"Mari", "babucidze", "ana.gorozia@gmail.com", 
+				"signature", "F", new Date(System.currentTimeMillis()), 1);
 	
 	}
 	
