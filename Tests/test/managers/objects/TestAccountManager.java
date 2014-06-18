@@ -28,6 +28,9 @@ public class TestAccountManager {
 		am.createAccount("Mari", "bla", null, 
 				"Mari", "babucidze", "ana.gorozia@gmail.com", 
 				"signature", "F", new Date(System.currentTimeMillis()), 1);
+		assertEquals(false, am.createAccount("Mari", "bla", null, 
+				"Mari", "babucidze", "ana.gorozia@gmail.com", 
+				"signature", "F", new Date(System.currentTimeMillis()), 1));
 	
 	}
 	
