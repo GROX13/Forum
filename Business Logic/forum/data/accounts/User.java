@@ -191,10 +191,7 @@ public class User {
 	 * @throws SQLException
 	 */
 	public Profile getProfile() throws SQLException{
-		ProfileManager pm = new ProfileManager();
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_USERS, userID))
-			return null;
-		return pm.getAll().get(userID);
+		return profile;
 	}
 	
 	/**
