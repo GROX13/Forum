@@ -34,6 +34,10 @@ public class User {
 	private ArrayList<Object> values = new ArrayList<Object>();
 	private ArrayList<String> fields = new ArrayList<String>();
 	private int userID;
+	private boolean isAdmin;
+	private Profile profile;
+	public User(){}
+	
 	public User(String username) throws SQLException{
 		AccountManager am = new AccountManager();
 		
@@ -43,9 +47,18 @@ public class User {
 			values.add(username);
 			ResultSet rs = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
 					fields, values, new ArrayList<String>());
-			if(rs.next())
+			if(rs.next()){
 				this.userID = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+				if(rs.getInt(DataBaseInfo.MYSQL_USERS_TYPE) == 1)
+					this.isAdmin = true;
+				this.isAdmin = false;
+				profile = getProfile();
+			}
 		}
+	}
+	
+	public boolean isAdmin(){
+		return isAdmin;
 	}
 	
 	/**

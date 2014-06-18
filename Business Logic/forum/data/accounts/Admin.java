@@ -13,8 +13,10 @@ import forum.data.objects.Theme;
 import forum.data.objects.Warn;
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
+import forum.managers.objects.AccountManager;
 import forum.managers.objects.CategoryManager;
 import forum.managers.objects.PostManager;
+import forum.managers.objects.ProfileManager;
 import forum.managers.objects.ThemeManager;
 
 public class Admin extends User {
@@ -27,7 +29,7 @@ public class Admin extends User {
 	private ArrayList<String> fields;
 	private ArrayList<String> clause;
 
-	public Admin() {
+	public Admin(String username) throws SQLException {
 		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 		categoryManager = new CategoryManager();
 		themeManager = new ThemeManager();
