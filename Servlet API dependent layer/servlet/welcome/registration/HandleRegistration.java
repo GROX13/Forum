@@ -59,20 +59,21 @@ public class HandleRegistration extends HttpServlet {
 			String signature = request.getParameter("signiture");
 			String gender = request.getParameter("gender");
 			String birth = request.getParameter("birth");
-			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
 			Date birthDate = null;
 			try {
 				birthDate = (Date) df.parse(birth);
 				String newDateString = df.format(birthDate);
 				System.out.println(newDateString);
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			int userType = 0;
 			if (am.createAccount(username, password, avatar, firstName,
-					lastName, email, signature, "" + gender.charAt(0), birthDate, userType)) {
+					lastName, email, signature, "" + gender.charAt(0),
+					birthDate, userType)) {
 				User usr = new User();
-				getServletContext().setAttribute("user", usr);
+				request.getServletContext().setAttribute("user", usr);
 				request.getRequestDispatcher("category.jsp").forward(request,
 						response);
 			} else {

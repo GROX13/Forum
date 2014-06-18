@@ -1,3 +1,4 @@
+<%@page import="forum.data.objects.Profile"%>
 <%@page import="forum.data.accounts.Admin"%>
 <%@page import="forum.data.accounts.User"%>
 <%@page import="java.util.Map.Entry"%>
@@ -18,24 +19,28 @@
 	<% Admin adm = (Admin) request.getServletContext().getAttribute("admin");%>
 	<% if(usr == null) {
 		if (adm == null) {
-			out.print("");
+			out.print(
+				"<form action = \"HandleLogin\" method = \"post\">" +	
+				  "<p>" +
+						"<label for = \"username\"> User name: </label>" +	
+						"<input type = \"text\" id = \"username\" name = \"username\" required>" +	
+						"<label for = \"password\"> Password: </label>" +		
+						"<input type = \"password\" id = \"password\" name = \"password\" required>" +
+						"<input type = \"submit\" value = \"Login\">" +	 
+						"<a href =\"registration.jsp\"> Create New Account </a>" +	
+					"</p>" +	
+				"</form>");
 		} else {
-
+			Profile p = adm.getProfile();
+			out.print("Welcome " + p.GetFirstName() + " " + p.GetLastName());
 		}
 	} else {
-		
+		Profile p = usr.getProfile();
+		String s = p.GetFirstName();
+		String s1 = p.GetLastName();
+		out.print("Welcome " + s + " " + s1);
 	}
 	%>
-	<form action = "HandleLogin" method = "post">	
-			<p>
-				<label for = "username"> User name: </label>	
-				<input type = "text" id = "username" name = "username" required>	
-				<label for = "password"> Password: </label>		
-				<input type = "password" id = "password" name = "password" required>
-				<input type = "submit" value = "Login">	 
-				<a href ="registration.jsp"> Create New Account </a>	
-			</p>	
-	</form>	
 	<p>Categories</p>
 	<ul>
 	    <% CategoryManager cm = (CategoryManager)request.getServletContext().getAttribute("categories"); %>
