@@ -69,7 +69,7 @@ public class HandleRegistration extends HttpServlet {
 			}
 			int userType = 0;
 			if (am.createAccount(username, password, avatar, firstName,
-					lastName, email, signature, gender, birthDate, userType)) {
+					lastName, email, signature, "" + gender.charAt(0), birthDate, userType)) {
 				request.getRequestDispatcher("category.jsp").forward(request,
 						response);
 			} else {
