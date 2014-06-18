@@ -191,7 +191,7 @@ public class User {
 	 * @throws SQLException
 	 */
 	public Profile getProfile() throws SQLException{
-		
+
 		return profile;
 	}
 	
