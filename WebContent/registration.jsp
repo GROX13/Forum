@@ -11,7 +11,7 @@
 		<form action = "HandleRegistration" method = "post">
 			<p>
 				<label for = "username"> User name: </label>	
-				<input type = "text" id = "username" name = "userName" required>
+				<input type = "text" id = "username" name = "username" required>
 			</p>
 			<p>
 				<label for = "firstname"> First name: </label>	
