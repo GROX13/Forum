@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import forum.data.accounts.User;
 import forum.managers.objects.AccountManager;
 
 /**
@@ -70,6 +71,8 @@ public class HandleRegistration extends HttpServlet {
 			int userType = 0;
 			if (am.createAccount(username, password, avatar, firstName,
 					lastName, email, signature, "" + gender.charAt(0), birthDate, userType)) {
+				User usr = new User();
+				getServletContext().setAttribute("user", usr);
 				request.getRequestDispatcher("category.jsp").forward(request,
 						response);
 			} else {

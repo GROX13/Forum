@@ -11,6 +11,16 @@
 <title>Themes</title>
 </head>
 <body>
+	<form action = "HandleLogin" method = "post">	
+			<p>
+				<label for = "username"> User name: </label>	
+				<input type = "text" id = "username" name = "username" required>	
+				<label for = "password"> Password: </label>		
+				<input type = "password" id = "password" name = "password" required>
+				<input type = "submit" value = "Login">	 
+				<a href ="registration.jsp"> Create New Account </a>	
+			</p>	
+	</form>	
 	<% ThemeManager tm = (ThemeManager)request.getServletContext().getAttribute("themes"); %>
 	<% int id = Integer.parseInt(request.getQueryString()); %>
 	<% Map<Integer, Theme> all = tm.getAll(id); %>

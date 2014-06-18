@@ -1,3 +1,5 @@
+<%@page import="forum.data.accounts.Admin"%>
+<%@page import="forum.data.accounts.User"%>
 <%@page import="java.util.Map.Entry"%>
 <%@page import="forum.data.objects.Category"%>
 <%@page import="java.util.Map"%>
@@ -12,6 +14,28 @@
 <title>All Categories</title>
 </head>
 <body>
+	<% User usr = (User) request.getServletContext().getAttribute("user");%>
+	<% Admin adm = (Admin) request.getServletContext().getAttribute("admin");%>
+	<% if(usr == null) {
+		if (adm == null) {
+			out.print("");
+		} else {
+
+		}
+	} else {
+		
+	}
+	%>
+	<form action = "HandleLogin" method = "post">	
+			<p>
+				<label for = "username"> User name: </label>	
+				<input type = "text" id = "username" name = "username" required>	
+				<label for = "password"> Password: </label>		
+				<input type = "password" id = "password" name = "password" required>
+				<input type = "submit" value = "Login">	 
+				<a href ="registration.jsp"> Create New Account </a>	
+			</p>	
+	</form>	
 	<p>Categories</p>
 	<ul>
 	    <% CategoryManager cm = (CategoryManager)request.getServletContext().getAttribute("categories"); %>
