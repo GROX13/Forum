@@ -52,7 +52,7 @@ public class User {
 				if(rs.getInt(DataBaseInfo.MYSQL_USERS_TYPE) == 1)
 					this.isAdmin = true;
 				this.isAdmin = false;
-				profile = getProfile();
+				this.profile = getProfile();
 			}
 		}
 	}
@@ -191,10 +191,8 @@ public class User {
 	 * @throws SQLException
 	 */
 	public Profile getProfile() throws SQLException{
-		ProfileManager pm = new ProfileManager();
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_USERS, userID))
-			return null;
-		return pm.getAll().get(userID);
+		
+		return profile;
 	}
 	
 	/**
@@ -238,7 +236,7 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifySignature(String signature) throws SQLException{
+	public boolean ModifySignature(String signature) throws SQLException{
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_SIGNATURE, signature);
 	}
@@ -249,7 +247,7 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyGender(String gender) throws SQLException{
+	public boolean ModifyGender(String gender) throws SQLException{
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_GENDER, gender);
 	}
@@ -259,7 +257,7 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyBirthdate(Date birthDate) throws SQLException{
+	public boolean ModifyBirthdate(Date birthDate) throws SQLException{
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_BIRTH_DATE, birthDate);
 	}
@@ -270,7 +268,7 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyEmail(String email) throws SQLException{
+	public boolean ModifyEmail(String email) throws SQLException{
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_EMAIL, email);
 	}
@@ -280,7 +278,7 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyAvatar(String avatar) throws SQLException{
+	public boolean ModifyAvatar(String avatar) throws SQLException{
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_AVATAR, avatar);
 	}
@@ -291,7 +289,7 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyFirstname(String firstName) throws SQLException{
+	public boolean ModifyFirstname(String firstName) throws SQLException{
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_FIRST_NAME, firstName);
 	}
@@ -302,7 +300,7 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifyLastname(String lastName) throws SQLException{
+	public boolean ModifyLastname(String lastName) throws SQLException{
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_LAST_NAME, lastName);
 	}
