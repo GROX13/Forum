@@ -335,4 +335,109 @@ public class Admin extends User {
 		if(resultSet.next()) return true;
 		return false;
 	}
+	
+	/**
+	 * 
+	 * @param userID
+	 * @param userName
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean ModifyUsername(int userID, String userName) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_USERNAME, userName);
+	}
+	
+	/**
+	 * 
+	 * @param userID
+	 * @param password
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean modifyPassword(int userID, String password) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_PASSWORD, password);
+	}
+	/**
+	 * 
+	 * @param userID
+	 * @param signature
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean modifySignature(int userID, String signature) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_SIGNATURE, signature);
+	}
+	
+	/**
+	 * 
+	 * @param userID
+	 * @param gender
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean modifyGender(int userID, String gender) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_GENDER, gender);
+	}
+	/**
+	 * 
+	 * @param userID
+	 * @param birthDate
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean modifyBirthdate(int userID, Date birthDate) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_BIRTH_DATE, birthDate);
+	}
+	
+	/**
+	 * 
+	 * @param userID
+	 * @param email
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean modifyEmail(int userID, String email) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_EMAIL, email);
+	}
+	/**
+	 * 
+	 * @param userID
+	 * @param avatar
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean modifyAvatar(int userID, String avatar) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_AVATAR, avatar);
+	}
+	
+	/**
+	 * 
+	 * @param userID
+	 * @param firstName
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean modifyFirstname(int userID, String firstName) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_FIRST_NAME, firstName);
+	}
+	
+	/**
+	 * 
+	 * @param userID
+	 * @param lastName
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean modifyLastname(int userID, String lastName) throws SQLException{
+		ProfileManager pm = new ProfileManager();
+		return pm.change(userID, DataBaseInfo.MYSQL_USERS_LAST_NAME, lastName);
+	}
 }
