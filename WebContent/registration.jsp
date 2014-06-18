@@ -50,10 +50,10 @@
 				<input type = "password" id = "password" name = "password" required>
 			</p>
 			<p> 
-				<a href ="#"> Login As Guest </a>
+				<a href ="category.jsp"> Login As Guest </a>
 			</p>
 			<p>		
-				<input type = "submit" value = "Login">	
+				<input type = "submit" value = "Register">	
 			</p>
 		</form>	
 	</body>

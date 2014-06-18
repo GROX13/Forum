@@ -21,7 +21,7 @@
 				<a href ="registration.jsp"> Create New Account </a>
 			</p>
 			<p> 
-				<a href ="#"> Login As Guest </a>
+				<a href ="category.jsp"> Login As Guest </a>
 			</p>
 			<p>		
 				<input type = "submit" value = "Login">	
