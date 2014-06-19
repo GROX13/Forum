@@ -37,6 +37,17 @@ public class Admin extends User {
 		values = new ArrayList<Object>();
 		fields = new ArrayList<String>();
 		clause = new ArrayList<String>();
+		AccountManager am = new AccountManager();
+		
+		if(am.containsAccount(username)){
+			clearArrays();
+			fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
+			values.add(username);
+			ResultSet rs = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
+					fields, values, new ArrayList<String>());
+			if(rs.next())
+				userID = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+		}
 	}
 
 	/**

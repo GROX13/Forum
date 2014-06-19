@@ -33,7 +33,7 @@ public class User {
 	private PostManager postManager = new PostManager();
 	private ArrayList<Object> values = new ArrayList<Object>();
 	private ArrayList<String> fields = new ArrayList<String>();
-	private int userID;
+	public int userID;
 	private boolean isAdmin;
 	private Profile profile;
 	public User(){}
