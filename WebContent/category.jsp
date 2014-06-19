@@ -35,6 +35,16 @@
 			if (p != null) 
 				out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
 			out.print("<h3> Status: Admin </h3>");
+			out.print(
+					"<form action = \"HandleCategory\" method = \"post\">" +	
+					  "<p>" +
+							"<label for = \"category\"> Category: </label>" +	
+							"<input type = \"text\" id = \"category\" name = \"category\" required>" +	
+							"<label for = \"category_description\"> Category Description: </label>" +		
+							"<input type = \"text\" id = \"category_description\" name = \"category_description\" required>" +
+							"<input type = \"submit\" value = \"Create\">" +	
+						"</p>" +	
+					"</form>");
 		}
 	} else {
 		Profile p = usr.getProfile();
