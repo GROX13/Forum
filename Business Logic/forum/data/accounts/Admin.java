@@ -9,6 +9,7 @@ import java.util.Map;
 import forum.data.objects.Bann;
 import forum.data.objects.Category;
 import forum.data.objects.Post;
+import forum.data.objects.Profile;
 import forum.data.objects.Theme;
 import forum.data.objects.Warn;
 import forum.info.DataBaseInfo;
@@ -29,7 +30,7 @@ public class Admin extends User {
 	private ArrayList<String> fields;
 	private ArrayList<String> clause;
 
-	public Admin(String username) throws SQLException {
+	public Admin(String username) {
 		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
 		categoryManager = new CategoryManager();
 		themeManager = new ThemeManager();
@@ -38,34 +39,55 @@ public class Admin extends User {
 		fields = new ArrayList<String>();
 		clause = new ArrayList<String>();
 		AccountManager am = new AccountManager();
-		
-		if(am.containsAccount(username)){
-			clearArrays();
-			fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
-			values.add(username);
-			ResultSet rs = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
-					fields, values, new ArrayList<String>());
-			if(rs.next())
-				userID = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+
+		try {
+			if (am.containsAccount(username)) {
+				clearArrays();
+				fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
+				values.add(username);
+				ResultSet rs = DBManager.executeSelectWhere(
+						DataBaseInfo.MYSQL_TABLE_USERS, fields, values,
+						new ArrayList<String>());
+				if (rs.next())
+					userID = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+				profile = new Profile(username);
+				profile.SetBirthDate(rs
+						.getDate(DataBaseInfo.MYSQL_USERS_BIRTH_DATE));
+				profile.SetEmail(rs.getString(DataBaseInfo.MYSQL_USERS_EMAIL));
+				profile.SetFirstName(rs
+						.getString(DataBaseInfo.MYSQL_USERS_FIRST_NAME));
+				profile.SetLastName(rs
+						.getString(DataBaseInfo.MYSQL_USERS_LAST_NAME));
+				profile.SetPassword(rs
+						.getString(DataBaseInfo.MYSQL_USERS_PASSWORD));
+				profile.SetSignature(rs
+						.getString(DataBaseInfo.MYSQL_USERS_SIGNATURE));
+				profile.SetGender(rs.getString(DataBaseInfo.MYSQL_USERS_GENDER));
+				profile.SetUserType(rs.getInt(DataBaseInfo.MYSQL_USERS_TYPE));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Adds category to the Database
-	 * Checks if the category with 
-	 * That title doesn't exist in database
+	 * Adds category to the Database Checks if the category with That title
+	 * doesn't exist in database
+	 * 
 	 * @param category
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean AddCategory(String categoryTitle, String categoryDescription) throws SQLException {
+	public boolean AddCategory(String categoryTitle, String categoryDescription)
+			throws SQLException {
 
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_TABLE_CATEGORIES + "."
 				+ DataBaseInfo.MYSQL_CATEGORIES_TITLE);
 		values.add(categoryTitle);
-		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_CATEGORIES, 
-				fields, values, clause);
+		ResultSet resultSet = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_CATEGORIES, fields, values, clause);
 
 		if (resultSet.next())
 			return false;
@@ -74,9 +96,9 @@ public class Admin extends User {
 
 		return true;
 	}
-	
-	public Category ViewCategory(int categoryID) throws SQLException{
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+
+	public Category ViewCategory(int categoryID) throws SQLException {
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
 			return null;
 		Category category = categoryManager.getAll().get(categoryID);
 		return category;
@@ -84,12 +106,14 @@ public class Admin extends User {
 
 	/**
 	 * Changes category title
+	 * 
 	 * @param category
-	 * @return 
-	 * @throws SQLException 
+	 * @return
+	 * @throws SQLException
 	 */
-	public boolean ModifyCategoryTitle(int categoryID, String categoryTitle) throws SQLException {
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+	public boolean ModifyCategoryTitle(int categoryID, String categoryTitle)
+			throws SQLException {
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
 			return false;
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_CATEGORIES_TITLE);
@@ -100,12 +124,14 @@ public class Admin extends User {
 
 	/**
 	 * Changes category description
+	 * 
 	 * @param category
-	 * @return 
-	 * @throws SQLException 
+	 * @return
+	 * @throws SQLException
 	 */
-	public boolean ModifyCategoryDescription(int categoryID, String categoryDescription) throws SQLException {
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+	public boolean ModifyCategoryDescription(int categoryID,
+			String categoryDescription) throws SQLException {
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
 			return false;
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_CATEGORIES_DESCRIPTION);
@@ -114,25 +140,26 @@ public class Admin extends User {
 		return true;
 
 	}
-	
+
 	/**
 	 * Removes category from database
+	 * 
 	 * @param category
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public boolean DeleteCategory(int categoryID) throws SQLException {
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
 			return false;
 		Map<Integer, Theme> mapOfThemes = themeManager.getAll(categoryID);
-		
-		for(Integer themeID : mapOfThemes.keySet()){
-			
+
+		for (Integer themeID : mapOfThemes.keySet()) {
+
 			Map<Integer, Post> mapOfPosts = postManager.getAll(themeID);
-			
-			for(Integer postID : mapOfPosts.keySet()){
+
+			for (Integer postID : mapOfPosts.keySet()) {
 				postManager.remove(postID);
 			}
-			
+
 			themeManager.remove(themeID);
 		}
 		categoryManager.remove(categoryID);
@@ -141,29 +168,30 @@ public class Admin extends User {
 
 	/**
 	 * Removes theme from Database
+	 * 
 	 * @param theme
 	 * @return
 	 * @throws SQLException
 	 */
 	public boolean DeleteTheme(int themeID) throws SQLException {
-		
-		
+
 		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_THEME, themeID))
 			return false;
-		
+
 		Map<Integer, Post> mapOfPosts = postManager.getAll(themeID);
-		
-		for(Integer postID : mapOfPosts.keySet()){
+
+		for (Integer postID : mapOfPosts.keySet()) {
 			postManager.remove(postID);
 		}
-		
+
 		themeManager.remove(themeID);
-		
+
 		return true;
 	}
 
 	/**
 	 * Changes theme title
+	 * 
 	 * @param theme
 	 */
 	public void ModifyThemeTitle(int themeID, String themeTitle) {
@@ -172,9 +200,10 @@ public class Admin extends User {
 		values.add(themeTitle);
 		themeManager.change(themeID, fields, values);
 	}
-	
+
 	/**
 	 * Changes theme description
+	 * 
 	 * @param theme
 	 */
 	public void ModifyThemeDescription(int themeID, String themeDescription) {
@@ -203,8 +232,9 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyPostText(int postID, String postText) throws SQLException {
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
+	public boolean ModifyPostText(int postID, String postText)
+			throws SQLException {
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
 			return false;
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_POSTS_POST_TEXT);
@@ -212,18 +242,19 @@ public class Admin extends User {
 		postManager.change(postID, fields, values);
 		return true;
 	}
-	
+
 	/**
 	 * Changes images or videos of the post
+	 * 
 	 * @param post
 	 * @param newFiles
 	 * @param tableName
-	 * @return 
-	 * @throws SQLException 
+	 * @return
+	 * @throws SQLException
 	 */
-	public boolean ChangePostImagesOrVideos(int postID, ArrayList<String> newFiles, 
-			String columnName) throws SQLException{
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
+	public boolean ChangePostImagesOrVideos(int postID,
+			ArrayList<String> newFiles, String columnName) throws SQLException {
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
 			return false;
 		clearArrays();
 		fields.add(columnName);
@@ -231,28 +262,29 @@ public class Admin extends User {
 		postManager.change(postID, fields, values);
 		return true;
 	}
-	
+
 	/**
 	 * Adds image or video to the post
+	 * 
 	 * @param post
 	 * @param files
 	 * @param tableName
-	 * @return 
-	 * @throws SQLException 
+	 * @return
+	 * @throws SQLException
 	 */
-	public boolean AddImagesOrVideosToPost(int postID, ArrayList<String> files, 
-			String tableName) throws SQLException{
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
+	public boolean AddImagesOrVideosToPost(int postID, ArrayList<String> files,
+			String tableName) throws SQLException {
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
 			return false;
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
 		values.add(postID);
-		ResultSet rs = DBManager.executeSelectWhere(tableName, fields,
-				values, new ArrayList<String>());
-		while(rs.next()){
-			if(tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_IMAGES))
+		ResultSet rs = DBManager.executeSelectWhere(tableName, fields, values,
+				new ArrayList<String>());
+		while (rs.next()) {
+			if (tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_IMAGES))
 				files.add(rs.getString(DataBaseInfo.MYSQL_IMAGE_FILE));
-			if(tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS))
+			if (tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS))
 				files.add(rs.getString(DataBaseInfo.MYSQL_VIDEO_FILE));
 		}
 		clearArrays();
@@ -261,71 +293,71 @@ public class Admin extends User {
 		postManager.change(postID, fields, values);
 		return true;
 	}
-	
+
 	/**
 	 * Removes images/image or videos/video from the post
+	 * 
 	 * @param post
 	 * @param files
 	 * @param tableName
-	 * @return 
-	 * @throws SQLException 
+	 * @return
+	 * @throws SQLException
 	 */
-	public boolean RemoveImagesOrVideosFromPost(int postID, ArrayList<String> files, 
-			String tableName) throws SQLException{
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
+	public boolean RemoveImagesOrVideosFromPost(int postID,
+			ArrayList<String> files, String tableName) throws SQLException {
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
 			return false;
-		
+
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
 		values.add(postID);
-		ResultSet rs = DBManager.executeSelectWhere(tableName, fields,
-				values, new ArrayList<String>());
+		ResultSet rs = DBManager.executeSelectWhere(tableName, fields, values,
+				new ArrayList<String>());
 		ArrayList<String> modified = new ArrayList<String>();
-		while(rs.next()){
-			
-			if(tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_IMAGES)){
+		while (rs.next()) {
+
+			if (tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_IMAGES)) {
 				String fileName = rs.getString(DataBaseInfo.MYSQL_IMAGE_FILE);
-				if(!files.contains(fileName))
+				if (!files.contains(fileName))
 					modified.add(fileName);
-			}	
-				
-			if(tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS)){
+			}
+
+			if (tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS)) {
 				String fileName = rs.getString(DataBaseInfo.MYSQL_VIDEO_FILE);
-				if(!files.contains(fileName))
+				if (!files.contains(fileName))
 					modified.add(fileName);
 			}
 		}
-		
+
 		clearArrays();
 		fields.add(tableName);
 		values.add(modified);
 		postManager.change(postID, modified, values);
 		return true;
 	}
-	
+
 	/**
-	 * Warns user 
-	 * Puts info about frequency of posting
-	 * and end date of warning
+	 * Warns user Puts info about frequency of posting and end date of warning
+	 * 
 	 * @param userID
 	 * @param frequency
 	 * @param endDate
 	 * @throws SQLException
 	 */
-	public void WarnUser(int userID, int frequency, Date endDate) throws SQLException {
+	public void WarnUser(int userID, int frequency, Date endDate)
+			throws SQLException {
 		Warn warn = new Warn(userID);
 		warn.WarnUser(frequency, endDate);
 	}
-	
+
 	/**
-	 * Bans user
-	 * Puts info about end date of ban
-	 * into the database
+	 * Bans user Puts info about end date of ban into the database
+	 * 
 	 * @param username
 	 * @param bannEndDate
 	 * @throws SQLException
 	 */
-	
+
 	public void BannUser(int userID, Date bannEndDate) throws SQLException {
 		Bann bann = new Bann(userID);
 		bann.BannUser(bannEndDate);
@@ -336,17 +368,18 @@ public class Admin extends User {
 		fields.clear();
 		clause.clear();
 	}
-	
+
 	private boolean isInDatabase(String table, int id) throws SQLException {
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
 		values.add(id);
-		ResultSet resultSet = DBManager.executeSelectWhere(
-				table, fields, values, clause);
-		if(resultSet.next()) return true;
+		ResultSet resultSet = DBManager.executeSelectWhere(table, fields,
+				values, clause);
+		if (resultSet.next())
+			return true;
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param userID
@@ -354,11 +387,12 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyUsername(int userID, String userName) throws SQLException{
+	public boolean ModifyUsername(int userID, String userName)
+			throws SQLException {
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_USERNAME, userName);
 	}
-	
+
 	/**
 	 * 
 	 * @param userID
@@ -366,10 +400,12 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyPassword(int userID, String password) throws SQLException{
+	public boolean ModifyPassword(int userID, String password)
+			throws SQLException {
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_PASSWORD, password);
 	}
+
 	/**
 	 * 
 	 * @param userID
@@ -377,11 +413,12 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean modifySignature(int userID, String signature) throws SQLException{
+	public boolean modifySignature(int userID, String signature)
+			throws SQLException {
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_SIGNATURE, signature);
 	}
-	
+
 	/**
 	 * 
 	 * @param userID
@@ -389,10 +426,11 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyGender(int userID, String gender) throws SQLException{
+	public boolean ModifyGender(int userID, String gender) throws SQLException {
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_GENDER, gender);
 	}
+
 	/**
 	 * 
 	 * @param userID
@@ -400,11 +438,13 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyBirthdate(int userID, Date birthDate) throws SQLException{
+	public boolean ModifyBirthdate(int userID, Date birthDate)
+			throws SQLException {
 		ProfileManager pm = new ProfileManager();
-		return pm.change(userID, DataBaseInfo.MYSQL_USERS_BIRTH_DATE, birthDate);
+		return pm
+				.change(userID, DataBaseInfo.MYSQL_USERS_BIRTH_DATE, birthDate);
 	}
-	
+
 	/**
 	 * 
 	 * @param userID
@@ -412,10 +452,11 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyEmail(int userID, String email) throws SQLException{
+	public boolean ModifyEmail(int userID, String email) throws SQLException {
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_EMAIL, email);
 	}
+
 	/**
 	 * 
 	 * @param userID
@@ -423,11 +464,11 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyAvatar(int userID, String avatar) throws SQLException{
+	public boolean ModifyAvatar(int userID, String avatar) throws SQLException {
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_AVATAR, avatar);
 	}
-	
+
 	/**
 	 * 
 	 * @param userID
@@ -435,11 +476,13 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyFirstname(int userID, String firstName) throws SQLException{
+	public boolean ModifyFirstname(int userID, String firstName)
+			throws SQLException {
 		ProfileManager pm = new ProfileManager();
-		return pm.change(userID, DataBaseInfo.MYSQL_USERS_FIRST_NAME, firstName);
+		return pm
+				.change(userID, DataBaseInfo.MYSQL_USERS_FIRST_NAME, firstName);
 	}
-	
+
 	/**
 	 * 
 	 * @param userID
@@ -447,7 +490,8 @@ public class Admin extends User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean ModifyLastname(int userID, String lastName) throws SQLException{
+	public boolean ModifyLastname(int userID, String lastName)
+			throws SQLException {
 		ProfileManager pm = new ProfileManager();
 		return pm.change(userID, DataBaseInfo.MYSQL_USERS_LAST_NAME, lastName);
 	}

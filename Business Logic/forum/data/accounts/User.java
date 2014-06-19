@@ -28,15 +28,15 @@ import forum.managers.objects.ThemeManager;
  */
 
 public class User {
-	private ThemeManager themeManager = new ThemeManager();
-	private DataBaseManager DBManager = new DataBaseManager(
-			DataBaseInfo.MYSQL_DATABASE_NAME);
-	private PostManager postManager = new PostManager();
-	private ArrayList<Object> values = new ArrayList<Object>();
-	private ArrayList<String> fields = new ArrayList<String>();
 	public int userID;
 	private boolean isAdmin;
-	private Profile profile;
+	protected ThemeManager themeManager = new ThemeManager();
+	protected DataBaseManager DBManager = new DataBaseManager(
+			DataBaseInfo.MYSQL_DATABASE_NAME);
+	protected PostManager postManager = new PostManager();
+	protected ArrayList<Object> values = new ArrayList<Object>();
+	protected ArrayList<String> fields = new ArrayList<String>();
+	protected Profile profile;
 
 	public User() {
 	}
