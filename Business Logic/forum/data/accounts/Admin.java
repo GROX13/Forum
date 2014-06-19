@@ -64,6 +64,7 @@ public class Admin extends User {
 						.getString(DataBaseInfo.MYSQL_USERS_SIGNATURE));
 				profile.SetGender(rs.getString(DataBaseInfo.MYSQL_USERS_GENDER));
 				profile.SetUserType(rs.getInt(DataBaseInfo.MYSQL_USERS_TYPE));
+				profile.SetUserID(rs.getInt(DataBaseInfo.MYSQL_TABLE_ID));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -43,6 +43,7 @@ public class ServletListener implements ServletContextListener {
 		// TODO Auto-generated method stub
 		arg0.getServletContext().removeAttribute("categories");
 		arg0.getServletContext().removeAttribute("account_manager");
+		arg0.getServletContext().removeAttribute("themes");
 	}
 
 }

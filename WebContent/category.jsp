@@ -45,12 +45,18 @@
 							"<input type = \"submit\" value = \"Create\">" +	
 						"</p>" +	
 					"</form>");
+			%>
+			<p><a href = <%= "profile.jsp?" + adm.userID %>> Profile </a></p>
+			<% 
 		}
 	} else {
 		Profile p = usr.getProfile();
 		if (p != null) 
 			out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
 		out.print("<h3> Status: User </h3>");
+		%>
+		<p><a href = <%= "profile.jsp?" +  usr.userID %>> Profile </a></p>
+		<% 
 	}
 	%>
 	<p>Categories</p>

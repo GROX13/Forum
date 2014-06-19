@@ -10,11 +10,34 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<% Profile p = (Profile)request.getSession().getAttribute("profile"); %>
+	<% int id = Integer.parseInt(request.getQueryString()); %>
+	<% Admin adm = (Admin)request.getSession().getAttribute("admin"); %>
+	<% User usr = (User)request.getSession().getAttribute("user"); %>
+	<% Profile p = null; %>
+	<% if(adm != null) { %>
+	<% p = adm.getProfile(); }%>
+	<% if(usr != null){ %>
+	<% p = usr.getProfile(); } %>
 	<% if(p!=null){ %>
-		<ul>
-			<li><%= p.UserName() %></li>
-		</ul>
+			<p>UserName: <%= p.UserName() %></p>
+			<% String usType = ""; %>
+			<% if(p.GetUserType() == 1) usType = "Admin"; if(p.GetUserType() == 0) usType= "User"; %>
+			<p>UserType: <%= usType %></p>
+			<p>FirstName: <%= p.GetFirstName() %></p>
+			<p>LastName: <%= p.GetLastName() %></p>
+			<% String gen; %>
+			<% if(p.GetGender().equals("m")) gen = "male"; else gen = "female";%>
+			<p>Gender: <%= gen %> </p>
+			<p>BirthDate: <%= p.GetBirthDate() %></p>
+			<p>Email: <%= p.GetEmail() %></p>
+			<p>Avatar: <%= p.GetAvatar() %></p>
+			<p>Signature: <%= p.GetSignature() %></p>
+			<% if(p.GetUserID() == id) { %>
+				<p>Password: <%= p.GetPasword() %></p>
+				<form action = "Change" method = "post">
+					<input type = 'submit' value = 'change'/>
+				</form>
+			<% }%>
 	<% } %>
 </body>
 </html>
