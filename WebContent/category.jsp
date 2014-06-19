@@ -15,8 +15,8 @@
 <title>All Categories</title>
 </head>
 <body>
-	<% User usr = (User) request.getServletContext().getAttribute("user");%>
-	<% Admin adm = (Admin) request.getServletContext().getAttribute("admin");%>
+	<% User usr = (User) request.getSession().getAttribute("user");%>
+	<% Admin adm = (Admin) request.getSession().getAttribute("admin");%>
 	<% if(usr == null) {
 		if (adm == null) {
 			out.print(
@@ -32,12 +32,15 @@
 				"</form>");
 		} else {
 			Profile p = adm.getProfile();
-			out.print("Welcome " + p.GetFirstName() + " " + p.GetLastName());
+			if (p != null) 
+				out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
+			out.print("<h3> Status: Admin </h3>");
 		}
 	} else {
 		Profile p = usr.getProfile();
 		if (p != null) 
-			out.print("Welcome: " + p.GetFirstName() + " " + p.GetLastName());
+			out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
+		out.print("<h3> Status: User </h3>");
 	}
 	%>
 	<p>Categories</p>

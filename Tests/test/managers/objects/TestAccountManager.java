@@ -7,6 +7,13 @@ import org.junit.Test;
 import forum.managers.objects.AccountManager;
 
 public class TestAccountManager {
+	
+
+	@Test
+	public void testIsAdmin() throws SQLException {
+		am = new AccountManager();
+		assertTrue(am.isAdmin("GROX13"));
+	}
 
 	@Test
 	public void testContainsAccount() throws SQLException {

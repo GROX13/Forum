@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import forum.data.accounts.Admin;
+import forum.data.accounts.User;
 import forum.managers.objects.AccountManager;
 
 /**
@@ -46,8 +48,16 @@ public class HandleLogin extends HttpServlet {
 				"account_manager");
 		try {
 			if (am.containsAccount(request.getParameter("username"))) {
-				if (am.matchesPassword(request.getParameter("username"),
+				String username = request.getParameter("username");
+				if (am.matchesPassword(username,
 						request.getParameter("password"))) {
+					if (am.isAdmin(username)) {
+						Admin adm = new Admin(username);
+						request.getSession().setAttribute("admin", adm);
+					} else {
+						User usr = new User(username);
+						request.getSession().setAttribute("user", usr);
+					}
 					request.getRequestDispatcher("category.jsp").forward(
 							request, response);
 				}

@@ -9,8 +9,8 @@ import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
 
 public class AccountManager {
-	
-	private DataBaseManager DBManager; 
+
+	private DataBaseManager DBManager;
 	private ArrayList<Object> values;
 	private ArrayList<String> fields;
 	private ArrayList<String> clause;
@@ -21,9 +21,10 @@ public class AccountManager {
 		fields = new ArrayList<String>();
 		clause = new ArrayList<String>();
 	}
-	
+
 	/**
 	 * Checks database for passed user name
+	 * 
 	 * @param username
 	 * @return
 	 */
@@ -31,16 +32,18 @@ public class AccountManager {
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
 		values.add(username);
-		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
-				fields, values, clause);
+		ResultSet resultSet = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
 		if (resultSet.next())
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Checks if passed password matches the user's password from database
-	 * @param user-name
+	 * 
+	 * @param user
+	 *            -name
 	 * @param password
 	 * @return
 	 */
@@ -54,17 +57,18 @@ public class AccountManager {
 		values.add(username);
 		values.add(password);
 		clause.add(DataBaseInfo.MYSQL_CLAUSE_AND);
-		
-		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_USERS,
-				fields, values, clause);
-		
+
+		ResultSet resultSet = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
+
 		if (resultSet.next())
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Creates and adds new account to database
+	 * 
 	 * @param username
 	 * @param password
 	 * @param avatar
@@ -75,47 +79,68 @@ public class AccountManager {
 	 * @param gender
 	 * @param birthDate
 	 * @param userType
-	 * @return 
+	 * @return
 	 */
-	
+
 	public boolean createAccount(String username, String password,
 			String avatar, String firstName, String lastName, String email,
-			String signature, String gender, Date birthDate, int userType) throws SQLException {
-		
+			String signature, String gender, Date birthDate, int userType)
+			throws SQLException {
+
 		if (containsAccount(username))
 			return false;
-		
+
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_USERS_AVATAR);
 		fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
 		fields.add(DataBaseInfo.MYSQL_USERS_FIRST_NAME);
 		fields.add(DataBaseInfo.MYSQL_USERS_TYPE);
-		fields.add(DataBaseInfo.MYSQL_USERS_LAST_NAME); 
+		fields.add(DataBaseInfo.MYSQL_USERS_LAST_NAME);
 		fields.add(DataBaseInfo.MYSQL_USERS_EMAIL);
-		fields.add(DataBaseInfo.MYSQL_USERS_SIGNATURE); 
-		fields.add(DataBaseInfo.MYSQL_USERS_GENDER); 
-		fields.add(DataBaseInfo.MYSQL_USERS_BIRTH_DATE); 
+		fields.add(DataBaseInfo.MYSQL_USERS_SIGNATURE);
+		fields.add(DataBaseInfo.MYSQL_USERS_GENDER);
+		fields.add(DataBaseInfo.MYSQL_USERS_BIRTH_DATE);
 		fields.add(DataBaseInfo.MYSQL_USERS_PASSWORD);
-		
-		values.add(avatar); 
+
+		values.add(avatar);
 		values.add(username);
 		values.add(firstName);
-		values.add(userType); 
+		values.add(userType);
 		values.add(lastName);
-		values.add(email); 
+		values.add(email);
 		values.add(signature);
-		values.add(gender); 
-		values.add(birthDate); 
-		values.add(password); 
-		
+		values.add(gender);
+		values.add(birthDate);
+		values.add(password);
+
 		DBManager.executeInsert(DataBaseInfo.MYSQL_TABLE_USERS, fields, values);
-		
+
 		return true;
 	}
-	
+
 	private void clearArrays() {
 		values.clear();
 		fields.clear();
 		clause.clear();
+	}
+
+	public boolean isAdmin(String username) {
+		// TODO Auto-generated method stub
+		try {
+			if (containsAccount(username)) {
+				clearArrays();
+				fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
+				values.add(username);
+				ResultSet rs = DBManager.executeSelectWhere(
+						DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
+				rs.next();
+				if (rs.getInt(DataBaseInfo.MYSQL_USERS_TYPE) == 1)
+					return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
