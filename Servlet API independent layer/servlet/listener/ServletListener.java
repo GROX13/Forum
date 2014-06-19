@@ -4,8 +4,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import forum.data.accounts.Admin;
-import forum.data.accounts.User;
 import forum.managers.objects.AccountManager;
 import forum.managers.objects.CategoryManager;
 import forum.managers.objects.ThemeManager;
@@ -30,16 +28,12 @@ public class ServletListener implements ServletContextListener {
 	 */
 	public void contextInitialized(ServletContextEvent arg0) {
 		// TODO Auto-generated method stub
-		User usr = null;
-		Admin adm = null;
 		AccountManager am = new AccountManager();
 		CategoryManager cm = new CategoryManager();
 		ThemeManager tm = new ThemeManager();
 		arg0.getServletContext().setAttribute("categories", cm);
 		arg0.getServletContext().setAttribute("account_manager", am);
 		arg0.getServletContext().setAttribute("themes", tm);
-		arg0.getServletContext().setAttribute("admin", adm);
-		arg0.getServletContext().setAttribute("user", usr);
 	}
 
 	/**
@@ -49,8 +43,6 @@ public class ServletListener implements ServletContextListener {
 		// TODO Auto-generated method stub
 		arg0.getServletContext().removeAttribute("categories");
 		arg0.getServletContext().removeAttribute("account_manager");
-		arg0.getServletContext().removeAttribute("admin");
-		arg0.getServletContext().removeAttribute("user");
 	}
 
 }
