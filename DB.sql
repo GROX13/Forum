@@ -137,6 +137,12 @@ INSERT INTO message (sender_id, receiver_id, message)
 INSERT INTO message (sender_id, receiver_id, message) 
 	VALUES (1, 2, 'Test message 9');
 
+INSERT INTO categories (title, description)
+	values('Sport', 'All about sport');
+
+INSERT INTO theme(creator_id, category_id, title, description, is_open)
+	values(1, 1, "Tennis", "", true);
+
 SELECT * FROM users;
 SELECT * FROM categories;
 SELECT * FROM message;
