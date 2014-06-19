@@ -80,6 +80,15 @@ public class User {
 	public boolean isAdmin() {
 		return isAdmin;
 	}
+	
+	public Profile viewProfile(int ID) throws SQLException{
+		Profile profile = null;
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_USERS, ID))
+			return profile;
+		ProfileManager pm = new ProfileManager();
+		profile = pm.getAll().get(ID);
+		return profile;
+	}
 
 	/**
 	 * Adds new theme to the Database Checks if user is banned or warned, In
