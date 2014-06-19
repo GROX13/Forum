@@ -62,7 +62,7 @@
 		<% 		Map.Entry<Integer, Category> entry = iter.next(); %>
 		<%		int id = entry.getKey(); %>
 		<%		Category value = entry.getValue(); %>
-		<li><a href = <%= "themes.jsp?category_id=" +  id %>><%= value.getTitle() %></a></li>
+		<li><a href = <%= "themes.jsp?id=" +  id %>><%= value.getTitle() %></a></li>
 		<% } %> 
 	</ul>
 </body>
