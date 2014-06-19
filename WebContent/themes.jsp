@@ -69,7 +69,7 @@
 		<% 		Map.Entry<Integer, Theme> entry = iter.next(); %>
 		<%		int tId = entry.getKey(); %>
 		<%		Theme value = entry.getValue(); %>
-		<% out.print("<li><a href = <%= \"posts.jsp?theme_id=" +  tId + "><" + value.getTitle() + "</a></li>"); %>
+		<% out.print("<li><a href = <%= \"posts.jsp?theme_id=" +  tId + "\"><" + value.getTitle() + "</a></li>"); %>
 		<% } %> 
 </body>
 </html>
