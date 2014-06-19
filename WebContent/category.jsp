@@ -60,6 +60,11 @@
 	}
 	%>
 	<p>Categories</p>
+	<%!
+        public String liDecorator(int id, String name){
+            return "<li><a href=\"themes.jsp?id=" + id + "\">" + name + "</a></li>";
+        }
+    %>
 	<ul>
 	    <% CategoryManager cm = (CategoryManager)request.getServletContext().getAttribute("categories"); %>
 		<% Map<Integer, Category> all = cm.getAll(); %>
@@ -68,7 +73,7 @@
 		<% 		Map.Entry<Integer, Category> entry = iter.next(); %>
 		<%		int id = entry.getKey(); %>
 		<%		Category value = entry.getValue(); %>
-		<li><a href = <%= "themes.jsp?id=\"" +  id %>"><%= value.getTitle() %></a></li>
+		<%		out.print(liDecorator(id, value.getTitle()));; %>
 		<% } %> 
 	</ul>
 </body>

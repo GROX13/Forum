@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebListener;
 
 import forum.managers.objects.AccountManager;
 import forum.managers.objects.CategoryManager;
+import forum.managers.objects.PostManager;
 import forum.managers.objects.ThemeManager;
 
 /**
@@ -31,9 +32,11 @@ public class ServletListener implements ServletContextListener {
 		AccountManager am = new AccountManager();
 		CategoryManager cm = new CategoryManager();
 		ThemeManager tm = new ThemeManager();
+		PostManager pm = new PostManager();
 		arg0.getServletContext().setAttribute("categories", cm);
 		arg0.getServletContext().setAttribute("account_manager", am);
 		arg0.getServletContext().setAttribute("themes", tm);
+		arg0.getServletContext().setAttribute("post", pm);
 	}
 
 	/**

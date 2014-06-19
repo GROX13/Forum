@@ -11,9 +11,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Themes</title>
+<% int id = Integer.parseInt(request.getParameter("id")); 
+	User user = new User();
+	String categoryName = user.viewcaCategory(id).getTitle();
+	%>
+<title><%= categoryName %></title>
 </head>
 <body>
+
 	<% User usr = (User) request.getSession().getAttribute("user");%>
 	<% Admin adm = (Admin) request.getSession().getAttribute("admin");%>
 	<% if(usr == null) {
@@ -61,15 +66,21 @@
 					"</p>" +	
 				"</form>");
 	} %>
+	<p><%= categoryName + " Themes: " %></p>
+	<%!
+        public String liDecorator(int id, String name){
+            return "<li><a href=\"Posts.jsp?id=" + id + "\">" + name + "</a></li>";
+        }
+    %>
 	<% ThemeManager tm = (ThemeManager)request.getServletContext().getAttribute("themes"); %>
-	<% int id = Integer.parseInt(request.getQueryString()); %>
+	
 	<% Map<Integer, Theme> all = tm.getAll(id); %>
 	<% Iterator<Map.Entry<Integer, Theme>> iter = all.entrySet().iterator(); %>
 		<% while(iter.hasNext()){ %>
 		<% 		Map.Entry<Integer, Theme> entry = iter.next(); %>
 		<%		int tId = entry.getKey(); %>
 		<%		Theme value = entry.getValue(); %>
-		<% out.print("<li><a href = <%= \"posts.jsp?theme_id=" +  tId + "\"><" + value.getTitle() + "</a></li>"); %>
+		<% 		out.print(liDecorator(tId, value.getTitle())); %>
 		<% } %> 
 </body>
 </html>

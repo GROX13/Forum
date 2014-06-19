@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.mysql.jdbc.DatabaseMetaData;
+
 import forum.data.objects.Bann;
 import forum.data.objects.Category;
 import forum.data.objects.Message;
@@ -114,7 +116,18 @@ public class User {
 				themeIsOpen);
 		return true;
 	}
-
+	
+	public Category viewcaCategory(int categoryID) throws SQLException{
+		Category category = null;
+		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+			return category;
+		CategoryManager cm = new CategoryManager();
+		Map<Integer, Category> categoryMap = cm.getAll();
+		category = categoryMap.get(categoryID);
+		
+		return category;
+	}
+	
 	public Theme viewTheme(int themeID) throws SQLException {
 		Theme theme = null;
 
