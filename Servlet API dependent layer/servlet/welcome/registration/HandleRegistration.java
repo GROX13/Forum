@@ -71,8 +71,8 @@ public class HandleRegistration extends HttpServlet {
 			if (am.createAccount(username, password, avatar, firstName,
 					lastName, email, signature, "" + gender.charAt(0),
 					birthDate, userType)) {
-				User usr = new User();
-				request.getServletContext().setAttribute("user", usr);
+				User usr = new User(username);
+				request.getSession().setAttribute("user", usr);
 				request.getRequestDispatcher("category.jsp").forward(request,
 						response);
 			} else {
