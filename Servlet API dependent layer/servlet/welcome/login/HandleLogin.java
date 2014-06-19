@@ -54,9 +54,11 @@ public class HandleLogin extends HttpServlet {
 					if (am.isAdmin(username)) {
 						Admin adm = new Admin(username);
 						request.getSession().setAttribute("admin", adm);
+						request.getSession().setAttribute("profile", adm.getProfile());
 					} else {
 						User usr = new User(username);
 						request.getSession().setAttribute("user", usr);
+						request.getSession().setAttribute("profile", usr);
 					}
 					request.getRequestDispatcher("category.jsp").forward(
 							request, response);
