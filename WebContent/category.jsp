@@ -35,6 +35,9 @@
 			if (p != null) 
 				out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
 			out.print("<h3> Status: Admin </h3>");
+			%>
+				<p><a href = <%= "profile.jsp?" + adm.userID %>> Profile </a></p>
+			<% 
 			out.print(
 					"<form action = \"HandleCategory\" method = \"post\">" +	
 					  "<p>" +
@@ -45,9 +48,6 @@
 							"<input type = \"submit\" value = \"Create\">" +	
 						"</p>" +	
 					"</form>");
-			%>
-			<p><a href = <%= "profile.jsp?" + adm.userID %>> Profile </a></p>
-			<% 
 		}
 	} else {
 		Profile p = usr.getProfile();

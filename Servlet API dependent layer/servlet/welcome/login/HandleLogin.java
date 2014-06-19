@@ -44,31 +44,37 @@ public class HandleLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		AccountManager am = (AccountManager) getServletContext().getAttribute(
-				"account_manager");
-		try {
-			if (am.containsAccount(request.getParameter("username"))) {
-				String username = request.getParameter("username");
-				if (am.matchesPassword(username,
-						request.getParameter("password"))) {
-					if (am.isAdmin(username)) {
-						Admin adm = new Admin(username);
-						request.getSession().setAttribute("admin", adm);
-					} else {
-						User usr = new User(username);
-						request.getSession().setAttribute("user", usr);
+		User us = (User) request.getSession().getAttribute("user");
+		Admin ad = (Admin) request.getSession().getAttribute("admin");
+		if (us != null || ad != null)
+			request.getRequestDispatcher("log_out.jsp").forward(request,
+					response);
+		else {
+			AccountManager am = (AccountManager) getServletContext()
+					.getAttribute("account_manager");
+			try {
+				if (am.containsAccount(request.getParameter("username"))) {
+					String username = request.getParameter("username");
+					if (am.matchesPassword(username,
+							request.getParameter("password"))) {
+						if (am.isAdmin(username)) {
+							Admin adm = new Admin(username);
+							request.getSession().setAttribute("admin", adm);
+						} else {
+							User usr = new User(username);
+							request.getSession().setAttribute("user", usr);
+						}
+						request.getRequestDispatcher("category.jsp").forward(
+								request, response);
 					}
-					request.getRequestDispatcher("category.jsp").forward(
-							request, response);
+				} else {
+					request.getRequestDispatcher("index.jsp").forward(request,
+							response);
 				}
-			} else {
-				request.getRequestDispatcher("index.jsp").forward(request,
-						response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-
 	}
 }
