@@ -13,7 +13,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Posts</title>
+<% int id = Integer.parseInt(request.getParameter("id")); %>
+<% 
+	User user = new User();
+	String themeName = user.viewTheme(id).getTitle();
+	%>
+<title><%=themeName%></title>
 </head>
 <body>
 
@@ -45,10 +50,10 @@
 		out.print("<h3> Status: User </h3>");
 		
 	} %>
-	<p>Posts</p>
+	<p><%=themeName + " Posts: "%></p>
 	
 	<% PostManager pm = (PostManager)request.getServletContext().getAttribute("post"); %>
-	<% int id = Integer.parseInt(request.getParameter("id")); %>
+	
 	<% Map<Integer, Post> all = pm.getAll(id); %>
 	<% Iterator<Map.Entry<Integer, Post>> iter = all.entrySet().iterator(); %>
 		<% while(iter.hasNext()){ %>

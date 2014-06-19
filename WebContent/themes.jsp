@@ -11,7 +11,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Themes</title>
+<% int id = Integer.parseInt(request.getParameter("id")); 
+	User user = new User();
+	String categoryName = user.viewcaCategory(id).getTitle();
+	%>
+<title><%= categoryName %></title>
 </head>
 <body>
 
@@ -62,14 +66,14 @@
 					"</p>" +	
 				"</form>");
 	} %>
-	<p>Themes</p>
+	<p><%= categoryName + " Themes: " %></p>
 	<%!
         public String liDecorator(int id, String name){
             return "<li><a href=\"Posts.jsp?id=" + id + "\">" + name + "</a></li>";
         }
     %>
 	<% ThemeManager tm = (ThemeManager)request.getServletContext().getAttribute("themes"); %>
-	<% int id = Integer.parseInt(request.getParameter("id")); %>
+	
 	<% Map<Integer, Theme> all = tm.getAll(id); %>
 	<% Iterator<Map.Entry<Integer, Theme>> iter = all.entrySet().iterator(); %>
 		<% while(iter.hasNext()){ %>
