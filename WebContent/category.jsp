@@ -36,7 +36,7 @@
 				out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
 			out.print("<h3> Status: Admin </h3>");
 			%>
-				<p><a href = <%= "profile.jsp?" + adm.userID %>> Profile </a></p>
+				<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 			<% 
 			out.print(
 					"<form action = \"HandleCategory\" method = \"post\">" +	
@@ -55,7 +55,7 @@
 			out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
 		out.print("<h3> Status: User </h3>");
 		%>
-		<p><a href = <%= "profile.jsp?" +  usr.userID %>> Profile </a></p>
+			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 		<% 
 	}
 	%>

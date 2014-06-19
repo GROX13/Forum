@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<% int id = Integer.parseInt(request.getQueryString()); %>
+	<% int id = Integer.parseInt(request.getParameter("id")); %>
 	<% Admin adm = (Admin)request.getSession().getAttribute("admin"); %>
 	<% User usr = (User)request.getSession().getAttribute("user"); %>
 	<% Profile p = null; %>
