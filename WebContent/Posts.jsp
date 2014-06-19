@@ -51,7 +51,12 @@
 		
 	} %>
 	<p><%=themeName + " Posts: "%></p>
-	
+	<%!
+        public String liDecorator(int id, String name){
+            return "<li><a href=\"profile.jsp?id=" + id + "\">" + name + "</a></li>";
+        }
+    %>
+    
 	<% PostManager pm = (PostManager)request.getServletContext().getAttribute("post"); %>
 	
 	<% Map<Integer, Post> all = pm.getAll(id); %>
@@ -60,7 +65,11 @@
 		<% 		Map.Entry<Integer, Post> entry = iter.next(); %>
 		<%		int pId = entry.getKey(); %>
 		<%		Post value = entry.getValue(); %>
-		<% 		out.print(value.getText()); %>
+				
+		<% 		
+				out.println(liDecorator(value.getUserId(), user.viewProfile(value.getUserId()).GetUsername() + " "));
+				out.println("[ " + value.getDate() + " ]: " + value.getText()); 
+		%>
 		<% } %> 
 </body>
 </html>

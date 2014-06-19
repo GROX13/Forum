@@ -104,6 +104,10 @@ public class Profile {
 		return gender;
 	}
 	
+	public String GetUsername(){
+		return username;
+	}
+	
 	public int GetUserID(){
 		return userID;
 	}
