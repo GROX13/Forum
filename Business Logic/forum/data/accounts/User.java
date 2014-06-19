@@ -52,7 +52,7 @@ public class User {
 				if(rs.getInt(DataBaseInfo.MYSQL_USERS_TYPE) == 1)
 					this.isAdmin = true;
 				this.isAdmin = false;
-				this.profile = getProfile();
+				profile = new Profile(username);
 			}
 		}
 	}
