@@ -14,11 +14,20 @@
 	<% Admin adm = (Admin)request.getSession().getAttribute("admin"); %>
 	<% User usr = (User)request.getSession().getAttribute("user"); %>
 	<% Profile p = null; %>
+	<% Profile temp = null; %>
 	<% if(adm != null) { %>
-	<% p = adm.getProfile(); }%>
+	<% p = adm.getProfile(); %>
+	<% temp = adm.viewProfile(id); %>
+	<% } %>
 	<% if(usr != null){ %>
-	<% p = usr.getProfile(); } %>
-	<% if(p!=null){ %>
+	<% p = usr.getProfile(); %>
+	<% temp = usr.viewProfile(id); %>
+	<% } %>
+		<% if(p != null && p.GetUserID() != id){ %>
+				<% p = temp;} %>
+		<%  if(p==null){ %>
+		 <% User tempUser = new User(); %>
+		 <% p = tempUser.viewProfile(id); } %>
 			<p>UserName: <%= p.UserName() %></p>
 			<% String usType = ""; %>
 			<% if(p.GetUserType() == 1) usType = "Admin"; if(p.GetUserType() == 0) usType= "User"; %>
@@ -37,7 +46,6 @@
 				<form action = "Change" method = "post">
 					<input type = 'submit' value = 'change'/>
 				</form>
-			<% }%>
 	<% } %>
 </body>
 </html>

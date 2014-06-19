@@ -23,6 +23,9 @@
 	<% Admin adm = (Admin) request.getSession().getAttribute("admin");%>
 	<% if(usr == null) {
 		if (adm == null) {
+			%>
+			<p><a href ="index.jsp">Log In</a></p>
+			<% 
 			out.print(
 				"<form action = \"HandleLogin\" method = \"post\">" +	
 				  "<p>" +
@@ -39,6 +42,10 @@
 			if (p != null) 
 				out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
 			out.print("<h3> Status: Admin </h3>");
+			%>
+				<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
+				<p><a href ="log_out.jsp">Log Out</a></p>
+			<% 
 			out.print(
 					"<form action = \"HandleThemes\" method = \"post\">" +	
 					  "<p>" +
@@ -55,6 +62,10 @@
 		if (p != null) 
 			out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
 		out.print("<h3> Status: User </h3>");
+		%>
+			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
+			<p><a href ="log_out.jsp">Log Out</a></p>
+		<% 
 		out.print(
 				"<form action = \"HandleThemes\" method = \"post\">" +	
 				  "<p>" +

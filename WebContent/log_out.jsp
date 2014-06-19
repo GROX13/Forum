@@ -7,7 +7,7 @@
 <title>Log Out</title>
 </head>
 <body>
-   <h1> Log In! </h1>	
+   <h1> Log Out! </h1>	
 		<form action = "HandleLogout" method = "post">	
 		<p>
 			<input type = "submit" value = "Log Out">	
