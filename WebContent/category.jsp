@@ -36,9 +36,8 @@
 		}
 	} else {
 		Profile p = usr.getProfile();
-		String s = p.GetFirstName();
-		String s1 = p.GetLastName();
-		out.print("Welcome " + s + " " + s1);
+		if (p != null) 
+			out.print("Welcome: " + p.GetFirstName() + " " + p.GetLastName());
 	}
 	%>
 	<p>Categories</p>
