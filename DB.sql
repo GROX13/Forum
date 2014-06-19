@@ -1,4 +1,3 @@
-
 DROP DATABASE IF EXISTS forum;
 CREATE DATABASE forum;
 USE forum;
