@@ -138,10 +138,22 @@ INSERT INTO message (sender_id, receiver_id, message)
 	VALUES (1, 2, 'Test message 9');
 
 INSERT INTO categories (title, description)
-	values('Sport', 'All about sport');
+	VALUES('Sport', 'All about sport');
 
 INSERT INTO theme(creator_id, category_id, title, description, is_open)
-	values(1, 1, "Tennis", "", true);
+	VALUES(1, 1, 'Tennis', "", true);
+
+INSERT INTO theme(creator_id, category_id, title, description, is_open)
+	VALUES(1, 1, 'Football', "", true);
+
+INSERT INTO theme(creator_id, category_id, title, description, is_open)
+	VALUES(1, 1, 'American Football', "", true);
+
+INSERT INTO posts (author_id, theme_id, post)
+	VALUES(1, 1, 'The four Grand Slam tournaments 
+					are considered to be the most prestigious 
+					tennis events in the world.');
+
 
 SELECT * FROM users;
 SELECT * FROM categories;

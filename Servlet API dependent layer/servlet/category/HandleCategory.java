@@ -42,7 +42,7 @@ public class HandleCategory extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String category = request.getParameter("category");
+		/*String category = request.getParameter("category");
 		String categoryDescription = request
 				.getParameter("category_description");
 		Admin adm = (Admin) request.getSession().getAttribute("admin");
@@ -51,7 +51,7 @@ public class HandleCategory extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		request.getRequestDispatcher("category.jsp").forward(request, response);
 	}
 

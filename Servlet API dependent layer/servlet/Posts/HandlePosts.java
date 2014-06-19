@@ -1,27 +1,23 @@
-package servlet.themes;
+package servlet.Posts;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import forum.data.accounts.Admin;
-
 /**
- * Servlet implementation class HandleThemes
+ * Servlet implementation class HandlePosts
  */
-@WebServlet("/HandleThemes")
-public class HandleThemes extends HttpServlet {
+@WebServlet("/HandlePosts")
+public class HandlePosts extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HandleThemes() {
+    public HandlePosts() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,8 +34,7 @@ public class HandleThemes extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		request.getRequestDispatcher("themes.jsp").forward(request, response);
+		request.getRequestDispatcher("Posts.jsp").forward(request, response);
 	}
 
 }
