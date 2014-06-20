@@ -82,5 +82,11 @@
 				out.println("[ " + value.getDate() + " ]: " + value.getText()); 
 		%>
 		<% } %> 
+		<% if(usr != null && adm != null){
+			 
+		}%>
+		
+		<%-- <textarea name="paragraph_text" cols="100" rows="10"></textarea>
+		<input type="submit" value="ADD"/> --%>
 </body>
 </html>
