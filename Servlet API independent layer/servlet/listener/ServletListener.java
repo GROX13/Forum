@@ -47,6 +47,7 @@ public class ServletListener implements ServletContextListener {
 		arg0.getServletContext().removeAttribute("categories");
 		arg0.getServletContext().removeAttribute("account_manager");
 		arg0.getServletContext().removeAttribute("themes");
+		arg0.getServletContext().removeAttribute("post");
 	}
 
 }
