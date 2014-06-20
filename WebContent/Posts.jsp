@@ -48,7 +48,20 @@
 			%>
 				<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 				<p><a href ="log_out.jsp">Log Out</a></p>
-			<% 
+			<%
+			
+			out.print(
+					"<form action = \"HandlePosts\" method = \"post\">" +	
+					  "<p>" +
+							"<label for = \"post\"> Post: </label>" +	
+							"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
+							"<label for = \"images\"> Images: </label>" +
+							"<input type = \"file\" name = \"imageFiles\" >" +
+							"<label for = \"videos\"> Videos: </label>" +
+							"<input type = \"file\" name = \"videoFiles\" >" +
+							"<input type = \"submit\" value = \"ADD\">" +	
+						"</p>" +	
+					"</form>");
 		}
 	} else {
 		Profile p = usr.getProfile();
@@ -59,6 +72,19 @@
 			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 			<p><a href ="log_out.jsp">Log Out</a></p>
 		<% 
+		
+		out.print(
+				"<form action = \"HandlePosts\" method = \"post\">" +	
+				  "<p>" +
+						"<label for = \"post\"> Post: </label>" +	
+						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
+						"<label for = \"images\"> Images: </label>" +
+						"<input type = \"file\" name = \"imageFiles\" >" +
+						"<label for = \"videos\"> Videos: </label>" +
+						"<input type = \"file\" name = \"videoFiles\" >" +
+						"<input type = \"submit\" value = \"ADD\">" +	
+					"</p>" +	
+				"</form>");
 		
 	} %>
 	<p><%=themeName + " Posts: "%></p>

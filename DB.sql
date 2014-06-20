@@ -163,6 +163,7 @@ INSERT INTO posts (author_id, theme_id, post)
 
 SELECT * FROM users;
 SELECT * FROM categories;
+SELECT * FROM themes;
 SELECT * FROM message;
 SELECT * FROM message_images;
 SELECT * FROM message_videos;

@@ -53,6 +53,11 @@
 							"<input type = \"text\" id = \"theme\" name = \"theme\" required>" +	
 							"<label for = \"theme_description\"> Theme Description: </label>" +		
 							"<input type = \"text\" id = \"theme_description\" name = \"theme_description\" required>" +
+							"<label for = \"theme_isOpen\"> Theme Is Open for Guest: </label>" +		
+							"<select id = \"theme_isOpen\" name = \"theme_isOpen\">" +
+		  					"<option value=\"Open\"> Open </option>" +
+							"<option value=\"notOpen\"> Closed </option>" +
+							"</select>" +
 							"<input type = \"submit\" value = \"Add Theme\">" +	
 						"</p>" +	
 					"</form>");
@@ -73,6 +78,11 @@
 						"<input type = \"text\" id = \"theme\" name = \"theme\" required>" +	
 						"<label for = \"theme_description\"> Theme Description: </label>" +		
 						"<input type = \"text\" id = \"theme_description\" name = \"theme_description\" required>" +
+						"<label for = \"theme_isOpen\"> Theme Is Open for Guest: </label>" +		
+						"<select id = \"theme_isOpen\" name = \"theme_isOpen\">" +
+	  						"<option value=\"Open\"> Open </option>" +
+							"<option value=\"notOpen\"> Closed </option>" +
+						"</select>" +
 						"<input type = \"submit\" value = \"Add Theme\">" +	
 					"</p>" +	
 				"</form>");
