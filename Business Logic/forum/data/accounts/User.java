@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.mysql.jdbc.DatabaseMetaData;
-
 import forum.data.objects.Bann;
 import forum.data.objects.Category;
 import forum.data.objects.Message;
