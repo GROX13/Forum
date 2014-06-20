@@ -154,6 +154,12 @@ INSERT INTO posts (author_id, theme_id, post)
 					are considered to be the most prestigious 
 					tennis events in the world.');
 
+INSERT INTO posts (author_id, theme_id, post)
+	VALUES(2, 1, 'Halep once again drew best.
+					I think Serena got a decent 
+					draw, better than Paris.');
+
+
 
 SELECT * FROM users;
 SELECT * FROM categories;

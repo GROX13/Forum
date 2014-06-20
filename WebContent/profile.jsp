@@ -7,10 +7,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<% int id = Integer.parseInt(request.getParameter("id")); 
+	User u = new User();
+	Profile prof = u.viewProfile(id);
+	
+%>
+<title><%=prof.GetUsername() + "'s Profile" %></title>
 </head>
 <body>
-	<% int id = Integer.parseInt(request.getParameter("id")); %>
 	<% Admin adm = (Admin)request.getSession().getAttribute("admin"); %>
 	<% User usr = (User)request.getSession().getAttribute("user"); %>
 	<% Profile p = null; %>
