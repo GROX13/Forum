@@ -78,7 +78,7 @@
 	<p>Categories</p>
 	<%!
         public String liDecorator(int id, String name){
-            return "<li><a href=\"themes.jsp?id=" + id + "\">" + name + "</a></li>";
+            return "<lu><a href=\"themes.jsp?id=" + id + "\">" + name + "</a></lu>";
         }
     %>
     

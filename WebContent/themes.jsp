@@ -108,9 +108,9 @@
     %>
     <%!
         public String editButtons(int i){
-    		String changeName = "changeTheme" + i;
-    		String editName = "editTheme" + i;
-    		String passName = "passTheme" + i;
+    		String changeName = "change" + i;
+    		String editName = "edit" + i;
+    		String passName = "pass" + i;
             return "<form action = \"HandleThemes\" method = \"post\">" + 
             "<button onclick=\"myFunction('"+passName+"', '" + changeName +"')\" id = " + editName +" style = \"display:none\" type = \"button\">Edit</button>" +
             "<p><input type = \"text\" id = "+ passName +" style = \"display:none\" name = "+ passName +"/></p>" +
@@ -122,7 +122,7 @@
     
      <%!
         public String showButtons(int i){
-    	 	String editName = "editTheme" + i;
+    	 	String editName = "edit" + i;
             return "<script>" + 
 		 	"myFunction('" + editName +"')" +
 			"</script>";
