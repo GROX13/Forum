@@ -1,3 +1,4 @@
+<%@page import="servlet.themes.HandleThemes"%>
 <%@page import="forum.data.accounts.Admin"%>
 <%@page import="forum.data.accounts.User"%>
 <%@page import="forum.data.objects.Profile"%>
@@ -46,6 +47,7 @@
 				<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 				<p><a href ="log_out.jsp">Log Out</a></p>
 			<% 
+			
 			out.print(
 					"<form action = \"HandleThemes\" method = \"post\">" +	
 					  "<p>" +
@@ -71,6 +73,7 @@
 			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 			<p><a href ="log_out.jsp">Log Out</a></p>
 		<% 
+		
 		out.print(
 				"<form action = \"HandleThemes\" method = \"post\">" +	
 				  "<p>" +
@@ -86,6 +89,7 @@
 						"<input type = \"submit\" value = \"Add Theme\">" +	
 					"</p>" +	
 				"</form>");
+		
 	} %>
 	<p><%= categoryName + " Themes: " %></p>
 	<%!
