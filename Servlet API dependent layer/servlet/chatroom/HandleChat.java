@@ -1,12 +1,17 @@
 package servlet.chatroom;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import forum.data.accounts.Admin;
+import forum.data.accounts.User;
+import forum.managers.objects.AccountManager;
 
 /**
  * Servlet implementation class HandleChat
@@ -39,7 +44,29 @@ public class HandleChat extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+		User usr = (User) request.getSession().getAttribute("user");
+		Admin adm = (Admin) request.getSession().getAttribute("admin");
+		String username = request.getParameter("username");
+		String messageText = request.getParameter("message");
+		AccountManager am = (AccountManager) getServletContext().getAttribute(
+				"account_manager");
+		int ID = am.getUserID(username);
+		if (ID != 0) {
+			if (usr != null) {
+				usr.sendMessage(ID, messageText, new ArrayList<String>(),
+						new ArrayList<String>());
+				request.getSession().setAttribute(
+						"message_list",
+						usr.seeFullConversation(ID, usr.getProfile()
+								.GetUserID()));
+			} else if (adm != null) {
+				adm.sendMessage(ID, messageText, new ArrayList<String>(),
+						new ArrayList<String>());
+				request.getSession().setAttribute(
+						"message_list",
+						adm.seeFullConversation(ID, adm.getProfile()
+								.GetUserID()));
+			}
+		}
 	}
-
 }
