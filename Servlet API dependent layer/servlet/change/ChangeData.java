@@ -75,7 +75,16 @@ public class ChangeData extends HttpServlet {
 		String firstname = request.getParameter("firstname");
 		String lastname = request.getParameter("lastname");
 		String gender = request.getParameter("gender");
-		String birthdate = request.getParameter("yeardropdown") + request.getParameter("monthdropdown")+request.getParameter("daydropdown");
+		String birthdate = "";
+		String month = request.getParameter("monthdropdown");
+		String day = request.getParameter("daydropdown");
+		if(!request.getParameter("yeardropdown").equals("") && !month.equals("") && !day.equals("")){
+			if(month.length() == 1)
+				month = "0" + month;
+			if(day.length() == 1)
+				day = "0" + day;
+			birthdate = request.getParameter("yeardropdown") + month + day;
+		}
 		String email = request.getParameter("email");
 		String avatar = request.getParameter("avatar");
 		String signature = request.getParameter("signature");
