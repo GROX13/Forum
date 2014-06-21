@@ -89,7 +89,7 @@
     		String passName = "pass" + i;
             return "<form action = \"HandleCategoryChanges?id=" + i + "\"" + "method = \"post\">" + 
             "<button onclick=\"myFunction('"+passName+"', '" + changeName +"')\" id = " + editName +" style = \"display:none\" type = \"button\">Edit</button>" +
-            "<p><input type = \"text\" id = "+ passName +" style = \"display:none\" name = "+ passName +"/></p>" +
+            "<p><input type = \"text\" id = "+ passName +" style = \"display:none\" name = "+ passName +" /></p>" +
             "<button  id =" +changeName+" style = \"display:none\" type = \"submit\">Save Changes</button>" +
             "</form>";
             
