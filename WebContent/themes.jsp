@@ -111,7 +111,7 @@
     		String changeName = "change" + i;
     		String editName = "edit" + i;
     		String passName = "pass" + i;
-            return "<form action = \"HandleThemes\" method = \"post\">" + 
+            return "<form action = \"HandleThemeChanges?id=" + i + "\"" + "method = \"post\">" + 
             "<button onclick=\"myFunction('"+passName+"', '" + changeName +"')\" id = " + editName +" style = \"display:none\" type = \"button\">Edit</button>" +
             "<p><input type = \"text\" id = "+ passName +" style = \"display:none\" name = "+ passName +"/></p>" +
             "<button  id =" +changeName+" style = \"display:none\" type = \"submit\">Save Changes</button>" +
@@ -134,16 +134,20 @@
 	
 	<% Map<Integer, Theme> all = tm.getAll(id); %>
 	<% Iterator<Map.Entry<Integer, Theme>> iter = all.entrySet().iterator(); %>
-	<% int i = 0; %>
 		<% while(iter.hasNext()){ %>
-		<% 		i++; %>
 		<% 		Map.Entry<Integer, Theme> entry = iter.next(); %>
 		<%		int tId = entry.getKey(); %>
 		<%		Theme value = entry.getValue(); %>
-		<% 		out.print(liDecorator(tId, value.getTitle())); %>
+		<%		if(value.getOpen()){											 
+					out.print(liDecorator(tId, value.getTitle()));
+				}else{
+					if(adm != null || usr != null)
+						out.print(liDecorator(tId, value.getTitle()));
+				}
+		%>
 		<%		if(adm != null){ %>
-		<%			out.print(editButtons(i)); %>
-		<%			out.print(showButtons(i)); %>
+		<%			out.print(editButtons(tId)); %>
+		<%			out.print(showButtons(tId)); %>
 		<%		}%>
 		<% } %> 
 </body>

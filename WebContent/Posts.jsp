@@ -110,7 +110,7 @@
     		String changeName = "change" + i;
     		String editName = "edit" + i;
     		String passName = "pass" + i;
-            return "<form action = \"HandlePosts\" method = \"post\">" + 
+            return "<form action = \"HandlePostChanges?id=" + i + "\"" + "method = \"post\">" + 
             "<button onclick=\"myFunction('"+passName+"', '" + changeName +"')\" id = " + editName +" style = \"display:none\" type = \"button\">Edit</button>" +
             "<p><input type = \"text\" id = "+ passName +" style = \"display:none\" name = "+ passName +"/></p>" +
             "<button  id =" +changeName+" style = \"display:none\" type = \"submit\">Save Changes</button>" +
@@ -133,17 +133,15 @@
 	<% PostManager pm = (PostManager)request.getServletContext().getAttribute("post"); %>
 	<% Map<Integer, Post> all = pm.getAll(id); %>
 	<% Iterator<Map.Entry<Integer, Post>> iter = all.entrySet().iterator(); %>
-	<% int i = 0; %>
 		<% while(iter.hasNext()){ %>
-		<% 		i++; %>
 		<% 		Map.Entry<Integer, Post> entry = iter.next(); %>
 		<%		int pId = entry.getKey(); %>
 		<%		Post value = entry.getValue(); %> 		
 		<% 		out.println(liDecorator(value.getUserId(), user.viewProfile(value.getUserId()).GetUsername() + " "));%>	
 		<%		out.println("[ " + value.getDate() + " ]: " + value.getText()); %>
 		<%		if(adm != null){ %>
-		<%			out.print(editButtons(i)); %>
-		<%			out.print(showButtons(i)); %>
+		<%			out.print(editButtons(pId)); %>
+		<%			out.print(showButtons(pId)); %>
 		<%		}%>
 		<% } %> 
 </body>
