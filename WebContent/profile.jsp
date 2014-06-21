@@ -100,9 +100,9 @@
 		<button onclick="myFunction('email', 'change5')" id = "edit5" style = "display:none" type = "button">Edit</button>
 		<p><input type = "text" id = "email" style = "display:none" name = "email"/></p>
 		<button  id = "change5" style = "display:none" type = "submit">Save Changes</button>
-		<p>Avatar: <%= p.GetAvatar() %></p>
+		<p>Avatar:<img src = <%= p.GetAvatar() %>></p>
 		<button onclick="myFunction('avatar', 'change6')" id = "edit6" style = "display:none" type = "button">Edit</button>
-		<p><input type = "text" id = "avatar" style = "display:none" name = "avatar"/></p>
+		<p><input type = "file" id = "avatar" style = "display:none" name = "avatar"/></p>
 		<button  id = "change6" style = "display:none" type = "submit">Save Changes</button>
 		<p>Signature: <%= p.GetSignature() %></p>
 		<button onclick="myFunction('sign', 'change7')" id = "edit7" style = "display:none" type = "button">Edit</button>

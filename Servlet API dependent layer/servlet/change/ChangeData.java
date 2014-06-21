@@ -165,6 +165,168 @@ public class ChangeData extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
+			else if (!email.equals("")) {
+				try {
+					if (us.ModifyEmail(email)) {
+						us.getProfile().SetEmail(email);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + us.userID).forward(request,
+								response);
+					} else {
+						error("email", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (!avatar.equals("")) {
+				try {
+					if (us.ModifyAvatar(avatar)) {
+						us.getProfile().SetAvatar(avatar);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + us.userID).forward(request,
+								response);
+					} else {
+						error("avatar", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (!signature.equals("")) {
+				try {
+					if (us.ModifySignature(signature)) {
+						us.getProfile().SetSignature(signature);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + us.userID).forward(request,
+								response);
+					} else {
+						error("signature", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		if (ad != null) {
+			if (!pass.equals("")) {
+				try {
+					if (ad.modifyPassword(pass)) {
+						ad.getProfile().SetPassword(pass);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + ad.userID).forward(request,
+								response);
+					} else {
+						error("password", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (!firstname.equals("")) {
+				try {
+					if (ad.ModifyFirstname(firstname)) {
+						ad.getProfile().SetFirstName(firstname);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + ad.userID).forward(request,
+								response);
+					} else {
+						error("firstName", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (!lastname.equals("")) {
+				try {
+					if (ad.ModifyLastname(lastname)) {
+						ad.getProfile().SetLastName(lastname);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + ad.userID).forward(request,
+								response);
+					} else {
+						error("lastName", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (!gender.equals("")) {
+				try {
+					if (ad.ModifyGender(gender.charAt(0) + "")) {
+						ad.getProfile().SetGender(gender.charAt(0) + "");
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + ad.userID).forward(request,
+								response);
+					} else {
+						error("gender", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (!birthdate.equals("")) {
+				try {
+					SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+			        java.util.Date parsed = format.parse(birthdate);
+			        java.sql.Date sql = new java.sql.Date(parsed.getTime());
+					if (ad.ModifyBirthdate(sql)) {
+						ad.getProfile().SetBirthDate(sql);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + ad.userID).forward(request,
+								response);
+					} else {
+						error("birthdate", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else if (!email.equals("")) {
+				try {
+					if (ad.ModifyEmail(email)) {
+						ad.getProfile().SetEmail(email);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + ad.userID).forward(request,
+								response);
+					} else {
+						error("email", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (!avatar.equals("")) {
+				try {
+					if (ad.ModifyAvatar(avatar)) {
+						ad.getProfile().SetAvatar(avatar);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + ad.userID).forward(request,
+								response);
+					} else {
+						error("avatar", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (!signature.equals("")) {
+				try {
+					if (ad.ModifySignature(signature)) {
+						ad.getProfile().SetSignature(signature);
+						request.getRequestDispatcher(
+								"profile.jsp?id=" + ad.userID).forward(request,
+								response);
+					} else {
+						error("signature", response);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
