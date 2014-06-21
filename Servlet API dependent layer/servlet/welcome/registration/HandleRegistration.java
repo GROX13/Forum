@@ -62,8 +62,6 @@ public class HandleRegistration extends HttpServlet {
 			Date birthDate = null;
 			try {
 				birthDate = (Date) df.parse(birth);
-				String newDateString = df.format(birthDate);
-				System.out.println(newDateString);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
