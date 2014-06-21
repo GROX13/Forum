@@ -1,3 +1,5 @@
+<%@page import="forum.data.objects.Bann"%>
+<%@page import="forum.data.objects.Warn"%>
 <%@page import="forum.data.objects.Profile"%>
 <%@page import="forum.data.accounts.Admin"%>
 <%@page import="forum.data.accounts.User"%>
@@ -108,11 +110,47 @@
 		<button onclick="myFunction('sign', 'change7')" id = "edit7" style = "display:none" type = "button">Edit</button>
 		<p><input type = "text" id = "sign" style = "display:none" name = "signature"/></p>
 		<button  id = "change7" style = "display:none" type = "submit">Save Changes</button>
-		<% if(adm != null && p.GetUserID() == id){ %>
-			<% adm.viewProfile(id); %>
-			<p>Warn: 
+		</form>
+		<form action = <%= "WarnBann?id=" + id %> method = "post">
+		<% if(adm != null && p.GetUserID() != id){ %>
+			<% Warn warnUser = new Warn(id); %>
+			<% boolean warned = warnUser.isWarned(); %>
+			<p>Warn: <%= warned %></p>
+			<select id = "warnUser" name = "warnUser" style = "display:none">
+					<option value = "" selected></option>
+  					<option value = 1> 1 Month </option>
+					<option value = 2> 2 Month </option>
+					<option value = 3> 3 Month </option>
+			</select>
+			<select id = "freq" name = "freq" style = "display:none">
+					<option value = "" selected></option>
+  					<option value = 5> 5 Post </option>
+					<option value = 10> 10 Post </option>
+					<option value = 15> 15 Post </option>
+			</select>
+				<button  id = "warn" style = "display:none" type = "submit">Warn User</button>
+			<% 	if(!warned){ %>
+					<script> 
+		 				myFunction("warn", "warnUser", "freq");
+		 			</script>
+		 	<% } %>
+		 	<% Bann bannUser = new Bann(id); %>
+			<% boolean banned = bannUser.isBanned(); %>
+			<p>Bann: <%= banned %></p>
+			<select id = "bannUser" name = "bannUser" style = "display:none">
+					<option value = "" selected></option>
+  					<option value = 1> 1 Month </option>
+					<option value = 2> 2 Month </option>
+					<option value = 3> 3 Month </option>
+			</select>
+				<button  id = "bann" style = "display:none" type = "submit">Bann User</button>
+			<% 	if(!banned){ %>
+					<script> 
+		 				myFunction("bann", "bannUser");
+		 			</script>
+		 	<% } %>
 		<% } %>
-	</form>
+		</form>
 	<% if(p.GetUserID() == id) { %>
 		 <script> 
 		 	myFunction("edit","edit1", "edit2", "edit3", "edit4");
