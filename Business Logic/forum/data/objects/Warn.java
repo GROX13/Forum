@@ -99,7 +99,7 @@ public class Warn {
 		
 		ResultSet resultSet = DBManager.executeOrderedSelect(DataBaseInfo.MYSQL_TABLE_POSTS, fields, 
 				values, clause, DataBaseInfo.MYSQL_POSTS_ADD_DATE, 0, 1, false);
-		
+		this.frequency = frequency;
 		if(resultSet.next()){
 			int lastPostID = resultSet.getInt(DataBaseInfo.MYSQL_TABLE_ID);
 			clearArrays();
@@ -162,6 +162,7 @@ public class Warn {
 			id = rs.getInt(DataBaseInfo.MYSQL_TABLE_ID);
 			start_date = rs.getDate(DataBaseInfo.MYSQL_START_DATE);
 			end_date = rs.getDate(DataBaseInfo.MYSQL_END_DATE);
+			frequency = rs.getInt(DataBaseInfo.MYSQL_WARN_FREQUENCY);
 			
 			Date now = currentDate();
 			if (end_date.compareTo(now) == -1) {

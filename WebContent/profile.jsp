@@ -136,6 +136,7 @@
 		 	<% } %>
 		 	<% if(warned){ %>
 		 		<p>Warned till : <%= warnUser.getEnd_date() %></p>
+		 		<p>Allowed number of posts : <%= warnUser.getFrequency() %></p>
 		 		<button  id = "unWarn" type = "submit" name = "remove" value = "warn">Remove Warn</button>
 		 	<% } %>
 		 	<% Bann bannUser = new Bann(id); %>
