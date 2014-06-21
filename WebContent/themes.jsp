@@ -49,7 +49,7 @@
 			<% 
 			
 			out.print(
-					"<form action = \"HandleThemes\" method = \"post\">" +	
+					"<form action = \"HandleThemes?id=" + id + "\""+ "method = \"post\">" +	
 					  "<p>" +
 							"<label for = \"theme\"> Theme: </label>" +	
 							"<input type = \"text\" id = \"theme\" name = \"theme\" required>" +	
@@ -75,7 +75,7 @@
 		<% 
 		
 		out.print(
-				"<form action = \"HandleThemes\" method = \"post\">" +	
+				"<form action = \"HandleThemes?id=" + id + "\""+ "method = \"post\">" +	
 				  "<p>" +
 						"<label for = \"theme\"> Theme: </label>" +	
 						"<input type = \"text\" id = \"theme\" name = \"theme\" required>" +	

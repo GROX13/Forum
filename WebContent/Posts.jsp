@@ -51,7 +51,7 @@
 			<%
 			
 			out.print(
-					"<form action = \"HandlePosts\" method = \"post\">" +	
+					"<form action = \"HandlePosts?id=" + id + "\""+ "method = \"post\">" +		
 					  "<p>" +
 							"<label for = \"post\"> Post: </label>" +	
 							"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
@@ -74,7 +74,7 @@
 		<% 
 		
 		out.print(
-				"<form action = \"HandlePosts\" method = \"post\">" +	
+				"<form action = \"HandlePosts?id=" + id + "\""+ "method = \"post\">" +	
 				  "<p>" +
 						"<label for = \"post\"> Post: </label>" +	
 						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
