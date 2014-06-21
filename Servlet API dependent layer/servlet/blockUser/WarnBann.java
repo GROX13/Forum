@@ -54,7 +54,7 @@ public class WarnBann extends HttpServlet {
 		int freq = 0;
 		if(!numPosts.equals(""))
 			freq = Integer.parseInt(numPosts);
-		if (!warnTime.equals("")) {
+		if (!warnTime.equals("") && freq != 0) {
 			Warn warnUser = new Warn(id);
 			Calendar now = java.util.Calendar.getInstance(); 
 			Date timeNow = new Date(now.getTimeInMillis());

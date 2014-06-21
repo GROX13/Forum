@@ -87,7 +87,7 @@ public class Warn {
 		ArrayList<Object> values = new ArrayList<Object>();
 		ArrayList<String> clause = new ArrayList<String>();
 		fields.add(DataBaseInfo.MYSQL_USERID);
-		values.add(id);
+		values.add(userID);
 		DBManager.executeRemove(DataBaseInfo.MYSQL_TABLE_WARN, fields, clause, values);
 		warned = false;
 	}
