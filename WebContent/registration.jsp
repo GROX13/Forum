@@ -4,7 +4,23 @@
 <html>
 	<head>
 		<meta http-equiv = "Content-Type" content = "text/html; charset = UTF-8">
-		<title> Welcome </title>	
+		<title> Welcome </title>
+		<script type="text/javascript">
+		function populatedropdown(dayfield, monthfield, yearfield){
+			var today=new Date();
+			var dayfield=document.getElementById(dayfield);
+			var monthfield=document.getElementById(monthfield);
+			var yearfield=document.getElementById(yearfield);
+			for (var i=1; i<=31; i++)
+				dayfield.options[i-1]=new Option(i, i);
+			for (var m=1; m<=12; m++)
+				monthfield.options[m-1]=new Option(m, m);
+			var thisyear=today.getFullYear();
+			for (var y=1; y<=100; y++){
+				yearfield.options[y-1]=new Option(thisyear, thisyear--);
+			}
+		}
+		</script>	
 	</head>
 	<body>
 		<h1> Register </h1>
@@ -31,7 +47,15 @@
 			</p>
 			<p>
 				<label for = "birth"> Birth Date: </label>	
-				<input type = "date" id = "birth" name = "birth" required>
+				<select id="daydropdown"  name = "daydropdown" required>
+				</select> 
+				<select id="monthdropdown" name = "monthdropdown" required>
+				</select> 
+				<select id="yeardropdown" name = "yeardropdown" required>
+				</select> 
+				<script> 
+				 	populatedropdown("daydropdown", "monthdropdown", "yeardropdown");
+				</script>
 			</p>
 			<p>
 				<label for = "signiture"> Signiture: </label>	

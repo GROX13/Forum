@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
@@ -57,18 +58,26 @@ public class HandleRegistration extends HttpServlet {
 			String email = request.getParameter("email");
 			String signature = request.getParameter("signiture");
 			String gender = request.getParameter("gender");
-			String birth = request.getParameter("birth");
-			DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-			Date birthDate = null;
+			String day = request.getParameter("daydropdown");
+			String month = request.getParameter("monthdropdown");
+			String year = request.getParameter("yeardropdown");
+			if(month.length() == 1)
+				month = "0" + month;
+			if(day.length() == 1)
+				day = "0" + day;
+			String birthdate = year + month + day;
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+	        java.util.Date parsed = null;
 			try {
-				birthDate = (Date) df.parse(birth);
-			} catch (Exception e) {
+				parsed = format.parse(birthdate);
+			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+	        java.sql.Date sql = new java.sql.Date(parsed.getTime());
 			int userType = 0;
 			if (am.createAccount(username, password, avatar, firstName,
 					lastName, email, signature, "" + gender.charAt(0),
-					birthDate, userType)) {
+					sql, userType)) {
 				User usr = new User(username);
 				request.getSession().setAttribute("user", usr);
 				request.getRequestDispatcher("category.jsp").forward(request,

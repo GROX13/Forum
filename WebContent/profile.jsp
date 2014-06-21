@@ -108,6 +108,10 @@
 		<button onclick="myFunction('sign', 'change7')" id = "edit7" style = "display:none" type = "button">Edit</button>
 		<p><input type = "text" id = "sign" style = "display:none" name = "signature"/></p>
 		<button  id = "change7" style = "display:none" type = "submit">Save Changes</button>
+		<% if(adm != null && p.GetUserID() == id){ %>
+			<% adm.viewProfile(id); %>
+			<p>Warn: 
+		<% } %>
 	</form>
 	<% if(p.GetUserID() == id) { %>
 		 <script> 
