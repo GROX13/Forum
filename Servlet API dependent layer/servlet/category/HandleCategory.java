@@ -52,6 +52,7 @@ public class HandleCategory extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		request.getRequestDispatcher("category.jsp").forward(request, response);
 	}
 
