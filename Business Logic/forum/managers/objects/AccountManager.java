@@ -124,6 +124,22 @@ public class AccountManager {
 		clause.clear();
 	}
 
+	public int getUserID(String username) {
+		int id = 0;
+		clearArrays();
+		fields.add(DataBaseInfo.MYSQL_USERS_USERNAME);
+		values.add(username);
+		ResultSet resultSet = DBManager.executeSelectWhere(
+				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
+		try {
+			id = resultSet.getInt(DataBaseInfo.MYSQL_TABLE_ID);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+
 	public boolean isAdmin(String username) {
 		// TODO Auto-generated method stub
 		try {

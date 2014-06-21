@@ -78,10 +78,10 @@ public class User {
 	public boolean isAdmin() {
 		return isAdmin;
 	}
-	
-	public Profile viewProfile(int ID) throws SQLException{
+
+	public Profile viewProfile(int ID) throws SQLException {
 		Profile profile = null;
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_USERS, ID))
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_USERS, ID))
 			return profile;
 		ProfileManager pm = new ProfileManager();
 		profile = pm.getAll().get(ID);
@@ -123,18 +123,18 @@ public class User {
 				themeIsOpen);
 		return true;
 	}
-	
-	public Category viewcaCategory(int categoryID) throws SQLException{
+
+	public Category viewcaCategory(int categoryID) throws SQLException {
 		Category category = null;
-		if(!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
+		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_CATEGORIES, categoryID))
 			return category;
 		CategoryManager cm = new CategoryManager();
 		Map<Integer, Category> categoryMap = cm.getAll();
 		category = categoryMap.get(categoryID);
-		
+
 		return category;
 	}
-	
+
 	public Theme viewTheme(int themeID) throws SQLException {
 		Theme theme = null;
 
@@ -231,8 +231,7 @@ public class User {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Profile getProfile() throws SQLException {
-
+	public Profile getProfile() {
 		return profile;
 	}
 
@@ -244,9 +243,8 @@ public class User {
 	 * @return
 	 */
 
-	public ArrayList<Message> seeFullConversation(Message message) {
-		MessageManager messageManager = new MessageManager(
-				message.getMessageReceiverID(), message.getMessageSenderID());
+	public ArrayList<Message> seeFullConversation(int receiverID, int senderID) {
+		MessageManager messageManager = new MessageManager(receiverID, senderID);
 		return messageManager.receiveFullConversation();
 	}
 
