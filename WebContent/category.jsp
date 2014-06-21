@@ -64,61 +64,21 @@
 		<% 
 	}
 	%>
-	<script>
-	function myFunction(arg1, arg2, arg3, arg4, arg5) {
-		 document.getElementById(arg1).style.display = "block";
-		 document.getElementById(arg2).style.display = "block";
-		 document.getElementById(arg3).style.display = "block";
-		 document.getElementById(arg4).style.display = "block";
-		 document.getElementById(arg5).style.display = "block";
-	}
-	</script>
 	<p>Categories</p>
 	<%!
         public String liDecorator(int id, String name){
             return "<li><a href=\"themes.jsp?id=" + id + "\">" + name + "</a></li>";
         }
     %>
-    
-    <%!
-        public String editButtons(int i){
-    		String changeName = "change" + i;
-    		String editName = "edit" + i;
-    		String passName = "pass" + i;
-            return "<form action = \"HandleCategory\" method = \"post\">" + 
-            "<button onclick=\"myFunction('"+passName+"', '" + changeName +"')\" id = " + editName +" style = \"display:none\" type = \"button\">Edit</button>" +
-            "<p><input type = \"text\" id = "+ passName +" style = \"display:none\" name = "+ passName +"/></p>" +
-            "<button  id =" +changeName+" style = \"display:none\" type = \"submit\">Save Changes</button>" +
-            "</form>";
-            
-        }
-    %>
-    
-     <%!
-        public String showButtons(int i){
-    	 	String editName = "edit" + i;
-            return "<script>" + 
-		 	"myFunction('" + editName +"')" +
-			"</script>";
-            
-        }
-    %>
-    
 	<ul>
 	    <% CategoryManager cm = (CategoryManager)request.getServletContext().getAttribute("categories"); %>
 		<% Map<Integer, Category> all = cm.getAll(); %>
 		<% Iterator<Map.Entry<Integer, Category>> iter = all.entrySet().iterator(); %>
-		<% int i = 0; %>
 		<% while(iter.hasNext()){ %>
-		<% i++; %>
 		<% 		Map.Entry<Integer, Category> entry = iter.next(); %>
 		<%		int id = entry.getKey(); %>
 		<%		Category value = entry.getValue(); %>
 		<%		out.print(liDecorator(id, value.getTitle()));; %>
-	<%--	<%		if(adm.getProfile() != null){ %>
-		<%			out.print(editButtons(i)); %>
-		<%			out.print(showButtons(i)); %>
-		<%		}%> --%>
 		<% } %> 
 	</ul>
 </body>
