@@ -50,6 +50,7 @@ public class WarnBann extends HttpServlet {
 		String warnTime = request.getParameter("warnUser");
 		String bannTime = request.getParameter("bannUser");
 		String numPosts = request.getParameter("freq");
+		String act = request.getParameter("remove");
 		int freq = 0;
 		if(!numPosts.equals(""))
 			freq = Integer.parseInt(numPosts);
@@ -79,6 +80,16 @@ public class WarnBann extends HttpServlet {
 				bannUser.BannUser(temp);
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}
+		}
+		if(act != null){
+			if(act.equals("bann")){
+				Bann bannUser = new Bann(id);
+				bannUser.removeBann();
+			}
+			if(act.equals("warn")){
+				Warn warnUser = new Warn(id);
+				warnUser.removeWarn();
 			}
 		}
 		request.getRequestDispatcher(

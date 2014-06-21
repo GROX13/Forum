@@ -134,6 +134,10 @@
 		 				myFunction("warn", "warnUser", "freq");
 		 			</script>
 		 	<% } %>
+		 	<% if(warned){ %>
+		 		<p>Warned till : <%= warnUser.getEnd_date() %></p>
+		 		<button  id = "unWarn" type = "submit" name = "remove" value = "warn">Remove Warn</button>
+		 	<% } %>
 		 	<% Bann bannUser = new Bann(id); %>
 			<% boolean banned = bannUser.isBanned(); %>
 			<p>Bann: <%= banned %></p>
@@ -148,6 +152,10 @@
 					<script> 
 		 				myFunction("bann", "bannUser");
 		 			</script>
+		 	<% } %>
+		 	<% if(banned){ %>
+		 		<p>Banned till : <%= bannUser.getEnd_date() %></p>
+		 		<button  id = "unBann" type = "submit" name = "remove" value = "bann">Remove Bann</button>
 		 	<% } %>
 		<% } %>
 		</form>
