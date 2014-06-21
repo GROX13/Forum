@@ -112,15 +112,15 @@
 		<% Iterator<Map.Entry<Integer, Category>> iter = all.entrySet().iterator(); %>
 		<% int i = 0; %>
 		<% while(iter.hasNext()){ %>
-		<% i++; %>
+		<% 		i++; %>
 		<% 		Map.Entry<Integer, Category> entry = iter.next(); %>
 		<%		int id = entry.getKey(); %>
 		<%		Category value = entry.getValue(); %>
 		<%		out.print(liDecorator(id, value.getTitle()));; %>
-	<%--	<%		if(adm.getProfile() != null){ %>
+		<%		if(adm != null){ %>
 		<%			out.print(editButtons(i)); %>
 		<%			out.print(showButtons(i)); %>
-		<%		}%> --%>
+		<%		}%> 
 		<% } %> 
 	</ul>
 </body>
