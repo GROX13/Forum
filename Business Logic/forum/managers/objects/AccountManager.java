@@ -132,6 +132,7 @@ public class AccountManager {
 		ResultSet resultSet = DBManager.executeSelectWhere(
 				DataBaseInfo.MYSQL_TABLE_USERS, fields, values, clause);
 		try {
+			resultSet.next();
 			id = resultSet.getInt(DataBaseInfo.MYSQL_TABLE_ID);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
