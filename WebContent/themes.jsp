@@ -120,6 +120,12 @@
         }
     %>
     
+    <%!
+        public String removeTheme(int i){
+            return "<a href =\"HandleThemeRemove?id=" + i + "\">" + "Remove Theme </a>";
+        }
+    %>
+    
      <%!
         public String showButtons(int i){
     	 	String editName = "edit" + i;
@@ -147,6 +153,7 @@
 		%>
 		<%		if(adm != null){ %>
 		<%			out.print(editButtons(tId)); %>
+		<%			out.print(removeTheme(tId)); %>
 		<%			out.print(showButtons(tId)); %>
 		<%		}%>
 		<% } %> 

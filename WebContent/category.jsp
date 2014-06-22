@@ -97,8 +97,15 @@
     %>
     
      <%!
+        public String removeCategory(int i){
+            return "<a href =\"HandleCategoryRemove?id=" + i + "\">" + "Remove Category </a>";
+        }
+    %>
+    
+     <%!
         public String showButtons(int i){
     	 	String editName = "edit" + i;
+    	 //	String removeName = "remove" + i;
             return "<script>" + 
 		 	"myFunction('" + editName +"')" +
 			"</script>";
@@ -117,6 +124,7 @@
 		<%		out.print(liDecorator(id, value.getTitle()));; %>
 		<%		if(adm != null){ %>
 		<%			out.print(editButtons(id)); %>
+		<%			out.print(removeCategory(id)); %>
 		<%			out.print(showButtons(id)); %>
 		<%		}%> 
 		<% } %> 

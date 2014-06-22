@@ -119,6 +119,12 @@
         }
     %>
     
+    <%!
+        public String removePost(int i){
+            return "<a href =\"HandlePostRemove?id=" + i + "\">" + "Remove Post </a>";
+        }
+    %>
+    
      <%!
         public String showButtons(int i){
     	 	String editName = "edit" + i;
@@ -141,6 +147,7 @@
 		<%		out.println("[ " + value.getDate() + " ]: " + value.getText()); %>
 		<%		if(adm != null){ %>
 		<%			out.print(editButtons(pId)); %>
+		<%   		out.print(removePost(pId)); %>
 		<%			out.print(showButtons(pId)); %>
 		<%		}%>
 		<% } %> 
