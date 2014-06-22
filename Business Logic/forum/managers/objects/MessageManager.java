@@ -1,5 +1,7 @@
 package forum.managers.objects;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import forum.data.objects.Message;
@@ -16,7 +18,6 @@ public class MessageManager {
 	private int sender;
 	private DataBaseManager DBManager;
 	private ArrayList<Message> messages;
-	private static final int SHOWN_NUMBER_OF_MESSAGES = 20;
 
 	public MessageManager(int receiverID, int senderID) {
 		DBManager = new DataBaseManager(DataBaseInfo.MYSQL_DATABASE_NAME);
@@ -63,8 +64,30 @@ public class MessageManager {
 	}
 
 	public ArrayList<Message> receiveFullConversation() {
-		if (messages.size() == SHOWN_NUMBER_OF_MESSAGES) {
-
+		ArrayList<String> fields = new ArrayList<String>();
+		ArrayList<Object> values = new ArrayList<Object>();
+		ArrayList<String> clause = new ArrayList<String>();
+		fields.add(DataBaseInfo.MYSQL_MESSAGE_SENDER);
+		fields.add(DataBaseInfo.MYSQL_MESSAGE_RECEIVER);
+		values.add(sender);
+		values.add(receiver);
+		fields.add(DataBaseInfo.MYSQL_MESSAGE_SENDER);
+		fields.add(DataBaseInfo.MYSQL_MESSAGE_RECEIVER);
+		values.add(receiver);
+		values.add(sender);
+		clause.add("AND");
+		clause.add("OR");
+		clause.add("AND");
+		ResultSet rs = DBManager.executeOrderedSelect(
+				DataBaseInfo.MYSQL_TABLE_MESSAGE, fields, values, clause,
+				DataBaseInfo.MYSQL_MESSAGE_SEND_DATE, 0, 20, false);
+		try {
+			while (rs.next()) {
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return messages;
 	}
