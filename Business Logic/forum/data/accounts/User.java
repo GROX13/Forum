@@ -243,8 +243,8 @@ public class User {
 	 * @return
 	 */
 
-	public ArrayList<Message> seeFullConversation(int receiverID, int senderID) {
-		MessageManager messageManager = new MessageManager(receiverID, senderID);
+	public ArrayList<Message> seeFullConversation(int chatterID) {
+		MessageManager messageManager = new MessageManager(profile.GetUserID(), chatterID);
 		return messageManager.receiveFullConversation();
 	}
 
