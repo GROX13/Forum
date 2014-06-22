@@ -43,6 +43,7 @@ public class HandleChatroom extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
 		User usr = (User) request.getSession().getAttribute("user");
 		Admin adm = (Admin) request.getSession().getAttribute("admin");
 		String messageText = request.getParameter("message");
