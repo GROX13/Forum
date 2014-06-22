@@ -1,4 +1,4 @@
-package servlet.chatroom;
+package servlet.chat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,19 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import forum.data.accounts.Admin;
 import forum.data.accounts.User;
-import forum.managers.objects.AccountManager;
 
 /**
- * Servlet implementation class HandleChat
+ * Servlet implementation class HandleChatroom
  */
-@WebServlet("/HandleChat")
-public class HandleChat extends HttpServlet {
+@WebServlet("/HandleChatroom")
+public class HandleChatroom extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public HandleChat() {
+	public HandleChatroom() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -46,23 +45,16 @@ public class HandleChat extends HttpServlet {
 		// TODO Auto-generated method stub
 		User usr = (User) request.getSession().getAttribute("user");
 		Admin adm = (Admin) request.getSession().getAttribute("admin");
-		String username = request.getParameter("username");
 		String messageText = request.getParameter("message");
-		AccountManager am = (AccountManager) getServletContext().getAttribute(
-				"account_manager");
-		int ID = am.getUserID(username);
-		if (ID != 0) {
-			if (usr != null) {
-				usr.sendMessage(ID, messageText, new ArrayList<String>(),
-						new ArrayList<String>());
-				request.getSession().setAttribute("chatter_id", ID);
-			} else if (adm != null) {
-				adm.sendMessage(ID, messageText, new ArrayList<String>(),
-						new ArrayList<String>());
-				request.getSession().setAttribute("chatter_id", ID);
-			}
+		int ID = (Integer) request.getSession().getAttribute("chatter_id");
+		if (usr != null) {
+			usr.sendMessage(ID, messageText, new ArrayList<String>(),
+					new ArrayList<String>());
+		} else if (adm != null) {
+			adm.sendMessage(ID, messageText, new ArrayList<String>(),
+					new ArrayList<String>());
 		}
-		request.getRequestDispatcher("chat.jsp").forward(
-				request, response);
+		request.getRequestDispatcher("chatroom.jsp").forward(request, response);
 	}
+
 }

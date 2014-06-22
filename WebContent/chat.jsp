@@ -16,27 +16,5 @@
 			Message: <input type="text" name="message"><br>
 			<input type="submit" value="Submit">
 		</form>
-		<% 
-		Object ID = request.getSession().getAttribute("chatter_id"); 
-		if(ID != null) {
-			int id = Integer.parseInt(ID.toString());
-			if (id > 0) {
-				ArrayList<Message> mess = null;
-				User usr = (User) request.getSession().getAttribute("user");
-				Admin adm = (Admin) request.getSession().getAttribute("admin");
-				if (usr != null) {
-					mess = usr.seeFullConversation(id);
-				} else if(adm != null) {
-					mess = adm.seeFullConversation(id);
-				}
-				if (mess != null) {
-					for (int i = 0; i < mess.size(); i++) {
-						out.print("Sent:" + mess.get(i).getMessageSendDate() + "<br>");
-						out.print("Sent:" + mess.get(i).getMessageText() + "<br>");
-					}
-				}
-			}
-		}
-		%>
 	</body>
 </html>
