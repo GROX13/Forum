@@ -55,18 +55,14 @@ public class HandleChat extends HttpServlet {
 			if (usr != null) {
 				usr.sendMessage(ID, messageText, new ArrayList<String>(),
 						new ArrayList<String>());
-				request.getSession().setAttribute(
-						"message_list",
-						usr.seeFullConversation(ID, usr.getProfile()
-								.GetUserID()));
+				request.getSession().setAttribute("chatter_id", ID);
 			} else if (adm != null) {
 				adm.sendMessage(ID, messageText, new ArrayList<String>(),
 						new ArrayList<String>());
-				request.getSession().setAttribute(
-						"message_list",
-						adm.seeFullConversation(ID, adm.getProfile()
-								.GetUserID()));
+				request.getSession().setAttribute("chatter_id", ID);
 			}
 		}
+		request.getRequestDispatcher("chat.jsp").forward(
+				request, response);
 	}
 }

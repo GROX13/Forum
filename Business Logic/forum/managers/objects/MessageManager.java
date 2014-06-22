@@ -64,6 +64,7 @@ public class MessageManager {
 	}
 
 	public ArrayList<Message> receiveFullConversation() {
+		messages = new ArrayList<Message>();
 		ArrayList<String> fields = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		ArrayList<String> clause = new ArrayList<String>();
@@ -83,7 +84,13 @@ public class MessageManager {
 				DataBaseInfo.MYSQL_MESSAGE_SEND_DATE, 0, 20, false);
 		try {
 			while (rs.next()) {
-				
+				messages.add(new Message(
+						rs.getInt(DataBaseInfo.MYSQL_TABLE_ID), rs
+								.getInt(DataBaseInfo.MYSQL_MESSAGE_SENDER), rs
+								.getInt(DataBaseInfo.MYSQL_MESSAGE_RECEIVER),
+						rs.getString(DataBaseInfo.MYSQL_MESSAGE_MESSAGE), rs
+								.getDate(DataBaseInfo.MYSQL_MESSAGE_SEND_DATE),
+						new ArrayList<String>(), new ArrayList<String>()));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

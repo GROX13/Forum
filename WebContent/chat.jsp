@@ -15,11 +15,11 @@
 			<input type="submit" value="Submit">
 		</form>
 		<% 
-		ArrayList<Message> list = (ArrayList<Message>) request.getSession().getAttribute("message_list"); 
-		if (list != null) {
-			for (int i = 0; i < list.size(); i++){
-				out.print("Message: " + list.get(i).getMessageText() 
-						+ " Send:" + list.get(i).getMessageSendDate() + "<br>");
+		Object ID = request.getSession().getAttribute("chatter_id"); 
+		if(ID != null) {
+			int id = Integer.parseInt(ID.toString());
+			if (id > 0) {
+				out.print("hdsss");
 			}
 		}
 		%>
