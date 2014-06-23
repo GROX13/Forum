@@ -47,7 +47,7 @@ public class TestPost {
 
 		next = new Post(3, 5, 4, "new post", new Date(0),
 				new ArrayList<String>());
-		assertEquals(false, another.equals(next));
+		assertEquals(false, another.equals(next)); 
 	}
 
 	@Test

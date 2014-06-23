@@ -75,21 +75,33 @@
 			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 			<p><a href ="log_out.jsp">Log Out</a></p>
 		<% 
+<<<<<<< HEAD
+		/*out.print(
+			"<form action = \"HandlePosts?id=" + id + "\""+ "method = \"post\">" +	
+=======
 		Bann bann = new Bann(p.GetUserID());
 		Warn warn = new Warn(p.GetUserID());
 		if(!bann.isBanned() && warn.canPost(new Date(System.currentTimeMillis()))){
 		out.print(
 				"<form action = \"HandlePosts?id=" + id + "\""+ "method = \"post\">" +	
+>>>>>>> origin/master
 				  "<p>" +
 						"<label for = \"post\"> Post: </label>" +	
 						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
-						"<label for = \"images\"> Images: </label>" +
-						"<input type = \"file\" name = \"imageFiles\" >" +
-						"<label for = \"videos\"> Videos: </label>" +
-						"<input type = \"file\" name = \"videoFiles\" >" +
+						
 						"<input type = \"submit\" value = \"ADD\">" +	
 					"</p>" +	
-				"</form>");
+				"</form>");*/
+				out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
+						"<p>" +
+						"<label for = \"post\"> Post: </label>" +	
+						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
+							
+						"File:" +
+	           			    " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
+	            		    "<input type=\"submit\" value=\"Upload\" name=\"upload\" id=\"upload\" />" +
+	            		    "</p>" +
+	            			"</form>");
 		
 			}
 		}%>

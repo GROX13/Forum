@@ -12,13 +12,11 @@ public class DataBaseInfo {
 	// MySQL DataBase table names
 	public static final String MYSQL_TABLE_USERS = "users";
 	public static final String MYSQL_TABLE_MESSAGE = "message";
-	public static final String MYSQL_TABLE_MESSAGE_IMAGES = "message_images";
-	public static final String MYSQL_TABLE_MESSAGE_VIDEOS = "message_videos";
+	public static final String MYSQL_TABLE_MESSAGE_FILES = "message_files";
 	public static final String MYSQL_TABLE_CATEGORIES = "categories";
 	public static final String MYSQL_TABLE_THEME = "theme";
 	public static final String MYSQL_TABLE_POSTS = "posts";
-	public static final String MYSQL_TABLE_POST_IMAGES = "post_images";
-	public static final String MYSQL_TABLE_POST_VIDEOS = "post_videos";
+	public static final String MYSQL_TABLE_POST_FILES = "post_files";
 	public static final String MYSQL_TABLE_WARN = "warn";
 	public static final String MYSQL_TABLE_BANN = "bann";
 
@@ -45,8 +43,7 @@ public class DataBaseInfo {
 	public static final String MYSQL_MESSAGE_FILES_MESSAGEID = "message_id";
 	public static final String MYSQL_POST_FILES_POSTID = "post_id";
 
-	public static final String MYSQL_IMAGE_FILE = "image_file";
-	public static final String MYSQL_VIDEO_FILE = "video_file";
+	public static final String MYSQL_FILE = "file";
 
 	public static final String MYSQL_CATEGORIES_TITLE = "title";
 	public static final String MYSQL_CATEGORIES_DESCRIPTION = "description";

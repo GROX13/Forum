@@ -28,20 +28,12 @@ CREATE TABLE message (
 	FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
 
-CREATE TABLE message_images (
+CREATE TABLE message_files (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	image_file TEXT,
+	file TEXT,
 	message_id INT NOT NULL,
 	FOREIGN KEY (message_id) REFERENCES message(id)
 );
-
-CREATE TABLE message_videos (
-	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	video_file TEXT,
-	message_id INT NOT NULL,
-	FOREIGN KEY (message_id) REFERENCES message(id)
-);
-
 
 CREATE TABLE categories (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -71,16 +63,9 @@ CREATE TABLE posts (
 	FOREIGN KEY (theme_id) REFERENCES theme(id)
 );
 
-CREATE TABLE post_images (
+CREATE TABLE post_files (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	image_file TEXT,
-	post_id INT NOT NULL,
-	FOREIGN KEY (post_id) REFERENCES posts(id)
-);
-
-CREATE TABLE post_videos (
-	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	video_file TEXT,
+	file TEXT,
 	post_id INT NOT NULL,
 	FOREIGN KEY (post_id) REFERENCES posts(id)
 );
@@ -161,12 +146,10 @@ INSERT INTO posts (author_id, theme_id, post)
 
 
 SELECT * FROM warn;
+SELECT * FROM post_files;
 SELECT * FROM bann;
 SELECT * FROM users;
 SELECT * FROM categories;
 SELECT * FROM theme;
 SELECT * FROM message;
-SELECT * FROM message_images;
-SELECT * FROM message_videos;
-SELECT * FROM post_images;
-SELECT * FROM post_videos;
+SELECT * FROM message_files;

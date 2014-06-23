@@ -73,10 +73,10 @@ public class TestPostManager extends DataBaseInfo {
 		ArrayList<Object> valueImg = new ArrayList<Object>();
 		columnImg.add(MYSQL_POST_FILES_POSTID);
 		valueImg.add(id);
-		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_IMAGES, columnImg,
+		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_FILES, columnImg,
 				valueImg, clause);
 		resImgs.next();
-		assertEquals("newImage", resImgs.getString(MYSQL_IMAGE_FILE));
+		assertEquals("newImage", resImgs.getString(MYSQL_FILE));
 
 		pm.remove(id);
 		tm.remove(tId);
@@ -85,17 +85,15 @@ public class TestPostManager extends DataBaseInfo {
 
 	@Test
 	public void testChange() throws SQLException {
-		ArrayList<String> imgs = new ArrayList<String>();
-		ArrayList<String> videos = new ArrayList<String>();
-		imgs.add("newImage");
-		videos.add("newVideo");
-		pm.add(userId, tId, "new post", imgs, videos);
+		ArrayList<String> files = new ArrayList<String>();
+		files.add("newImage");
+		pm.add(userId, tId, "new post", files);
 
 		ArrayList<String> columns = new ArrayList<String>();
 		ArrayList<Object> value = new ArrayList<Object>();
 		ArrayList<String> newImgs = new ArrayList<String>();
 		newImgs.add("img");
-		columns.add(MYSQL_TABLE_POST_IMAGES);
+		columns.add(MYSQL_TABLE_POST_FILES);
 		columns.add(MYSQL_POSTS_POST_TEXT);
 		value.add(newImgs);
 		value.add("my post");
@@ -119,11 +117,11 @@ public class TestPostManager extends DataBaseInfo {
 		ArrayList<Object> valueImg = new ArrayList<Object>();
 		columnImg.add(MYSQL_POST_FILES_POSTID);
 		valueImg.add(id);
-		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_IMAGES, columnImg,
+		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_FILES, columnImg,
 				valueImg, clause);
 		resImgs.next();
 		assertEquals(true,
-				resImgs.getString(MYSQL_IMAGE_FILE).equals("img"));
+				resImgs.getString(MYSQL_FILE).equals("img"));
 		
 		pm.remove(id);
 		tm.remove(tId);
@@ -132,13 +130,13 @@ public class TestPostManager extends DataBaseInfo {
 
 	@Test
 	public void testGetAllAndChange() throws SQLException {
-		ArrayList<String> imgs = new ArrayList<String>();
-		ArrayList<String> videos = new ArrayList<String>();
-		imgs.add("newImage");
-		videos.add("newVideo");
-		pm.add(userId, tId, "new post", imgs, videos);
-		imgs.add("img");
-		pm.add(userId, tId, "another post", imgs, videos);
+		ArrayList<String> files = new ArrayList<String>();
+		files.add("img");
+		pm.add(userId, tId, "another post", files);
+		
+		ArrayList<String> fil = new ArrayList<String>();
+		fil.add("images");
+		pm.add(userId, tId, "another postss", fil);
 		
 		Map<Integer, Post> all = pm.getAll(tId);
 		
@@ -163,19 +161,14 @@ public class TestPostManager extends DataBaseInfo {
 		pm.change(firstId, columns, values);
 		assertEquals(true, all.get(firstId).getText().equals("my posts"));
 		
-		columns.add(MYSQL_TABLE_POST_VIDEOS);
-		ArrayList<String> video = new ArrayList<String>();
-		video.add("myVideo");
-		values.add(video);
-		columns.add(MYSQL_TABLE_POST_IMAGES);
-		ArrayList<String> img = new ArrayList<String>();
-		img.add("myp");
-		img.add("newP");
-		values.add(img);
+		columns.add(MYSQL_TABLE_POST_FILES);
+		ArrayList<String> file = new ArrayList<String>();
+		file.add("myp");
+		file.add("newP");
+		values.add(file);
 		pm.change(secondId, columns, values);
 		assertEquals(true, all.get(secondId).getText().equals("my posts"));
-		assertEquals(true, all.get(secondId).getVideos().equals(video));
-		assertEquals(true, all.get(secondId).getImgs().equals(img));
+		assertEquals(true, all.get(secondId).getFiles().equals(file));
 		
 		pm.remove(firstId);
 		pm.remove(secondId);
@@ -185,11 +178,9 @@ public class TestPostManager extends DataBaseInfo {
 
 	@Test
 	public void testRemove() throws SQLException {
-		ArrayList<String> imgs = new ArrayList<String>();
-		ArrayList<String> videos = new ArrayList<String>();
-		imgs.add("newImage");
-		videos.add("newVideo");
-		pm.add(userId, tId, "new post", imgs, videos);
+		ArrayList<String> files = new ArrayList<String>();
+		files.add("newImage");
+		pm.add(userId, tId, "new post", files);
 		
 		ResultSet result = data.executeOrderedSelect(MYSQL_TABLE_POSTS,
 				fields, values, clause, MYSQL_TABLE_ID, 0, 1, false);
@@ -209,17 +200,9 @@ public class TestPostManager extends DataBaseInfo {
 		ArrayList<Object> valueImg = new ArrayList<Object>();
 		columnImg.add(MYSQL_POST_FILES_POSTID);
 		valueImg.add(id);
-		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_IMAGES, columnImg,
+		ResultSet resImgs = data.executeSelectWhere(MYSQL_TABLE_POST_FILES, columnImg,
 				valueImg, clause);
 		assertEquals(false, resImgs.next());
-		
-		ArrayList<String> columnVd = new ArrayList<String>();
-		ArrayList<Object> valueVd = new ArrayList<Object>();
-		columnVd.add(MYSQL_POST_FILES_POSTID);
-		valueVd.add(id);
-		ResultSet resVideos = data.executeSelectWhere(MYSQL_TABLE_POST_VIDEOS, columnVd,
-				valueVd, clause);
-		assertEquals(false, resVideos.next());
 		
 		tm.remove(tId);
 		cm.remove(catId);

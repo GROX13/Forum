@@ -32,8 +32,7 @@ public class PostManager extends DataBaseInfo {
 	 * @param userId
 	 * @param themeId
 	 * @param text
-	 * @param imgs
-	 * @param videos
+	 * @param files
 	 */
 	public void add(int userId, int themeId, String text,
 			ArrayList<String> files) {
@@ -46,7 +45,7 @@ public class PostManager extends DataBaseInfo {
 		values.add(themeId);
 		values.add(text);
 		int id = data.executeAdministration(MYSQL_TABLE_POSTS, fields, values);
-		putFiles(id, files, MYSQL_TABLE_POST_IMAGES, MYSQL_IMAGE_FILE);
+		putFiles(id, files, MYSQL_TABLE_POST_FILES, MYSQL_FILE);
 	}
 
 	/**
@@ -89,7 +88,7 @@ public class PostManager extends DataBaseInfo {
 		try {
 			while (res.next()) {
 				Integer id = res.getInt(MYSQL_TABLE_ID);
-				ArrayList<String> file = getFiles(id, MYSQL_TABLE_POST_IMAGES, MYSQL_IMAGE_FILE);
+				ArrayList<String> file = getFiles(id, MYSQL_TABLE_POST_FILES, MYSQL_FILE);
 				Post newOne = new Post(id, res.getInt(MYSQL_POSTS_THEME),
 						res.getInt(MYSQL_POSTS_AUTHORID),
 						res.getString(MYSQL_POSTS_POST_TEXT),
@@ -141,7 +140,7 @@ public class PostManager extends DataBaseInfo {
 		ArrayList<Object> values = new ArrayList<Object>();
 		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
 		values.add(id);
-		data.executeRemove(DataBaseInfo.MYSQL_TABLE_POST_IMAGES, fields, clause, values);
+		data.executeRemove(DataBaseInfo.MYSQL_TABLE_POST_FILES, fields, clause, values);
 		
 		fields.remove(0);
 		fields.add(MYSQL_TABLE_ID);
@@ -149,26 +148,22 @@ public class PostManager extends DataBaseInfo {
 	}
 
 	/**
-	 * changes post in database, images and videos fields are
-	 * MYSQL_TABLE_POST_IMAGES and MYSQL_TABLE_POST_VIDEOS
+	 * changes post in database
 	 * 
 	 * @param id
 	 * @param fields
 	 * @param values
-	 * @param imgs
-	 * @param videos
 	 */
 	@SuppressWarnings("unchecked")
 	public void change(int id, ArrayList<String> fields,
 			ArrayList<Object> values) {
 		String text = "";
-		ArrayList<String> imgs = new ArrayList<String>();
-		ArrayList<String> videos = new ArrayList<String>();
+		ArrayList<String> files = new ArrayList<String>();
 		for (int i = 0; i < fields.size(); i++) {
 			if (fields.get(i).equals(MYSQL_POSTS_POST_TEXT))
 				text = (String) values.get(i);
-			if (fields.get(i).equals(MYSQL_TABLE_POST_IMAGES))
-				imgs = (ArrayList<String>) values.get(i);
+			if (fields.get(i).equals(MYSQL_TABLE_POST_FILES))
+				files = (ArrayList<String>) values.get(i);
 		}
 		if (fields.contains(MYSQL_POSTS_POST_TEXT)) {
 			changeText(text, id);
@@ -177,11 +172,11 @@ public class PostManager extends DataBaseInfo {
 				toChange.setPostText(text);
 			}
 		}
-		if (fields.contains(MYSQL_TABLE_POST_IMAGES)) {
-			changeFiles(imgs, MYSQL_TABLE_POST_IMAGES, id, MYSQL_IMAGE_FILE);
+		if (fields.contains(MYSQL_TABLE_POST_FILES)) {
+			changeFiles(files, MYSQL_TABLE_POST_FILES, id, MYSQL_FILE);
 			if (allPost.containsKey(id)) {
 				Post toChange = allPost.get(id);
-				toChange.setImages(imgs);
+				toChange.setFiles(files);
 			}
 		}
 	}

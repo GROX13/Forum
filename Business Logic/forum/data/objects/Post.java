@@ -27,13 +27,14 @@ public class Post {
 	 * @param date
 	 * @param fls
 	 */
-	public Post(int pId, int tId, int usId, String postText, Date date, ArrayList<String> fls){
+
+	public Post(int pId, int tId, int usId, String postText, Date date, ArrayList<String> files){
 		id = pId;
 		themeId = tId;
 		userId = usId;
 		text = postText;
 		creationDate = date;
-		files = fls;
+		this.files = files;
 	}
 	
 	
