@@ -50,7 +50,7 @@
 						<div class="row">
 							<div class="col col-4"></div>
 							<div class="col col-8">
-								<label class="checkbox"><input type="checkbox" name="checkbox-inline" checked=""><i></i>Keep me logged in</label>
+								<label class="checkbox"><input type="checkbox" name="checkbox-inline"><i></i>Keep me logged in</label>
 							</div>
 						</div>
 					</section>

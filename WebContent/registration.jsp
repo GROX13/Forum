@@ -12,6 +12,23 @@
 		<link rel="stylesheet" href="CSS/css/demo.css">
 		<link rel="stylesheet" href="CSS/css/sky-forms.css">
 		<link rel = "icon" href = "Icons/Wineass_W.ico" type = "icon">
+		
+		<script type="text/javascript">
+			function populatedropdown(dayfield, monthfield, yearfield){
+				var today=new Date();
+				var dayfield=document.getElementById(dayfield);
+				var monthfield=document.getElementById(monthfield);
+				var yearfield=document.getElementById(yearfield);
+				for (var i=1; i<=31; i++)
+					dayfield.options[i-1]=new Option(i, i);
+				for (var m=1; m<=12; m++)
+					monthfield.options[m-1]=new Option(m, m);
+				var thisyear=today.getFullYear();
+				for (var y=1; y<=100; y++){
+					yearfield.options[y-1]=new Option(thisyear, thisyear--);
+				}
+			}
+		</script>	
 	</head>
 		<body class="bg-cyan">
 		<div class="body body-s">
@@ -30,8 +47,16 @@
 					
 					<section>
 						<label class="input">
+							<i class="icon-append icon-user"></i>
+							<input type="text" placeholder="Signiture" id="signiture" name="signiture" required>
+							<b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
+						</label>
+					</section>
+					
+					<section>
+						<label class="input">
 							<i class="icon-append icon-envelope-alt"></i>
-							<input type="text" placeholder="Email address">
+							<input type="text" placeholder="Email address" id="email" name="email" required>
 							<b class="tooltip tooltip-bottom-right">Needed to verify your account</b>
 						</label>
 					</section>
@@ -39,15 +64,7 @@
 					<section>
 						<label class="input">
 							<i class="icon-append icon-lock"></i>
-							<input type="password" placeholder="Password">
-							<b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
-						</label>
-					</section>
-					
-					<section>
-						<label class="input">
-							<i class="icon-append icon-lock"></i>
-							<input type="password" placeholder="Confirm password">
+							<input type="password" placeholder="Password" id = "password" name = "password" required>
 							<b class="tooltip tooltip-bottom-right">Only latin characters and numbers</b>
 						</label>
 					</section>
@@ -69,19 +86,47 @@
 					
 					<section>
 						<label class="select">
-							<select>
+							<select id="gender" name="gender">
 								<option value="0" selected disabled>Gender</option>
-								<option value="1">Male</option>
-								<option value="2">Female</option>
-								<option value="3">Other</option>
+								<option value="male">Male</option>
+								<option value="female">Female</option>
+								<option value="other">Other</option>
 							</select>
 							<i></i>
 						</label>
 					</section>
 					
+					<div class = "row">
+						<section class="col col-4">
+							<label class="select" for="birth"> Birth Day:
+								<select id="daydropdown"  name = "daydropdown"></select>
+								<script> 
+				 					populatedropdown("daydropdown", "monthdropdown", "yeardropdown");
+								</script>
+							</label>	
+						</section> 
+					
+						<section class="col col-4">
+							<label class="select" for="birth"> Birth Month:
+								<select id="monthdropdown" name = "monthdropdown"></select>
+								<script> 
+				 					populatedropdown("daydropdown", "monthdropdown", "yeardropdown");
+								</script>
+							</label>	
+						</section> 
+						
+						<section class="col col-4">
+							<label class="select" for="birth"> Birth Year:
+								<select id="yeardropdown" name = "yeardropdown"></select> 
+								<script> 
+				 					populatedropdown("daydropdown", "monthdropdown", "yeardropdown");
+								</script>
+							</label>	
+						</section> 		
+					</div>
+					
 					<section>
 						<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>I agree to the Terms of Service</label>
-						<label class="checkbox"><input type="checkbox" name="checkbox"><i></i>I want to receive news and  special offers</label>
 					</section>
 				</fieldset>
 				<footer>
