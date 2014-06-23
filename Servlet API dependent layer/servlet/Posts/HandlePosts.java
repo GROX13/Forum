@@ -66,19 +66,18 @@ public class HandlePosts extends HttpServlet {
 	    final Part filePart = request.getPart("file");
 	    final String fileName = getFileName(filePart);
 	    
-	    ArrayList<String> images = new ArrayList<String>();
-		ArrayList<String> videos = new ArrayList<String>();
-		images.add(fileName);
+	    ArrayList<String> files = new ArrayList<String>();
+		files.add(fileName);
 		//videos.add(video);
 		Admin adm = (Admin) request.getSession().getAttribute("admin");
 		User usr = (User) request.getSession().getAttribute("user");
 		try {
 			if(adm!=null)
 				adm.WritePost(postThemeID, postText, new Date(System.currentTimeMillis()), 
-					images, videos);
+					files);
 			if(usr!=null)
 				usr.WritePost(postThemeID, postText, new Date(System.currentTimeMillis()), 
-						images, videos);
+						files);
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

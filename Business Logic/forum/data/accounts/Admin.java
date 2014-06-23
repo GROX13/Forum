@@ -254,11 +254,11 @@ public class Admin extends User {
 	 * @throws SQLException
 	 */
 	public boolean ChangePostImagesOrVideos(int postID,
-			ArrayList<String> newFiles, String columnName) throws SQLException {
+			ArrayList<String> newFiles) throws SQLException {
 		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
 			return false;
 		clearArrays();
-		fields.add(columnName);
+		fields.add(DataBaseInfo.MYSQL_FILE);
 		values.add(newFiles);
 		postManager.change(postID, fields, values);
 		return true;
@@ -302,33 +302,25 @@ public class Admin extends User {
 	 * @throws SQLException
 	 */
 	public boolean RemoveImagesOrVideosFromPost(int postID,
-			ArrayList<String> files, String tableName) throws SQLException {
+			ArrayList<String> files) throws SQLException {
 		if (!isInDatabase(DataBaseInfo.MYSQL_TABLE_POSTS, postID))
 			return false;
 
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
 		values.add(postID);
-		ResultSet rs = DBManager.executeSelectWhere(tableName, fields, values,
+		ResultSet rs = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_POST_FILES, fields, values,
 				new ArrayList<String>());
 		ArrayList<String> modified = new ArrayList<String>();
 		while (rs.next()) {
-
-			if (tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_IMAGES)) {
-				String fileName = rs.getString(DataBaseInfo.MYSQL_IMAGE_FILE);
+				String fileName = rs.getString(DataBaseInfo.MYSQL_FILE);
 				if (!files.contains(fileName))
 					modified.add(fileName);
-			}
-
-			if (tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS)) {
-				String fileName = rs.getString(DataBaseInfo.MYSQL_VIDEO_FILE);
-				if (!files.contains(fileName))
-					modified.add(fileName);
-			}
+			
 		}
 
 		clearArrays();
-		fields.add(tableName);
+		fields.add(DataBaseInfo.MYSQL_TABLE_POST_FILES);
 		values.add(modified);
 		postManager.change(postID, modified, values);
 		return true;

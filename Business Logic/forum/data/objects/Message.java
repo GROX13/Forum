@@ -14,8 +14,7 @@ public class Message {
 	private int RECEIVER_ID;
 	private String MESSAGE_TEXT;
 	private Date SEND_DATE;
-	private ArrayList<String> MESSAGE_IMAGES;
-	private ArrayList<String> MESSAGE_VIDEOS;
+	private ArrayList<String> MESSAGE_FILES;
 
 	/**
 	 * 
@@ -28,14 +27,13 @@ public class Message {
 	 * @param videos
 	 */
 	public Message(int ID, int sender, int receiver, String text,
-			Date sendDate, ArrayList<String> images, ArrayList<String> videos) {
+			Date sendDate, ArrayList<String> files) {
 		this.ID = ID;
 		this.SENDER_ID = sender;
 		this.RECEIVER_ID = receiver;
 		this.MESSAGE_TEXT = text;
 		this.SEND_DATE = sendDate;
-		this.MESSAGE_IMAGES = images;
-		this.MESSAGE_VIDEOS = videos;
+		this.MESSAGE_FILES = files;
 	}
 
 	/**
@@ -74,16 +72,8 @@ public class Message {
 	 * 
 	 * @return
 	 */
-	public ArrayList<String> getMessageImages() {
-		return MESSAGE_IMAGES;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public ArrayList<String> getMessageVideos() {
-		return MESSAGE_VIDEOS;
+	public ArrayList<String> getMessageFiles() {
+		return MESSAGE_FILES;
 	}
 
 	/**

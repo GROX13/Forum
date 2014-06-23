@@ -53,18 +53,16 @@
 				<p><a href ="log_out.jsp">Log Out</a></p>
 			<%
 			
-			out.print(
-					"<form action = \"HandlePosts?id=" + id + "\""+ "method = \"post\">" +		
-					  "<p>" +
-							"<label for = \"post\"> Post: </label>" +	
-							"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
-							"<label for = \"images\"> Images: </label>" +
-							"<input type = \"file\" name = \"imageFiles\" >" +
-							"<label for = \"videos\"> Videos: </label>" +
-							"<input type = \"file\" name = \"videoFiles\" >" +
-							"<input type = \"submit\" value = \"ADD\">" +	
-						"</p>" +	
-					"</form>");
+			out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
+					"<p>" +
+					"<label for = \"post\"> Post: </label>" +	
+					"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
+						
+					"File:" +
+           			    " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
+            		    "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
+            		    "</p>" +
+            			"</form>");
 		}
 	} else {
 		Profile p = usr.getProfile();
@@ -87,7 +85,7 @@
 							
 						"File:" +
 	           			    " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
-	            		    "<input type=\"submit\" value=\"Upload\" name=\"upload\" id=\"upload\" />" +
+	            		    "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
 	            		    "</p>" +
 	            			"</form>");
 		
