@@ -40,8 +40,9 @@ public class HandlePostRemove extends HttpServlet {
 		int pID = Integer.parseInt(request.getParameter("id"));
 		
 		try {
+			int tID = getThemeID(pID);
 			adm.DeletePost(pID);
-			request.getRequestDispatcher("Posts.jsp?id=" + getThemeID(pID)).forward(request, response);
+			request.getRequestDispatcher("Posts.jsp?id=" + tID).forward(request, response);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
