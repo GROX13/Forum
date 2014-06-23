@@ -84,10 +84,10 @@
 						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
 							
 						"File:" +
-	           			    " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
-	            		    "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
-	            		    "</p>" +
-	            			"</form>");
+	           			 " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
+	            		 "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
+	            		 "</p>" +
+	            		"</form>");
 		
 			}
 		}%>
