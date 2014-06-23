@@ -1,3 +1,6 @@
+<%@page import="java.sql.Date"%>
+<%@page import="forum.data.objects.Warn"%>
+<%@page import="forum.data.objects.Bann"%>
 <%@page import="forum.data.objects.Post"%>
 <%@page import="forum.managers.objects.PostManager"%>
 <%@page import="forum.data.accounts.Admin"%>
@@ -72,8 +75,16 @@
 			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 			<p><a href ="log_out.jsp">Log Out</a></p>
 		<% 
+<<<<<<< HEAD
 		/*out.print(
 			"<form action = \"HandlePosts?id=" + id + "\""+ "method = \"post\">" +	
+=======
+		Bann bann = new Bann(p.GetUserID());
+		Warn warn = new Warn(p.GetUserID());
+		if(!bann.isBanned() && warn.canPost(new Date(System.currentTimeMillis()))){
+		out.print(
+				"<form action = \"HandlePosts?id=" + id + "\""+ "method = \"post\">" +	
+>>>>>>> origin/master
 				  "<p>" +
 						"<label for = \"post\"> Post: </label>" +	
 						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
@@ -92,7 +103,8 @@
 	            		    "</p>" +
 	            			"</form>");
 		
-	} %>
+			}
+		}%>
 	<p><%=themeName + " Posts: "%></p>
 	
 	<script>
