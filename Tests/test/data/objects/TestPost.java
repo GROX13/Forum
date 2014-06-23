@@ -47,7 +47,11 @@ public class TestPost {
 
 		next = new Post(3, 5, 4, "new post", new Date(0),
 				new ArrayList<String>());
+<<<<<<< HEAD
 		assertEquals(false, another.equals(next)); 
+=======
+		assertEquals(false, another.equals(next));
+>>>>>>> cd3908b525855f1032b24692ddba74b964dbf896
 	}
 
 	@Test
