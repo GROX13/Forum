@@ -15,8 +15,7 @@ public class Post {
 	private int userId;
 	private String text;
 	private Date creationDate;
-	private ArrayList<String> images;
-	private ArrayList<String> videos;
+	private ArrayList<String> files;
 
 	
 	/**
@@ -29,14 +28,13 @@ public class Post {
 	 * @param imgs
 	 * @param video
 	 */
-	public Post(int pId, int tId, int usId, String postText, Date date, ArrayList<String> imgs, ArrayList<String> video){
+	public Post(int pId, int tId, int usId, String postText, Date date, ArrayList<String> files){
 		id = pId;
 		themeId = tId;
 		userId = usId;
 		text = postText;
 		creationDate = date;
-		images = imgs;
-		videos = video;
+		this.files = files;
 	}
 	
 	

@@ -280,13 +280,10 @@ public class Admin extends User {
 		clearArrays();
 		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
 		values.add(postID);
-		ResultSet rs = DBManager.executeSelectWhere(tableName, fields, values,
+		ResultSet rs = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_POST_FILES, fields, values,
 				new ArrayList<String>());
 		while (rs.next()) {
-			if (tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_IMAGES))
-				files.add(rs.getString(DataBaseInfo.MYSQL_IMAGE_FILE));
-			if (tableName.equals(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS))
-				files.add(rs.getString(DataBaseInfo.MYSQL_VIDEO_FILE));
+				files.add(rs.getString(DataBaseInfo.MYSQL_FILE));
 		}
 		clearArrays();
 		fields.add(tableName);
