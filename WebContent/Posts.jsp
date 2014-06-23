@@ -1,6 +1,3 @@
-<%@page import="java.sql.Date"%>
-<%@page import="forum.data.objects.Warn"%>
-<%@page import="forum.data.objects.Bann"%>
 <%@page import="forum.data.objects.Post"%>
 <%@page import="forum.managers.objects.PostManager"%>
 <%@page import="forum.data.accounts.Admin"%>
@@ -75,10 +72,8 @@
 			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
 			<p><a href ="log_out.jsp">Log Out</a></p>
 		<% 
-		Bann bann = new Bann(p.GetUserID());
-		Warn warn = new Warn(p.GetUserID());
-		if (!bann.isBanned() && warn.canPost(new Date(System.currentTimeMillis()))){
-			out.print(
+		
+		out.print(
 				"<form action = \"HandlePosts?id=" + id + "\""+ "method = \"post\">" +	
 				  "<p>" +
 						"<label for = \"post\"> Post: </label>" +	
@@ -90,7 +85,7 @@
 						"<input type = \"submit\" value = \"ADD\">" +	
 					"</p>" +	
 				"</form>");
-		}
+		
 	} %>
 	<p><%=themeName + " Posts: "%></p>
 	
@@ -125,8 +120,8 @@
     %>
     
     <%!
-        public String removePost(int i, String userName){
-            return "<a href =\"HandlePostRemove?id=" + i + "\">" + "Remove " + userName + "'s Post </a>";
+        public String removePost(int i){
+            return "<a href =\"HandlePostRemove?id=" + i + "\">" + "Remove Post </a>";
         }
     %>
     
@@ -152,7 +147,7 @@
 		<%		out.println("[ " + value.getDate() + " ]: " + value.getText()); %>
 		<%		if(adm != null){ %>
 		<%			out.print(editButtons(pId)); %>
-		<%   		out.print(removePost(pId, adm.viewProfile(value.getUserId()).GetUsername())); %>
+		<%   		out.print(removePost(pId)); %>
 		<%			out.print(showButtons(pId)); %>
 		<%		}%>
 		<% } %> 
