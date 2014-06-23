@@ -28,7 +28,7 @@ public class TestWarn extends DataBaseInfo{
 		Warn warn = new Warn(2);
 		warn.WarnUser(2, new Date(System.currentTimeMillis() + 1000000000));
 		User u = new User("Giorgi");
-		u.WritePost(1, "dsfsd", new Date(System.currentTimeMillis()), new ArrayList<String>());
+		u.WritePost(1, "dsfsd", new Date(System.currentTimeMillis()), new ArrayList<String>(), new ArrayList<String>());
 		System.out.println(warn.canPost(new Date(System.currentTimeMillis())));
 	}
 

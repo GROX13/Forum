@@ -20,7 +20,7 @@ public class TestPost {
 	public void setUp() {
 		d = new Date(0);
 		newOne = new Post(2, 5, 4, "new post", d,
-				new ArrayList<String>());
+				new ArrayList<String>(), new ArrayList<String>());
 	}
 
 	@Test
@@ -42,14 +42,18 @@ public class TestPost {
 	@Test
 	public void testEquals() {
 		another = new Post(2, 5, 4, "new post", new Date(0),
-				new ArrayList<String>());
+				new ArrayList<String>(), new ArrayList<String>());
 		assertEquals(true, another.equals(newOne));
 
 		next = new Post(3, 5, 4, "new post", new Date(0),
+<<<<<<< HEAD
 				new ArrayList<String>());
 <<<<<<< HEAD
 		assertEquals(false, another.equals(next)); 
 =======
+=======
+				new ArrayList<String>(), new ArrayList<String>());
+>>>>>>> f485d1328554566c02d4c1ae307454f27fbf606e
 		assertEquals(false, another.equals(next));
 >>>>>>> cd3908b525855f1032b24692ddba74b964dbf896
 	}
