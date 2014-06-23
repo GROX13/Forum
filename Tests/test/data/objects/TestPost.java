@@ -45,18 +45,13 @@ public class TestPost {
 				new ArrayList<String>());
 		assertEquals(true, another.equals(newOne));
 
-<<<<<<< HEAD
-		next = new Post(3, 5, 4, "new post", new Date(0), new ArrayList<String>());
 
-		assertEquals(false, another.equals(next)); 
-
-=======
 		next = new Post(3, 5, 4, "new post", new Date(0),
 
 				new ArrayList<String>());
 
 		assertEquals(false, another.equals(next)); 
->>>>>>> origin/master
+
 	}
 
 	@Test
