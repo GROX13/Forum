@@ -301,7 +301,7 @@ header {
 .personal-info li label {
 	color: /*profileTextColor*/ #a87f09 ;
 	float: left;
-	padding: 4px 7px;
+	padding: 5px 7px;
 	font-weight: 600;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -951,14 +951,15 @@ form p label {
 
 .button {
 	color: #fff;
+	margin-top: 2;
 	background-color: #666;
-	padding: 8px;
+	padding: 3px;
 	border: none;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
 	cursor: pointer;
-	font-size: 13px;
+	font-size: 12px;
 }
 
 .button:hover {
