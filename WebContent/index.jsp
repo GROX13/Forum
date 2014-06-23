@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="CSS/css/sky-forms.css">
 		<link rel = "icon" href = "Icons/Wineass_W.ico" type = "icon">
 	</head>
-	<body class="bg-cyan">
+	<body class="bg-red">
 		<div class="body body-s">
 		
 			<form action = "HandleLogin" method = "post" class="sky-form">
@@ -64,5 +64,5 @@
 			
 		</div>
 	
-</body>
+	</body>
 </html>

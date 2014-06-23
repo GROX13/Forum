@@ -30,7 +30,7 @@
 			}
 		</script>	
 	</head>
-		<body class="bg-cyan">
+		<body class="bg-red">
 		<div class="body body-s">
 		
 			<form action = "HandleRegistration" method = "post" class="sky-form">
