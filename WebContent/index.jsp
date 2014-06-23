@@ -1,57 +1,68 @@
-<%@ page language = "java" contentType = "text/html; charset = UTF-8"
-	pageEncoding = "UTF-8"%>
+<%@ page language="java" contentType="text/html; charset = UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv = "Content-Type" content = "text/html; charset = UTF-8">
-		<title> Welcome </title>
-		<script src = "Login/fblogin.js" type = "text/javascript"> </script>	
-		<script src = "Login/glogin.js" type = "text/javascript"> </script>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Welcome</title>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		
+		<link rel="stylesheet" href="CSS/css/demo.css">
+		<link rel="stylesheet" href="CSS/css/sky-forms.css">
+		<link rel = "icon" href = "Icons/Wineass_W.ico" type = "icon">
 	</head>
-	<body>
-		<h1> Log In! </h1>	
-		<form action = "HandleLogin" method = "post">	
-			<p>
-				<label for = "username"> User name: </label>	
-				<input type = "text" id = "username" name = "username" required>
-			</p>
-			<p>		
-				<label for = "password"> Password: </label>		
-				<input type = "password" id = "password" name = "password" required>
-			</p>
-			<p> 
-				<a href ="registration.jsp"> Create New Account </a>
-			</p>
-			<p> 
-				<a href ="category.jsp"> Login As Guest </a>
-			</p>
-			<p>		
-				<input type = "submit" value = "Login">	
-			</p>
-			<p>		
-				<span id="signinButton">
-					<span
-						class="g-signin"
-						data-callback="signinCallback"
-						data-clientid="effective-brook-617"
-						data-cookiepolicy="single_host_origin"
-						data-requestvisibleactions="http://schemas.google.com/AddActivity"
-						data-scope="https://www.googleapis.com/auth/plus.login">
-					</span>
-				</span>
+	<body class="bg-cyan">
+		<div class="body body-s">
+		
+			<form action = "HandleLogin" method = "post" class="sky-form">
+				<header>Login form</header>
+				
+				<fieldset>					
+					<section>
+						<div class="row">
+							<label class="label col col-4">User Name</label>
+							<div class="col col-8">
+								<label class="input">
+									<i class="icon-append icon-user"></i>
+									<input type="text" id = "username" name = "username" required>
+								</label>
+							</div>
+						</div>
+					</section>
+					
+					<section>
+						<div class="row">
+							<label class="label col col-4">Password</label>
+							<div class="col col-8">
+								<label class="input">
+									<i class="icon-append icon-lock"></i>
+									<input type="password" id = "password" name = "password" required>
+								</label>
+								<div class="note"><a href="#">Forgot password?</a></div>
+								<div class="note"><a href="category.jsp">Log in as guest?</a></div>
+							</div>
+						</div>
+					</section>
+					
+					<section>
+						<div class="row">
+							<div class="col col-4"></div>
+							<div class="col col-8">
+								<label class="checkbox"><input type="checkbox" name="checkbox-inline" checked=""><i></i>Keep me logged in</label>
+							</div>
+						</div>
+					</section>
+				</fieldset>
+				<footer>
+					<button type="submit" class="button">Log in</button>
+					<a href="registration.jsp" class="button button-secondary">Register</a>
+					
+				</footer>
+			</form>
 			
-				<!--
-					Below we include the Login Button social plugin. This button uses
-  					the JavaScript SDK to present a graphical Login button that triggers
-  					the FB.login() function when clicked.
-				-->
-				<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-				</fb:login-button>
-				
-				<div id="status">
-				</div>
-				
-			</p>	
-		</form>		
-	</body>
+		</div>
+	
+</body>
 </html>
