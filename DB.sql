@@ -160,7 +160,8 @@ INSERT INTO posts (author_id, theme_id, post)
 					draw, better than Paris.');
 
 
-
+SELECT * FROM warn;
+SELECT * FROM bann;
 SELECT * FROM users;
 SELECT * FROM categories;
 SELECT * FROM theme;
