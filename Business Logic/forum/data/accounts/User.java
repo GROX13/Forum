@@ -180,7 +180,7 @@ public class User {
 	 * @throws SQLException
 	 */
 	public boolean WritePost(int postThemeID, String postText, Date postDate,
-			ArrayList<String> postImages, ArrayList<String> postVideos)
+			ArrayList<String> files)
 			throws SQLException {
 
 		clearArrays();
@@ -192,7 +192,7 @@ public class User {
 		if (!warn.canPost(postDate))
 			return false;
 		
-		postManager.add(userID, postThemeID, postText, postImages, postVideos);
+		postManager.add(userID, postThemeID, postText, files);
 		
 		if(warn.isWarned()){
 			clearArrays();
@@ -231,10 +231,10 @@ public class User {
 	 */
 
 	public void sendMessage(int messageReceiverID, String messageText,
-			ArrayList<String> messageImages, ArrayList<String> messageVideos) {
+			ArrayList<String> messageFiles) {
 		MessageManager messageManager = new MessageManager(messageReceiverID,
 				userID);
-		messageManager.sendMessage(messageText, messageImages, messageVideos);
+		messageManager.sendMessage(messageText, messageFiles);
 	}
 
 	/**

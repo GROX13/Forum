@@ -79,7 +79,7 @@ public class TestAdmin extends DataBaseInfo {
 	public void testModifyPostText() throws SQLException {
 		Admin admin = new Admin("GROX13");
 		admin.WritePost(1, "blabla", new Date(System.currentTimeMillis()), 
-				new ArrayList<String>(), new ArrayList<String>());
+				new ArrayList<String>());
 		assertEquals("blabla", admin.viewPost(1).getText());
 		admin.ModifyPostText(1, "blbl");
 		assertEquals("blbl", admin.viewPost(1).getText());
@@ -106,7 +106,7 @@ public class TestAdmin extends DataBaseInfo {
 		User user = new User("Giorgi");
 		admin.WarnUser(2, 1, new Date(System.currentTimeMillis() + 1000000000));
 		assertEquals(false, user.WritePost(1, "postText", new Date(System.currentTimeMillis()),
-				new ArrayList<String>(), new ArrayList<String>()));
+				new ArrayList<String>()));
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class TestAdmin extends DataBaseInfo {
 		User user = new User("Giorgi");
 		admin.BannUser(2, new Date(System.currentTimeMillis() + 1000000000));
 		assertEquals(false, user.WritePost(1, "postText", new Date(System.currentTimeMillis()),
-				new ArrayList<String>(), new ArrayList<String>()));
+				new ArrayList<String>()));
 	}
 
 }
