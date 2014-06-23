@@ -15,8 +15,7 @@ public class Post {
 	private int userId;
 	private String text;
 	private Date creationDate;
-	private ArrayList<String> images;
-	private ArrayList<String> videos;
+	private ArrayList<String> files;
 
 	
 	/**
@@ -26,17 +25,15 @@ public class Post {
 	 * @param name
 	 * @param postText
 	 * @param date
-	 * @param imgs
-	 * @param video
+	 * @param fls
 	 */
-	public Post(int pId, int tId, int usId, String postText, Date date, ArrayList<String> imgs, ArrayList<String> video){
+	public Post(int pId, int tId, int usId, String postText, Date date, ArrayList<String> fls){
 		id = pId;
 		themeId = tId;
 		userId = usId;
 		text = postText;
 		creationDate = date;
-		images = imgs;
-		videos = video;
+		files = fls;
 	}
 	
 	
@@ -50,19 +47,11 @@ public class Post {
 	
 	
 	/**
-	 * sets images
-	 * @param imgs
+	 * sets files
+	 * @param fls
 	 */
-	public void setImages(ArrayList<String> imgs){
-		images = imgs;
-	}
-	
-	/**
-	 * sets videos
-	 * @param video
-	 */
-	public void setVideos(ArrayList<String> video){
-		videos = video;
+	public void setFiles(ArrayList<String> fls){
+		files = fls;
 	}
 	
 	/**
@@ -107,20 +96,13 @@ public class Post {
 	}
 	
 	/**
-	 * returns images
+	 * returns files
 	 * @return List
 	 */
-	public ArrayList<String> getImgs(){
-		return images;
+	public ArrayList<String> getFiles(){
+		return files;
 	}
 	
-	/**
-	 * returns videos
-	 * @return
-	 */
-	public ArrayList<String> getVideos(){
-		return videos;
-	}
 	
 	/**
 	 * equals for two posts
@@ -140,12 +122,9 @@ public class Post {
 	@Override
 	public String toString() {
 		String texts = id + " post: themeId " + themeId + " , author id " + userId + " , text "
-				+ text + " , creation date " + creationDate + " , images: ";
-		for(int i = 0; i < images.size(); i++)
-			texts += images.get(i) + " , ";
-		texts += "videos: ";
-		for(int j = 0; j < videos.size(); j++)
-			texts += videos.get(j) + " , ";
+				+ text + " , creation date " + creationDate + " , files: ";
+		for(int i = 0; i < files.size(); i++)
+			texts += files.get(i) + " , ";
 		return texts;
 	}
 }

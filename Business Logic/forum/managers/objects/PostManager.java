@@ -36,7 +36,7 @@ public class PostManager extends DataBaseInfo {
 	 * @param videos
 	 */
 	public void add(int userId, int themeId, String text,
-			ArrayList<String> imgs, ArrayList<String> videos) {
+			ArrayList<String> files) {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add(MYSQL_POSTS_AUTHORID);
 		fields.add(MYSQL_POSTS_THEME);
@@ -46,8 +46,7 @@ public class PostManager extends DataBaseInfo {
 		values.add(themeId);
 		values.add(text);
 		int id = data.executeAdministration(MYSQL_TABLE_POSTS, fields, values);
-		putFiles(id, imgs, MYSQL_TABLE_POST_IMAGES, MYSQL_IMAGE_FILE);
-		putFiles(id, videos, MYSQL_TABLE_POST_VIDEOS, MYSQL_VIDEO_FILE);
+		putFiles(id, files, MYSQL_TABLE_POST_IMAGES, MYSQL_IMAGE_FILE);
 	}
 
 	/**
@@ -90,12 +89,11 @@ public class PostManager extends DataBaseInfo {
 		try {
 			while (res.next()) {
 				Integer id = res.getInt(MYSQL_TABLE_ID);
-				ArrayList<String> imgs = getFiles(id, MYSQL_TABLE_POST_IMAGES, MYSQL_IMAGE_FILE);
-				ArrayList<String> videos = getFiles(id, MYSQL_TABLE_POST_VIDEOS, MYSQL_VIDEO_FILE);
+				ArrayList<String> file = getFiles(id, MYSQL_TABLE_POST_IMAGES, MYSQL_IMAGE_FILE);
 				Post newOne = new Post(id, res.getInt(MYSQL_POSTS_THEME),
 						res.getInt(MYSQL_POSTS_AUTHORID),
 						res.getString(MYSQL_POSTS_POST_TEXT),
-						res.getDate(MYSQL_POSTS_ADD_DATE), imgs, videos);
+						res.getDate(MYSQL_POSTS_ADD_DATE), file);
 				allPost.put(id, newOne);
 			}
 		} catch (SQLException e) {
@@ -144,7 +142,6 @@ public class PostManager extends DataBaseInfo {
 		fields.add(DataBaseInfo.MYSQL_POST_FILES_POSTID);
 		values.add(id);
 		data.executeRemove(DataBaseInfo.MYSQL_TABLE_POST_IMAGES, fields, clause, values);
-		data.executeRemove(DataBaseInfo.MYSQL_TABLE_POST_VIDEOS, fields, clause, values);
 		
 		fields.remove(0);
 		fields.add(MYSQL_TABLE_ID);
@@ -172,8 +169,6 @@ public class PostManager extends DataBaseInfo {
 				text = (String) values.get(i);
 			if (fields.get(i).equals(MYSQL_TABLE_POST_IMAGES))
 				imgs = (ArrayList<String>) values.get(i);
-			if (fields.get(i).equals(MYSQL_TABLE_POST_VIDEOS))
-				videos = (ArrayList<String>) values.get(i);
 		}
 		if (fields.contains(MYSQL_POSTS_POST_TEXT)) {
 			changeText(text, id);
@@ -187,13 +182,6 @@ public class PostManager extends DataBaseInfo {
 			if (allPost.containsKey(id)) {
 				Post toChange = allPost.get(id);
 				toChange.setImages(imgs);
-			}
-		}
-		if (fields.contains(MYSQL_TABLE_POST_VIDEOS)) {
-			changeFiles(videos, MYSQL_TABLE_POST_VIDEOS, id, MYSQL_VIDEO_FILE);
-			if (allPost.containsKey(id)) {
-				Post toChange = allPost.get(id);
-				toChange.setVideos(videos);
 			}
 		}
 	}

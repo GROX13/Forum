@@ -56,11 +56,9 @@ public class TestPostManager extends DataBaseInfo {
 
 	@Test
 	public void testAdd() throws SQLException {
-		ArrayList<String> imgs = new ArrayList<String>();
-		ArrayList<String> videos = new ArrayList<String>();
-		imgs.add("newImage");
-		videos.add("newVideo");
-		pm.add(userId, tId, "new post", imgs, videos);
+		ArrayList<String> files = new ArrayList<String>();
+		files.add("newImage");
+		pm.add(userId, tId, "new post", files);
 		ResultSet res = data.executeOrderedSelect(MYSQL_TABLE_POSTS,
 				fields, values, clause, MYSQL_TABLE_ID, 0, 1, false);
 		res.next();
@@ -79,15 +77,6 @@ public class TestPostManager extends DataBaseInfo {
 				valueImg, clause);
 		resImgs.next();
 		assertEquals("newImage", resImgs.getString(MYSQL_IMAGE_FILE));
-
-		ArrayList<String> columnVd = new ArrayList<String>();
-		ArrayList<Object> valueVd = new ArrayList<Object>();
-		columnVd.add(MYSQL_POST_FILES_POSTID);
-		valueVd.add(id);
-		ResultSet resVideos = data.executeSelectWhere(MYSQL_TABLE_POST_VIDEOS, columnVd,
-				valueVd, clause);
-		resVideos.next();
-		assertEquals("newVideo", resVideos.getString(MYSQL_VIDEO_FILE));
 
 		pm.remove(id);
 		tm.remove(tId);
