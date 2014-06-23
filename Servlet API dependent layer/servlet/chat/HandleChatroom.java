@@ -49,9 +49,11 @@ public class HandleChatroom extends HttpServlet {
 		String messageText = request.getParameter("message");
 		int ID = (Integer) request.getSession().getAttribute("chatter_id");
 		if (usr != null) {
-			usr.sendMessage(ID, messageText, new ArrayList<String>());
+			usr.sendMessage(ID, messageText, new ArrayList<String>(),
+					new ArrayList<String>());
 		} else if (adm != null) {
-			adm.sendMessage(ID, messageText, new ArrayList<String>());
+			adm.sendMessage(ID, messageText, new ArrayList<String>(),
+					new ArrayList<String>());
 		}
 		request.getRequestDispatcher("chatroom.jsp").forward(request, response);
 	}

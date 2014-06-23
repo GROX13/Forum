@@ -25,7 +25,8 @@ public class MessageManager {
 		sender = senderID;
 	}
 
-	public void sendMessage(String messageText, ArrayList<String> messageFiles) {
+	public void sendMessage(String messageText, ArrayList<String> messageImg,
+			ArrayList<String> messageVid) {
 		ArrayList<String> columns = new ArrayList<String>();
 		ArrayList<Object> values = new ArrayList<Object>();
 		columns.add(DataBaseInfo.MYSQL_MESSAGE_SENDER);
@@ -36,16 +37,28 @@ public class MessageManager {
 		values.add(messageText);
 		int ID = DBManager.executeAdministration(
 				DataBaseInfo.MYSQL_TABLE_MESSAGE, columns, values);
-		if (messageFiles != null)
-			for (int i = 0; i < messageFiles.size(); i++) {
+		if (messageImg != null)
+			for (int i = 0; i < messageImg.size(); i++) {
 				ArrayList<String> columnsImg = new ArrayList<String>();
 				ArrayList<Object> valuesImg = new ArrayList<Object>();
-				columnsImg.add(DataBaseInfo.MYSQL_FILE);
+				columnsImg.add(DataBaseInfo.MYSQL_IMAGE_FILE);
 				columnsImg.add(DataBaseInfo.MYSQL_MESSAGE_FILES_MESSAGEID);
-				valuesImg.add(messageFiles.get(i));
+				valuesImg.add(messageImg.get(i));
 				valuesImg.add(ID);
 				DBManager.executeInsert(
-						DataBaseInfo.MYSQL_TABLE_MESSAGE_FILES, columnsImg,
+						DataBaseInfo.MYSQL_TABLE_MESSAGE_IMAGES, columnsImg,
+						valuesImg);
+			}
+		if (messageVid != null)
+			for (int i = 0; i < messageImg.size(); i++) {
+				ArrayList<String> columnsImg = new ArrayList<String>();
+				ArrayList<Object> valuesImg = new ArrayList<Object>();
+				columnsImg.add(DataBaseInfo.MYSQL_VIDEO_FILE);
+				columnsImg.add(DataBaseInfo.MYSQL_MESSAGE_FILES_MESSAGEID);
+				valuesImg.add(messageImg.get(i));
+				valuesImg.add(ID);
+				DBManager.executeInsert(
+						DataBaseInfo.MYSQL_TABLE_MESSAGE_IMAGES, columnsImg,
 						valuesImg);
 			}
 	}
@@ -77,7 +90,7 @@ public class MessageManager {
 								.getInt(DataBaseInfo.MYSQL_MESSAGE_RECEIVER),
 						rs.getString(DataBaseInfo.MYSQL_MESSAGE_MESSAGE), rs
 								.getDate(DataBaseInfo.MYSQL_MESSAGE_SEND_DATE),
-						new ArrayList<String>()));
+						new ArrayList<String>(), new ArrayList<String>()));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

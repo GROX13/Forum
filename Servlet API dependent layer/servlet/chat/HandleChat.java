@@ -53,10 +53,12 @@ public class HandleChat extends HttpServlet {
 		int ID = am.getUserID(username);
 		if (ID != 0) {
 			if (usr != null) {
-				usr.sendMessage(ID, messageText, new ArrayList<String>());
+				usr.sendMessage(ID, messageText, new ArrayList<String>(),
+						new ArrayList<String>());
 				request.getSession().setAttribute("chatter_id", ID);
 			} else if (adm != null) {
-				adm.sendMessage(ID, messageText, new ArrayList<String>());
+				adm.sendMessage(ID, messageText, new ArrayList<String>(),
+						new ArrayList<String>());
 				request.getSession().setAttribute("chatter_id", ID);
 			}
 		}

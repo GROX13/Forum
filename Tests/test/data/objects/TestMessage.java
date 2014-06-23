@@ -15,7 +15,8 @@ import forum.data.objects.Message;
 
 public class TestMessage {
 
-	private ArrayList<String> files;
+	private ArrayList<String> videos;
+	private ArrayList<String> images;
 	private Date sendDate;
 	private String text;
 	private int receiver;
@@ -31,8 +32,10 @@ public class TestMessage {
 		text = "Hello World!";
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		sendDate = sdf.parse("21/12/2012");
-		files = new ArrayList<String>();
-		message = new Message(ID, sender, receiver, text, sendDate, files);
+		images = null;
+		videos = new ArrayList<String>();
+		message = new Message(ID, sender, receiver, text, sendDate, images,
+				videos);
 	}
 
 	@Test
@@ -56,8 +59,13 @@ public class TestMessage {
 	}
 
 	@Test
-	public void testMessageFiles() {
-		assertEquals(message.getMessageFiles(), files);
+	public void testMessageImages() {
+		assertEquals(message.getMessageImages(), images);
+	}
+
+	@Test
+	public void testMessageVideos() {
+		assertEquals(message.getMessageVideos(), videos);
 	}
 
 	@Test
