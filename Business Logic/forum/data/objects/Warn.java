@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import forum.info.DataBaseInfo;
 import forum.managers.database.DataBaseManager;
@@ -124,27 +125,32 @@ public class Warn {
 		return currentDate;
 	}
 
+	
 	public boolean canPost(Date postDate) throws SQLException{
 		if(!isWarned()) 
 			return true;
-		ArrayList<String> fields = new ArrayList<String>();
-		ArrayList<Object> values = new ArrayList<Object>();
-		ArrayList<String> clause = new ArrayList<String>();
+		clearArrays();
+		fields = new ArrayList<String>();
+		values = new ArrayList<Object>();
+		clause = new ArrayList<String>();
 		fields.add(DataBaseInfo.MYSQL_USERID);
 		values.add(userID);
 		ResultSet resultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_WARN,
 				fields, values, clause);
+		resultSet.next();
 		int lastPostId = resultSet.getInt(DataBaseInfo.MYSQL_WARN_LAST_POST);
 		clearArrays();
-		fields.add(DataBaseInfo.MYSQL_TABLE_POSTS + "." + DataBaseInfo.MYSQL_TABLE_ID);
+		fields.add(DataBaseInfo.MYSQL_TABLE_ID);
 		values.add(lastPostId);
 		ResultSet lastPostResultSet = DBManager.executeSelectWhere(DataBaseInfo.MYSQL_TABLE_POSTS, 
-				fields, values, new ArrayList<String>());
+				fields, values, clause);
+		lastPostResultSet.next();
 		Date lastPostDate = lastPostResultSet.getDate(DataBaseInfo.MYSQL_POSTS_ADD_DATE);
 		Date currentPostDate = postDate;
 		int frequency = resultSet.getInt(DataBaseInfo.MYSQL_WARN_FREQUENCY);
-		if((currentPostDate.getTime() - 
-				lastPostDate.getTime())/MILLISECONDS_IN_SECOND/SECONDS_IN_HOUR <= frequency)
+		long k = (currentPostDate.getTime() - lastPostDate.getTime());
+		long temp = ((currentPostDate.getTime() - lastPostDate.getTime())/60000)%60;
+		if(temp <= frequency)
 			return false;
 		return true;
 		
@@ -171,6 +177,16 @@ public class Warn {
 				warned = true;
 			}
 		}
+	}
+	
+	public void updateLastPost(int id){
+		clearArrays();
+		fields.add(DataBaseInfo.MYSQL_WARN_LAST_POST);
+		values.add(id);
+		values.add(this.userID);
+		ArrayList<String> conditionFields = new ArrayList<String>();
+		conditionFields.add(DataBaseInfo.MYSQL_USERID);
+		DBManager.executeUpdate(DataBaseInfo.MYSQL_TABLE_WARN, fields, values, conditionFields, clause);
 	}
 	private void clearArrays() {
 		values.clear();

@@ -191,8 +191,20 @@ public class User {
 			return false;
 		if (!warn.canPost(postDate))
 			return false;
-
+		
 		postManager.add(userID, postThemeID, postText, postImages, postVideos);
+		
+		if(warn.isWarned()){
+			clearArrays();
+			values.add(userID);
+			fields.add(DataBaseInfo.MYSQL_POSTS_AUTHORID);
+		
+			ArrayList<String> clause = new ArrayList<String>();
+			ResultSet resultSet = DBManager.executeOrderedSelect(DataBaseInfo.MYSQL_TABLE_POSTS, fields, 
+					values, clause , DataBaseInfo.MYSQL_POSTS_ADD_DATE, 0, 1, false);
+			resultSet.next();
+			warn.updateLastPost(resultSet.getInt(DataBaseInfo.MYSQL_TABLE_ID));
+		}
 		return true;
 	}
 
