@@ -47,7 +47,7 @@ public class HandleLogin extends HttpServlet {
 		User us = (User) request.getSession().getAttribute("user");
 		Admin ad = (Admin) request.getSession().getAttribute("admin");
 		if (us != null || ad != null)
-			request.getRequestDispatcher("log_out.jsp").forward(request,
+			request.getRequestDispatcher("logout.jsp").forward(request,
 					response);
 		else {
 			AccountManager am = (AccountManager) getServletContext()
