@@ -103,7 +103,7 @@
 	</script>
 	<%!
         public String liDecorator(int id, String name){
-            return "<li><a href=\"Posts.jsp?id=" + id + "\">" + name + "</a></li>";
+            return "<a href=\"Posts.jsp?id=" + id + "\">" + name + "</a>";
         }
     %>
     <%!

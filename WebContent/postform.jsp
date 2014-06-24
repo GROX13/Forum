@@ -24,8 +24,8 @@
 </head>
 <body class="bg-red">
 		<div class="body">
-		<%String handlePosts = "HandlePosts?id=" + themeID ; %>
-			<form action=<% out.print("\"" + handlePosts + "\""); %> method="post" class="sky-form">
+		<%String handlePosts = "upload?id=" + themeID ; %>
+			<form action=<% out.print("\"" + handlePosts + "\""); %> method="post" class="sky-form" >
 				<header>Post form</header>
 					
 				<fieldset>					
@@ -37,12 +37,16 @@
 						</label>
 						<div class="note">You may use these HTML tags and attributes: &lt;a href="" title=""&gt;, &lt;abbr title=""&gt;, &lt;acronym title=""&gt;, &lt;b&gt;, &lt;blockquote cite=""&gt;, &lt;cite&gt;, &lt;code&gt;, &lt;del datetime=""&gt;, &lt;em&gt;, &lt;i&gt;, &lt;q cite=""&gt;, &lt;strike&gt;, &lt;strong&gt;.</div>
 					</section>
-					<section>
+					 
+					<%--<section>
 						<label class="label">File input</label>
 						<label for="file" class="input input-file">
-							<div class="button"><input type="file" id="file" onchange="this.parentNode.nextSibling.value = this.value">Browse</div><input type="text" readonly="">
+							<div class="button">
+							<input type="file" name="file" id="file">Browse</div>
+							<input type="text" readonly="">
 						</label>
-					</section>
+					</section> --%>
+					
 				</fieldset>
 				
 				<footer>

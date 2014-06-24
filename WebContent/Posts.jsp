@@ -65,18 +65,20 @@
 					
 				<p><h4><a href = <%= "profile.jsp?id=" + p.GetUserID() %> style=\"color: white\"> Profile </a></h4></p>
 				<p><h4><a href ="logout.jsp" style=\"color: white\">Log Out</a></h4></p>
+				<%String s = "postform.jsp?id=" + id; %>
+				<p><h4><a href =<% out.print("\"" + s + "\""); %> style=\"color: white\">Add Post</a></h4></p>
 			<%
 			
-			out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
+			/*out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
 					"<p>" +
-					//"<label for = \"post\"> Post: </label>" +	
+					
 					"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
 						
 					"File:" +
            			    " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
             		    "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
             		    "</p>" +
-            			"</form>");
+            			"</form>");*/
 		}
 	} else {
 		Profile p = usr.getProfile();
@@ -86,15 +88,18 @@
 		%>
 			<p><h4><a href = <%= "profile.jsp?id=" + p.GetUserID() %> style=\"color: white\"> Profile </a></h4></p>
 			<p><h4><a href ="logout.jsp" style=\"color: white\">Log Out</a></h4></p>
+			
+			
 		<% 
 
 		Bann bann = new Bann(p.GetUserID());
 		Warn warn = new Warn(p.GetUserID());
-		if(!bann.isBanned() && warn.canPost(new Date(System.currentTimeMillis()))){
-		
-				out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
+		if(!bann.isBanned() && warn.canPost(new Date(System.currentTimeMillis()))){%>
+			<%String s = "postform.jsp?id=" + id; %>
+			<p><h4><a href =<% out.print("\"" + s + "\""); %> style=\"color: white\">Add Post</a></h4></p>
+			<%-- 	out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
 						"<p>" +
-						//"<label for = \"post\"> Post: </label>" +	
+						"<label for = \"post\"> Post: </label>" +	
 						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
 							
 						"File:" +
@@ -102,10 +107,10 @@
 	           			 "<input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
 	            		 "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
 	            		 "</p>" +
-	            		"</form>");
+	            		"</form>")--%>
 		
-			}
-		}%>
+		<%	}
+		} %>
 	<script>
 	function myFunction(arg1, arg2, arg3, arg4, arg5) {
 		 document.getElementById(arg1).style.display = "block";
