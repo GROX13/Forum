@@ -1,3 +1,4 @@
+<%@page import="forum.managers.objects.CategoryManager"%>
 <%@page import="servlet.themes.HandleThemes"%>
 <%@page import="forum.data.accounts.Admin"%>
 <%@page import="forum.data.accounts.User"%>
@@ -11,87 +12,81 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Categories</title>
+		
+		<link rel="stylesheet" href="CSS/css/stylemenu.css">
+		<link rel="stylesheet" href="CSS/css/style-themes.css">
+		<link rel="stylesheet" href="CSS/css/demo.css">
+		<link rel="stylesheet" href="CSS/css/sky-forms.css">
+		
+		<link rel = "icon" href = "Icons/Wineass_W.ico" type = "icon">
 <% int id = Integer.parseInt(request.getParameter("id")); 
-	User user = new User();
-	String categoryName = user.viewcaCategory(id).getTitle();
+	User usr = new User();
+	String categoryName = usr.viewcaCategory(id).getTitle();
 	%>
 <title><%= categoryName %></title>
+
 </head>
 <body>
-
-	<% User usr = (User) request.getSession().getAttribute("user");%>
-	<% Admin adm = (Admin) request.getSession().getAttribute("admin");%>
-	<% if(usr == null) {
-		if (adm == null) {
-			%>
-			<p><a href ="index.jsp">Log In</a></p>
-			<% 
-			out.print(
-				"<form action = \"HandleLogin\" method = \"post\">" +	
-				  "<p>" +
-						"<label for = \"username\"> User name: </label>" +	
-						"<input type = \"text\" id = \"username\" name = \"username\" required>" +	
-						"<label for = \"password\"> Password: </label>" +		
-						"<input type = \"password\" id = \"password\" name = \"password\" required>" +
-						"<input type = \"submit\" value = \"Login\">" +	 
-						"<a href =\"registration.jsp\"> Create New Account </a>" +	
-					"</p>" +	
-				"</form>");
-		} else {
-			Profile p = adm.getProfile();
-			if (p != null) 
-				out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
-			out.print("<h3> Status: Admin </h3>");
-			%>
-				<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
-				<p><a href ="log_out.jsp">Log Out</a></p>
-			<% 
-			
-			out.print(
-					"<form action = \"HandleThemes?id=" + id + "\""+ "method = \"post\">" +	
-					  "<p>" +
-							"<label for = \"theme\"> Theme: </label>" +	
-							"<input type = \"text\" id = \"theme\" name = \"theme\" required>" +	
-							"<label for = \"theme_description\"> Theme Description: </label>" +		
-							"<input type = \"text\" id = \"theme_description\" name = \"theme_description\" required>" +
-							"<label for = \"theme_isOpen\"> Theme Is Open for Guest: </label>" +		
-							"<select id = \"theme_isOpen\" name = \"theme_isOpen\">" +
-		  					"<option value=\"Open\"> Open </option>" +
-							"<option value=\"notOpen\"> Closed </option>" +
-							"</select>" +
-							"<input type = \"submit\" value = \"Add Theme\">" +	
-						"</p>" +	
-					"</form>");
-		}
-	} else {
-		Profile p = usr.getProfile();
-		if (p != null) 
-			out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
-		out.print("<h3> Status: User </h3>");
-		%>
-			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
-			<p><a href ="log_out.jsp">Log Out</a></p>
-		<% 
-		
-		out.print(
-				"<form action = \"HandleThemes?id=" + id + "\""+ "method = \"post\">" +	
-				  "<p>" +
-						"<label for = \"theme\"> Theme: </label>" +	
-						"<input type = \"text\" id = \"theme\" name = \"theme\" required>" +	
-						"<label for = \"theme_description\"> Theme Description: </label>" +		
-						"<input type = \"text\" id = \"theme_description\" name = \"theme_description\" required>" +
-						"<label for = \"theme_isOpen\"> Theme Is Open for Guest: </label>" +		
-						"<select id = \"theme_isOpen\" name = \"theme_isOpen\">" +
-	  						"<option value=\"Open\"> Open </option>" +
-							"<option value=\"notOpen\"> Closed </option>" +
-						"</select>" +
-						"<input type = \"submit\" value = \"Add Theme\">" +	
-					"</p>" +	
-				"</form>");
-		
-	} %>
-	<p><%= categoryName + " Themes: " %></p>
+	<% User user = (User) request.getSession().getAttribute("user");%>
+	<% Admin admin = (Admin) request.getSession().getAttribute("admin");%>
+	<% CategoryManager cm = (CategoryManager)request.getServletContext().getAttribute("categories"); %>
+	<% boolean isUser = (user != null);%>
+	<% boolean isAdmin = (admin != null);%>
+	<% boolean isGuest = (!isUser && !isAdmin);%>
+	<% String myProfileLink = "profile.jsp"; %> 
+	<% if (!isGuest){ %>
+	<% 		if (isAdmin){ %>
+	<% 			myProfileLink += "?id=" + admin.getProfile().GetUserID();%>
+	<% 		}%>
+	<%		if (isUser){ %>
+	<% 			myProfileLink += "?id=" + user.getProfile().GetUserID();%>
+	<% 		}%>
+	<% }%>
+	
+	<body class="bg-red">
+  		<nav class="menu-opener">
+    		<div class="menu-opener-inner"></div>
+  		</nav>
+  		<nav class="menu">			 		
+  			<ul class="menu-inner">
+  				<% if (isGuest){ %>
+  				<a href="index.jsp" class="menu-link">
+        			<li>Log In</li>
+      			</a>
+      			<a href="#" class="menu-link">
+        			<li>About us</li>
+      			</a> 
+  				<% }%> 
+  				<% if (isAdmin){ %>
+  				<a href=<% out.print("\"" + myProfileLink + "\""); %> class="menu-link">
+        			<li>Profile</li>
+      			</a>
+      			<%String s = "themeform.jsp?id=" + id; %>
+      			<a href=<% out.print("\"" + s+ "\""); %> class="menu-link">
+       				<li>Add Theme</li>
+      			</a>
+      			<a href="logout.jsp" class="menu-link">
+        			<li>Log out</li>
+      			</a>
+      			<a href="#" class="menu-link">
+        			<li>About us</li>
+      			</a> 
+  				<% }%> 
+  				<% if (isUser){ %>
+  				<a href=<% out.print("\"" + myProfileLink + "\""); %> class="menu-link">
+        			<li>Profile</li>
+      			</a> 
+      			<a href="logout.jsp" class="menu-link">
+        			<li>Log out</li>
+      			</a>
+      			<a href="#" class="menu-link">
+        			<li>About us</li>
+      			</a> 
+  				<% }%> 
+    		</ul>
+  		</nav>
 	<script>
 	function myFunction(arg1, arg2, arg3, arg4, arg5) {
 		 document.getElementById(arg1).style.display = "block";
@@ -135,7 +130,7 @@
             
         }
     %>
-    
+    <article class="themes">
 	<% ThemeManager tm = (ThemeManager)request.getServletContext().getAttribute("themes"); %>
 	
 	<% Map<Integer, Theme> all = tm.getAll(id); %>
@@ -147,15 +142,18 @@
 		<%		if(value.getOpen()){											 
 					out.print(liDecorator(tId, value.getTitle()));
 				}else{
-					if(adm != null || usr != null)
+					if(isAdmin || isUser)
 						out.print(liDecorator(tId, value.getTitle()));
 				}
 		%>
-		<%		if(adm != null){ %>
+		<%		if(isUser){ %>
 		<%			out.print(editButtons(tId)); %>
 		<%			out.print(removeTheme(tId)); %>
 		<%			out.print(showButtons(tId)); %>
 		<%		}%>
 		<% } %> 
+		</article>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  		<script src="JavaScript/menu-opener.js"></script>
 </body>
 </html>
