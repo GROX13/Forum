@@ -43,7 +43,7 @@ public class HandleCategoryChanges extends HttpServlet {
 		
 		try {
 			adm.ModifyCategoryTitle(catID, newTitle);
-			request.getRequestDispatcher("category.jsp").forward(request, response);
+			request.getRequestDispatcher("categorybc.jsp").forward(request, response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -103,7 +103,7 @@
 		
 			}
 		}%>
-	
+		<p><%=themeName + " Posts: "%></p>
 	<script>
 	function myFunction(arg1, arg2, arg3, arg4, arg5) {
 		 document.getElementById(arg1).style.display = "block";
@@ -180,16 +180,16 @@
                 </div>
                 
                 <ul class="personal-info">
-                
 					<li><% out.print(value.getText()); %></li>
-				 <%--	<%ArrayList<String> files = value.getFiles(); 
-						int size = files.size();
-						String file = "";
-						for(int i = 0; i < size; i++){
-							file = files.get(i);
-					%>
-					<img src="Images/UploadedFiles/" + <%= file %> + "height="186" width="153">
-					<%} %> --%>
+				 	<%//ArrayList<String> files = value.getFiles(); 
+					//	int size = files.size();
+					//	String file = "";
+					//	for(int i = 0; i < size; i++){
+					//		file = files.get(i);
+					
+					//String f = "Images/UploadedFiles/" + file; 
+					//<img src= <%=f + " height="186" width="153">
+					//} %> 
                 </ul>
 			</div>        
 		</section>

@@ -53,7 +53,7 @@ public class HandleCategory extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		request.getRequestDispatcher("category.jsp").forward(request, response);
+		request.getRequestDispatcher("categorybc.jsp").forward(request, response);
 	}
 
 }
