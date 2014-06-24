@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Categories</title>
+		
 		
 		<link rel="stylesheet" href="CSS/css/stylemenu.css">
 		<link rel="stylesheet" href="CSS/css/style-themes.css">
@@ -78,6 +78,11 @@
   				<a href=<% out.print("\"" + myProfileLink + "\""); %> class="menu-link">
         			<li>Profile</li>
       			</a> 
+      			</a>
+      			<%String s = "themeform.jsp?id=" + id; %>
+      			<a href=<% out.print("\"" + s+ "\""); %> class="menu-link">
+       				<li>Add Theme</li>
+      			</a>
       			<a href="logout.jsp" class="menu-link">
         			<li>Log out</li>
       			</a>
