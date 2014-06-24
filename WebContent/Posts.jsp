@@ -95,6 +95,7 @@
 						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
 							
 						"File:" +
+						
 	           			 " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
 	            		 "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
 	            		 "</p>" +
@@ -102,7 +103,6 @@
 		
 			}
 		}%>
-	<p><%=themeName + " Posts: "%></p>
 	
 	<script>
 	function myFunction(arg1, arg2, arg3, arg4, arg5) {
@@ -168,7 +168,8 @@
                             	<%if(user.viewProfile(value.getUserId()).GetAvatar() == null){ %>
                             	<li><img src="Images/default.jpg" height="186" width="153"></li>
                             	<%}else{ %>
-                            	<li><img src="Images/UploadedFiles/" + <%= user.viewProfile(value.getUserId()).GetAvatar()%> + "height="186" width="153"></li>
+                            	<%String image = "Images/UploadedFiles/" + user.viewProfile(value.getUserId()).GetAvatar(); %>
+                            	<li><img src= <%=image%> + " height="186" width="153"></li>
                             <%} %>
                             </ul>
                         </div>
@@ -179,16 +180,16 @@
                 </div>
                 
                 <ul class="personal-info">
-                 
+                
 					<li><% out.print(value.getText()); %></li>
-					<%ArrayList<String> files = value.getFiles(); 
+				 <%--	<%ArrayList<String> files = value.getFiles(); 
 						int size = files.size();
-						String image = "";
+						String file = "";
 						for(int i = 0; i < size; i++){
-							image = files.get(i);
+							file = files.get(i);
 					%>
-					<img src="Images/UploadedFiles/" + <%= image %> + "height="186" width="153">
-					<%} %>
+					<img src="Images/UploadedFiles/" + <%= file %> + "height="186" width="153">
+					<%} %> --%>
                 </ul>
 			</div>        
 		</section>
