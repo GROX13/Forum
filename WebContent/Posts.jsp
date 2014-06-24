@@ -95,6 +95,7 @@
 						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
 							
 						"File:" +
+						
 	           			 " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
 	            		 "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
 	            		 "</p>" +
@@ -102,8 +103,7 @@
 		
 			}
 		}%>
-	<p><%=themeName + " Posts: "%></p>
-	
+		<p><%=themeName + " Posts: "%></p>
 	<script>
 	function myFunction(arg1, arg2, arg3, arg4, arg5) {
 		 document.getElementById(arg1).style.display = "block";
@@ -117,6 +117,20 @@
 	<%!
         public String liDecorator(int id, String name){
 			return "<a href=\"profile.jsp?id=" + id + "\">" + name + "</a>"; 
+        }
+    %>
+    
+    <%!
+        public String date(String date){
+    	
+			return "<FONT FACE=" + "\"verdana\" color=" + "\"green\"" + ">" + date + "</FONT>"; 
+        }
+    %>
+    
+     <%!
+        public String signature(String s){
+    	
+			return "<FONT FACE=" + "\"verdana\" color=" + "\"green\"" + ">" + s + "</FONT>"; 
         }
     %>
     
@@ -168,27 +182,30 @@
                             	<%if(user.viewProfile(value.getUserId()).GetAvatar() == null){ %>
                             	<li><img src="Images/default.jpg" height="186" width="153"></li>
                             	<%}else{ %>
-                            	<li><img src="Images/UploadedFiles/" + <%= user.viewProfile(value.getUserId()).GetAvatar()%> + "height="186" width="153"></li>
+                            	<%String image = "Images/UploadedFiles/" + user.viewProfile(value.getUserId()).GetAvatar(); %>
+                            	<li><img src= <%=image%> + " height="186" width="153"></li>
                             <%} %>
                             </ul>
                         </div>
                     </div> 
                           
                     <h1><% out.print(liDecorator(value.getUserId(), user.viewProfile(value.getUserId()).GetUsername())); %></h1>
-                   <p><%out.print(user.viewProfile(value.getUserId()).GetSignature());%></p>
+                   <p><%out.print(signature(user.viewProfile(value.getUserId()).GetSignature()));%></p>
                 </div>
                 
                 <ul class="personal-info">
-                 
+                
+                <li><% out.print(date(value.getDate().toString())); %></li>
 					<li><% out.print(value.getText()); %></li>
-					<%ArrayList<String> files = value.getFiles(); 
-						int size = files.size();
-						String image = "";
-						for(int i = 0; i < size; i++){
-							image = files.get(i);
-					%>
-					<img src="Images/UploadedFiles/" + <%= image %> + "height="186" width="153">
-					<%} %>
+				 	<%//ArrayList<String> files = value.getFiles(); 
+					//	int size = files.size();
+					//	String file = "";
+					//	for(int i = 0; i < size; i++){
+					//		file = files.get(i);
+					
+					//String f = "Images/UploadedFiles/" + file; 
+					//<img src= <%=f + " height="186" width="153">
+					//} %> 
                 </ul>
 			</div>        
 		</section>
