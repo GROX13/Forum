@@ -236,7 +236,7 @@ header {
 /* Profile Section */
 /*-------------------------------------------------------*/
 #profile {
-	background: /*mainColor*/ #fdc750 ;
+	background: /*mainColor*/ #99FFFF;
 	background-image: url(../images/header-shadow.png);
 	background-position: center bottom;
 	background-repeat: repeat-x;
@@ -245,7 +245,7 @@ header {
 .about {
 	float: left;
 	margin-top: 30px;
-	width: 490px;
+	width: 400px;
 	margin-left: 20px;
 }
 
@@ -278,30 +278,28 @@ header {
 .about p {
 	font-size: 14px;
 	margin-top: 15px;
-	color: /*profileTextColor*/ #a87f09 ;
 	font-weight: 400;
 	line-height: 20px;
 }  /* Personal info */
 .personal-info {
 	float: left;
 	margin-top: 30px;
-	width: 310px;
-	min-height: 230px;
+	width: 350px;
+	min-height: 400px;
 	margin-left: 10px;
-	background: url(../images/personal-info-sep.png) no-repeat left top;
 	padding: 20px 0 0 20px;
 }
 
 .personal-info li {
 	font-size: 14px;
-	margin-bottom: 10px;
+	margin-bottom: 14px;
 	overflow: hidden;
 }
 
 .personal-info li label {
 	color: /*profileTextColor*/ #a87f09 ;
 	float: left;
-	padding: 5px 7px;
+	padding: 12px 7px;
 	font-weight: 600;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -311,10 +309,44 @@ header {
 .personal-info li span {
 	float: right;
 	width: 220px;
+	padding-top: 11px;
+	font-weight: 300;
+	color: /*profileTextColor*/ #a87f09 ;
+}
+
+.personal-infos {
+	float: left;
+	margin-top: 30px;
+	width: 300px;
+	min-height: 400px;
+	margin-left: 10px;
+	padding: 20px 0 0 20px;
+}
+
+.personal-infos li {
+	font-size: 14px;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.personal-infos li label {
+	color: /*profileTextColor*/ #a87f09 ;
+	float: left;
+	padding: 10px;
+	font-weight: 600;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.personal-infos li span {
+	float: right;
+	width: 220px;
 	padding-top: 4px;
 	font-weight: 300;
 	color: /*profileTextColor*/ #a87f09 ;
-}  /*-------------------------------------------------------*/
+} 
+  /*-------------------------------------------------------*/
 /* Menu */ /*-------------------------------------------------------*/
 .menu {
 	height: 100px;

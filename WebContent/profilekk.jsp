@@ -83,9 +83,8 @@
 	</head>
 	<body class="bg-cyan">
 		<section id="content" data-easytabs="true"> 
-			     
-				<div id="profile"  style="display: block;">
-				 <form action = ChangeData method = "post">       
+			<form action = ChangeData method = "post">            
+				<div id="profile" class="active" style="display: block;"> 
 	                <div class="about">
 	                   	<div class="photo-inner">
 	                   		<div class="caroufredsel_wrapper" style="display: block; text-align: start; float: none; position: relative; top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 153px; height: 188px; margin: 0px; overflow: hidden;">
@@ -127,8 +126,7 @@
 	                    	<li id = "bannTime" style = "display:none"><label>Ban Ends</label><span class="word-wrap"><% out.print(bann.getEnd_date()); %></span></li>
 	                    <% } %>
 	                </ul>
-	                <% if(profile.GetUserID() == id){%>
-	                 <ul class="personal-infos">
+	                 <ul class="personal-info">
 	                 
 	                 	<li>
 		                 	<label><button  onclick="myFunction('firstName', 'changeName')" id = "name" style = "display:none" type = "button" class = "button">Edit</button></label>
@@ -152,15 +150,13 @@
 							</span>
 	                 	</li>
 	                 	<li>
-	                 		<label><button onclick="myFunction('date', 'changeDate')" id = "editDate" style = "display:none" type = "button" class = "button">Edit</button></label>
-	                 		<label style = "display:none" id = "date">
-	                 		<select style = "display:inline" id="daydropdown"  name = "daydropdown">
+	                 		<label><button onclick="myFunction('daydropdown', 'monthdropdown', 'yeardropdown', 'changeDate')" id = "editDate" style = "display:none" type = "button" class = "button">Edit</button></label>
+	                 		<select id="daydropdown" style = "display:none" name = "daydropdown">
 							</select> 
-							<select style = "display:inline" id="monthdropdown"  name = "monthdropdown">
+							<select id="monthdropdown" style = "display:none" name = "monthdropdown">
 							</select> 
-							<select style = "display:inline" id="yeardropdown"  name = "yeardropdown">
-							</select>
-							</label> 
+							<select id="yeardropdown" style = "display:none" name = "yeardropdown">
+							</select> 
 	                 		<script> 
 				 				populatedropdown("daydropdown", "monthdropdown", "yeardropdown");
 							</script>
@@ -183,15 +179,13 @@
 							</span>
 						</li>
 				 	</ul>
-				 	<%} %>
-				 	</form>
-	             <ul class = "personal-info">
-			      
+	             </div>  
+			</form>      
 				<form action = <%= "WarnBann?id=" + id %> method = "post">
-					<% if(adm != null && profile.GetUserID() != id){ %>
-						<% Warn warnUser = new Warn(id); %>
-						<% boolean warned = warnUser.isWarned(); %>
-			<li><label>Warn: <%= warned %></label></li>
+		<% if(adm != null && profile.GetUserID() != id){ %>
+			<% Warn warnUser = new Warn(id); %>
+			<% boolean warned = warnUser.isWarned(); %>
+			<p>Warn: <%= warned %></p>
 			<select id = "warnUser" name = "warnUser" style = "display:none">
 					<option value = "" selected></option>
   					<option value = 1> 1 Month </option>
@@ -204,38 +198,38 @@
 					<option value = 10> 10 Post </option>
 					<option value = 15> 15 Post </option>
 			</select>
-				<button  id = "warn" style = "display:none" type = "submit" class = "button">Warn User</button>
+				<button  id = "warn" style = "display:none" type = "submit">Warn User</button>
 			<% 	if(!warned){ %>
 					<script> 
 		 				myFunction("warn", "warnUser", "freq");
 		 			</script>
 		 	<% } %>
 		 	<% if(warned){ %>
-		 	<li>	<label>Warned till : <%= warnUser.getEnd_date() %></label></li>
-		 		<li><label>Allowed number of posts : <%= warnUser.getFrequency() %></label></li>
-		 		<button  id = "unWarn" type = "submit" name = "remove" value = "warn" class = "button">Remove Warn</button>
+		 		<p>Warned till : <%= warnUser.getEnd_date() %></p>
+		 		<p>Allowed number of posts : <%= warnUser.getFrequency() %></p>
+		 		<button  id = "unWarn" type = "submit" name = "remove" value = "warn">Remove Warn</button>
 		 	<% } %>
 		 	<% Bann bannUser = new Bann(id); %>
 			<% boolean banned = bannUser.isBanned(); %>
-			<li><label>Bann: <%= banned %></label></li>
+			<p>Bann: <%= banned %></p>
 			<select id = "bannUser" name = "bannUser" style = "display:none">
 					<option value = "" selected></option>
   					<option value = 1> 1 Month </option>
 					<option value = 2> 2 Month </option>
 					<option value = 3> 3 Month </option>
 			</select>
-				<button  id = "bann" style = "display:none" type = "submit" class = "button">Bann User</button>
+				<button  id = "bann" style = "display:none" type = "submit">Bann User</button>
 			<% 	if(!banned){ %>
 					<script> 
 		 				myFunction("bann", "bannUser");
 		 			</script>
 		 	<% } %>
 		 	<% if(banned){ %>
-		 		<li><label>Banned till : <%= bannUser.getEnd_date() %></label></li>
-		 		<button  id = "unBann" type = "submit" name = "remove" value = "bann" class = "button">Remove Bann</button>
+		 		<p>Banned till : <%= bannUser.getEnd_date() %></p>
+		 		<button  id = "unBann" type = "submit" name = "remove" value = "bann">Remove Bann</button>
 		 	<% } %>
 		<% } %>
-		</form></ul></div>  
+		</form>
 		</section>
 		<% if(profile.GetUserID() == id) { %>
 		 <script> 
