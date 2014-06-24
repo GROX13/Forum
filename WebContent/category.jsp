@@ -122,8 +122,9 @@
 						+ cat.getDescription() + "</p></div>"); 
 				if (isAdmin) {
 					out.print(editButtons(id)); 
-					out.print("<a href =\"HandleCategoryRemove?id=" + id + "\">" + "Remove Category </a>");
+					out.print("<a class=\"remove\" href =\"HandleCategoryRemove?id=" + id + "\">" + "Remove Category </a>");					
 					out.print(showButtons(id)); 
+
 			}
 			%>
 			<% } %>  
