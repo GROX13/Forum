@@ -121,6 +121,20 @@
     %>
     
     <%!
+        public String date(String date){
+    	
+			return "<FONT FACE=" + "\"verdana\" color=" + "\"green\"" + ">" + date + "</FONT>"; 
+        }
+    %>
+    
+     <%!
+        public String signature(String s){
+    	
+			return "<FONT FACE=" + "\"verdana\" color=" + "\"green\"" + ">" + s + "</FONT>"; 
+        }
+    %>
+    
+    <%!
         public String editButtons(int i){
     		String changeName = "change" + i;
     		String editName = "edit" + i;
@@ -176,10 +190,12 @@
                     </div> 
                           
                     <h1><% out.print(liDecorator(value.getUserId(), user.viewProfile(value.getUserId()).GetUsername())); %></h1>
-                   <p><%out.print(user.viewProfile(value.getUserId()).GetSignature());%></p>
+                   <p><%out.print(signature(user.viewProfile(value.getUserId()).GetSignature()));%></p>
                 </div>
                 
                 <ul class="personal-info">
+                
+                <li><% out.print(date(value.getDate().toString())); %></li>
 					<li><% out.print(value.getText()); %></li>
 				 	<%//ArrayList<String> files = value.getFiles(); 
 					//	int size = files.size();
