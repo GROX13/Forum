@@ -41,32 +41,35 @@
 	<% if(usr == null) {
 		if (adm == null) {
 			%>
-			<p><a href ="index.jsp">Log In</a></p>
+			
+			
 			<% 
 			out.print(
 				"<form action = \"HandleLogin\" method = \"post\">" +	
 				  "<p>" +
-						"<label for = \"username\"> User name: </label>" +	
-						"<input type = \"text\" id = \"username\" name = \"username\" required>" +	
-						"<label for = \"password\"> Password: </label>" +		
-						"<input type = \"password\" id = \"password\" name = \"password\" required>" +
-						"<input type = \"submit\" value = \"Login\">" +	 
-						"<a href =\"registration.jsp\"> Create New Account </a>" +	
+						"<p><h3><label for = \"username\"> User name: </label></h3></p>" +	
+						"<h3><input type = \"text\" id = \"username\" name = \"username\" required></h3>" +	
+						"<p><h3><label for = \"password\"> Password: </label></h3></p>" +		
+						"<p><h3><input type = \"password\" id = \"password\" name = \"password\" required></h3></p>" +
+						"<a style=\"font-size:20px\">" +
+						"<input type = \"submit\" value = \"Login\"  style=\"width: 100px; height: 30px\" >" +	 
+						"<p><h3><a href =\"registration.jsp\" style=\"color: white\"> Create New Account </a></h3></p>" +	
 					"</p>" +	
 				"</form>");
 		} else {
 			Profile p = adm.getProfile();
 			if (p != null) 
-				out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
-			out.print("<h3> Status: Admin </h3>");
+				out.print("<h3> Welcome, " + p.GetFirstName() + " " + p.GetLastName() + "</h3>");
+			out.print("<h5> Status: Admin </h5>");
 			%>
-				<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
-				<p><a href ="log_out.jsp">Log Out</a></p>
+					
+				<p><h4><a href = <%= "profile.jsp?id=" + p.GetUserID() %> style=\"color: white\"> Profile </a></h4></p>
+				<p><h4><a href ="log_out.jsp" style=\"color: white\">Log Out</a></h4></p>
 			<%
 			
 			out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
 					"<p>" +
-					"<label for = \"post\"> Post: </label>" +	
+					//"<label for = \"post\"> Post: </label>" +	
 					"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
 						
 					"File:" +
@@ -78,11 +81,11 @@
 	} else {
 		Profile p = usr.getProfile();
 		if (p != null) 
-			out.print("<h1> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h1>");
-		out.print("<h3> Status: User </h3>");
+			out.print("<h3> Welcome " + p.GetFirstName() + " " + p.GetLastName() + "</h3>");
+		out.print("<h4> Status: User </h4>");
 		%>
-			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
-			<p><a href ="log_out.jsp">Log Out</a></p>
+			<p><h4><a href = <%= "profile.jsp?id=" + p.GetUserID() %> style=\"color: white\"> Profile </a></h4></p>
+			<p><h4><a href ="log_out.jsp" style=\"color: white\">Log Out</a></h4></p>
 		<% 
 
 		Bann bann = new Bann(p.GetUserID());
@@ -91,19 +94,18 @@
 		
 				out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
 						"<p>" +
-						"<label for = \"post\"> Post: </label>" +	
+						//"<label for = \"post\"> Post: </label>" +	
 						"<input type = \"textarea\" name = \"post\" cols = \"70\" rows = \"10\" required>" +	
 							
 						"File:" +
 						
-	           			 " <input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
+	           			 "<input type=\"file\" name=\"file\" id=\"file\" /> <br/>" +
 	            		 "<input type=\"submit\" value=\"Add Post\" name=\"upload\" id=\"upload\" />" +
 	            		 "</p>" +
 	            		"</form>");
 		
 			}
 		}%>
-		<p><%=themeName + " Posts: "%></p>
 	<script>
 	function myFunction(arg1, arg2, arg3, arg4, arg5) {
 		 document.getElementById(arg1).style.display = "block";
@@ -121,16 +123,9 @@
     %>
     
     <%!
-        public String date(String date){
+        public String textPrint(String text, String color, String size, String font){
     	
-			return "<FONT FACE=" + "\"verdana\" color=" + "\"green\"" + ">" + date + "</FONT>"; 
-        }
-    %>
-    
-     <%!
-        public String signature(String s){
-    	
-			return "<FONT FACE=" + "\"verdana\" color=" + "\"green\"" + ">" + s + "</FONT>"; 
+			return "<FONT FACE=" + font + " color=" + color + " size=" + size + ">" + text + "</FONT>"; 
         }
     %>
     
@@ -150,7 +145,7 @@
     
     <%!
         public String removePost(int i){
-            return "<a href =\"HandlePostRemove?id=" + i + "\">" + "Remove Post </a>";
+            return "<p><h4><a href =\"HandlePostRemove?id=" + i + "\">" + "Remove Post </a></h4></p>";
         }
     %>
     
@@ -190,12 +185,12 @@
                     </div> 
                           
                     <h1><% out.print(liDecorator(value.getUserId(), user.viewProfile(value.getUserId()).GetUsername())); %></h1>
-                   <p><%out.print(signature(user.viewProfile(value.getUserId()).GetSignature()));%></p>
+                   <p><%out.print(textPrint(user.viewProfile(value.getUserId()).GetSignature(),"green", "2", "verdana"));%></p>
                 </div>
                 
                 <ul class="personal-info">
                 
-                <li><% out.print(date(value.getDate().toString())); %></li>
+                <li><% out.print(textPrint(value.getDate().toString(),"green", "2", "verdana")); %></li>
 					<li><% out.print(value.getText()); %></li>
 				 	<%//ArrayList<String> files = value.getFiles(); 
 					//	int size = files.size();

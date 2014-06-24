@@ -62,7 +62,7 @@
 		%>
 			<p><a href = <%= "chat.jsp?id=" + p.GetUserID() %>> Chat </a></p>
 			<p><a href = <%= "profile.jsp?id=" + p.GetUserID() %>> Profile </a></p>
-			<p><a href ="log_out.jsp">Log Out</a></p>
+			<p><a href ="logout.jsp">Log Out</a></p>
 		<% 
 	}
 	%>

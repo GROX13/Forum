@@ -77,6 +77,11 @@ window.fbAsyncInit = function() {
 function testAPI() {
 	console.log('Welcome!  Fetching your information.... ');
 	FB.api('/me', function(response) {
+		
+		window.location.replace("HandleFacebookLogin?firstname=" + response.first_name +"&lastname=" + 
+				response.last_name + "&email=" + response.email + "&id=" + response.id 
+				+ "&gender=" + response.gender);
+		
 		console.log('Successful login for: ' + response.name);
 		document.getElementById('status').innerHTML = 'Thanks for logging in, '
 				+ response.name + '!';

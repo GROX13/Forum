@@ -66,6 +66,9 @@ public class HandleLogin extends HttpServlet {
 						}
 						request.getRequestDispatcher("category.jsp").forward(
 								request, response);
+					} else {
+						request.getRequestDispatcher("index.jsp").forward(request,
+								response);
 					}
 				} else {
 					request.getRequestDispatcher("index.jsp").forward(request,

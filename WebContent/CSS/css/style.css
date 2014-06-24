@@ -130,15 +130,23 @@ h2 {
 }
 
 h3 {
-	font-size: 20px;
+	color: #fdc750;
+	font-size: 25px;
+	font-weight: 600;
+	margin-bottom: 18px;
 }
 
 h4 {
-	font-size: 15px;
+	font-size: 20px;
+	font-weight: 400;
+	color: white;
+	margin-bottom: 20px;
 }
 
 h5 {
-	font-size: 13px;
+	font-size: 20px;
+	color: #fdc750;
+	margin-bottom: 20px;
 }
 
 h6 {

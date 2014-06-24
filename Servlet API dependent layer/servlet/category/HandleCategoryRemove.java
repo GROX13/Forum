@@ -36,7 +36,7 @@ public class HandleCategoryRemove extends HttpServlet {
 		
 		try {
 			adm.DeleteCategory(catID);
-			request.getRequestDispatcher("categorybc.jsp?id=" + catID).forward(request, response);
+			request.getRequestDispatcher("category.jsp?id=" + catID).forward(request, response);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
