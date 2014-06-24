@@ -1,7 +1,11 @@
+<%@page import="forum.data.accounts.Admin"%>
+<%@page import="forum.data.accounts.User"%>
 <%@ page language="java" contentType="text/html; charset = UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+	<% User usr = (User) request.getSession().getAttribute("user");%>
+	<% Admin adm = (Admin) request.getSession().getAttribute("admin");%>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Categories</title>
@@ -22,10 +26,10 @@
         			<li>Profile</li>
       			</a>
       			<a href="#" class="menu-link">
-       				<li>Categories</li>
+       				<li>Add category</li>
       			</a>
       			<a href="#" class="menu-link">
-        			<li>Themes</li>
+        			<li>Delete category</li>
       			</a>
       			<a href="#" class="menu-link">
         			<li>About us</li>

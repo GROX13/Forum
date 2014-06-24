@@ -40,8 +40,10 @@
 									<i class="icon-append icon-lock"></i>
 									<input type="password" id = "password" name = "password" required>
 								</label>
-								<div class="note"><a href="#">Forgot password?</a></div>
-								<div class="note"><a href="category.jsp">Log in as guest?</a></div>
+								<div class="note">
+									<a href="#">Forgot password?</a> 
+									<a href="category.jsp">Log in as guest?</a>
+								</div>
 							</div>
 						</div>
 					</section>
