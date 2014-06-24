@@ -16,6 +16,10 @@ article {
 	color: #000;
 }
 
+.remove {
+	font-size: 10px;
+}
+
 .categories a:link {
 	font-family: "Josefin Sans", Arial, Helvetica, sans-serif;
 	text-shadow:0 0 6px rgba(0, 0, 0, 0.5);

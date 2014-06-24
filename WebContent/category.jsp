@@ -90,7 +90,7 @@
 						+ id + "\">" + cat.getTitle() + "</a></p><p>"  
 						+ cat.getDescription() + "</p></div>"); 
 				if (isAdmin) {
-					out.print("<a href =\"HandleCategoryRemove?id=" + id + "\">" + "Remove Category </a>");
+					out.print("<a class=\"reomove\" href =\"HandleCategoryRemove?id=" + id + "\">" + "Remove Category </a>");
 			}
 			%>
 			<% } %>  
