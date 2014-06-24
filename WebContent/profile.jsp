@@ -81,23 +81,32 @@
 				 document.getElementById(arg5).style.display = "block";
 			}
 		</script>
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	</head>
 	<body class="bg-cyan">
 		<section id="content" data-easytabs="true"> 
 			     
 				<div id="profile"  style="display: block;">
-				 <form action = ChangeData method = "post">       
+				 <form action =  <%= "uploads?id=" + id %>  method = "post" enctype="multipart/form-data">       
 	                <div class="about">
 	                   	<div class="photo-inner">
+	                  		
 	                   		<div class="caroufredsel_wrapper" style="display: block; text-align: start; float: none; position: relative; top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 153px; height: 188px; margin: 0px; overflow: hidden;">
 	                    		<ul style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 765px; height: 188px; z-index: auto; opacity: 1;">                          
-	                            	<li><img src="Images/default.jpg" height="186" width="153"></li>
-	                            	<li><img src="Images/default.jpg" height="186" width="153"></li>
+	                            	<%if(profile.GetAvatar() == null){ %>
+                            			<li><img src="Images/default.jpg" height="186" width="153"></li>
+                            		<%}else{ %>
+                            			<%String image = "Images/UploadedFiles/" + profile.GetAvatar(); %>
+                            			<li><img src= <%=image%> + " height="186" width="153"></li>
+	                            	<% } %>
 	                            </ul>
 	                        </div>
+	                     
 	                        <button onclick="myFunction('avatar', 'changeImg')" id = "editPic" style = "display:none" type = "button" class = "button">Edit</button>
 	                    	<p><input type = "file" id = "avatar" style = "display:none" name = "avatar"/></p>
 							<button  id = "changeImg" style = "display:none" type = "submit" class = "button">Save Changes</button>
+	                 	   
 	                    </div>        
 	                    <h1><% out.print(username); %></h1>
 	                    <h1><% out.print(userType); %></h1>
@@ -127,7 +136,7 @@
 	               			<% boolean isB = bannU.isBanned(); %>
 	               			<% if(isW){ %>
 	               				 <li><label>Warned</label><span class="word-wrap"><% out.print(isW); %></span></li>
-	               				 <li><label>1 Post In </label><span class="word-wrap"><% out.print(fre); %> hours</span></li>
+	               				 <li><label>1 Post In </label><span class="word-wrap"><% out.print(fre); %> days</span></li>
 	               				 <li><label>Warn Ends</label><span class="word-wrap"><% out.print(warnU.getEnd_date()); %></span></li>
 	               			<% } %>
 	               			<% if(isB){ %>
@@ -210,9 +219,9 @@
 							</select><br>
 							<select id = "freq" name = "freq" style = "display:none">
 									<option value = "" selected></option>
-				  					<option value = 5> 5 Hour </option>
-									<option value = 10> 10 Hour </option>
-									<option value = 15> 15 Hour </option>
+				  					<option value = 5> 5 Day </option>
+									<option value = 10> 10 Day </option>
+									<option value = 15> 15 Day </option>
 							</select>
 								<button  id = "warn" style = "display:none" type = "submit" class = "button">Warn User</button>
 							<% 	if(!warned && !banned){ %>
@@ -222,7 +231,7 @@
 						 	<% } %>
 						 	<% if(warned && !banned){ %>
 						 		<li><label>Warned till : <%= warnUser.getEnd_date() %></label></li>
-						 		<li><label>Allowed 1 post in   <%= warnUser.getFrequency() %> hours</label></li>
+						 		<li><label>Allowed 1 post in   <%= warnUser.getFrequency() %> days</label></li>
 						 		<button  id = "unWarn" type = "submit" name = "remove" value = "warn" class = "button">Remove Warn</button>
 						 	<% } %>
 							<li><label id = "bannLabel">Bann: <%= banned %></label></li>

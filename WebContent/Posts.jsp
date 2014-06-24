@@ -64,7 +64,7 @@
 			%>
 					
 				<p><h4><a href = <%= "profile.jsp?id=" + p.GetUserID() %> style=\"color: white\"> Profile </a></h4></p>
-				<p><h4><a href ="log_out.jsp" style=\"color: white\">Log Out</a></h4></p>
+				<p><h4><a href ="logout.jsp" style=\"color: white\">Log Out</a></h4></p>
 			<%
 			
 			out.print("<form method=\"POST\" action=\"upload?id=" + id + "\"" + "enctype=\"multipart/form-data\" >" +
@@ -85,7 +85,7 @@
 		out.print("<h4> Status: User </h4>");
 		%>
 			<p><h4><a href = <%= "profile.jsp?id=" + p.GetUserID() %> style=\"color: white\"> Profile </a></h4></p>
-			<p><h4><a href ="log_out.jsp" style=\"color: white\">Log Out</a></h4></p>
+			<p><h4><a href ="logout.jsp" style=\"color: white\">Log Out</a></h4></p>
 		<% 
 
 		Bann bann = new Bann(p.GetUserID());
