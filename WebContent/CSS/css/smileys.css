@@ -1,19 +1,19 @@
 @CHARSET "UTF-8";
-a:link {
+a.sm:link {
     color: #FF0000;
 }
 
 /* visited link */
-a:visited {
+a.sm:visited {
     color: #00FF00;
 }
 
 /* mouse over link */
-a:hover {
+a.sm:hover {
     color: #FF00FF;
 }
 
 /* selected link */
-a:active {
+a.sm:active {
     color: #0000FF;
 }
