@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.Date"%>
 <%@page import="forum.data.objects.Warn"%>
 <%@page import="forum.data.objects.Bann"%>
@@ -16,6 +17,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		
+		<link rel="icon" href="Icons/Wineass_W.ico" type="icon">
+		
+    	<link rel="stylesheet" type="text/css" href="CSS/css/reset.css"> 
+    	<link rel="stylesheet" type="text/css" href="CSS/css/style.css">
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,300,800,700,400italic|PT+Serif:400,400italic">
+	
 <% int id = Integer.parseInt(request.getParameter("id")); %>
 <% 
 	User user = new User();
@@ -23,7 +34,7 @@
 	%>
 <title><%=themeName%></title>
 </head>
-<body>
+<body class="bg-cyan">
 
 	<% User usr = (User) request.getSession().getAttribute("user");%>
 	<% Admin adm = (Admin) request.getSession().getAttribute("admin");%>
@@ -105,7 +116,7 @@
 	
 	<%!
         public String liDecorator(int id, String name){
-            return "<li><a href=\"profile.jsp?id=" + id + "\">" + name + "</a></li>";
+			return "<a href=\"profile.jsp?id=" + id + "\">" + name + "</a>"; 
         }
     %>
     
@@ -146,9 +157,42 @@
 		<% while(iter.hasNext()){ %>
 		<% 		Map.Entry<Integer, Post> entry = iter.next(); %>
 		<%		int pId = entry.getKey(); %>
-		<%		Post value = entry.getValue(); %> 		
-		<% 		out.println(liDecorator(value.getUserId(), user.viewProfile(value.getUserId()).GetUsername() + " "));%>	
-		<%		out.println("[ " + value.getDate() + " ]: " + value.getText()); %>
+		<%		Post value = entry.getValue(); %> 	
+				
+		<section id="content" data-easytabs="true">             
+			<div id="profile" class="active" style="display: block;"> 
+                <div class="about">
+                   	<div class="photo-inner">
+                   		<div class="caroufredsel_wrapper" style="display: block; text-align: start; float: none; position: relative; top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 153px; height: 188px; margin: 0px; overflow: hidden;">
+                    		<ul style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 765px; height: 188px; z-index: auto; opacity: 1;">                          
+                            	<%if(user.viewProfile(value.getUserId()).GetAvatar() == null){ %>
+                            	<li><img src="Images/default.jpg" height="186" width="153"></li>
+                            	<%}else{ %>
+                            	<li><img src="Images/UploadedFiles/" + <%= user.viewProfile(value.getUserId()).GetAvatar()%> + "height="186" width="153"></li>
+                            <%} %>
+                            </ul>
+                        </div>
+                    </div> 
+                          
+                    <h1><% out.print(liDecorator(value.getUserId(), user.viewProfile(value.getUserId()).GetUsername())); %></h1>
+                   <p><%out.print(user.viewProfile(value.getUserId()).GetSignature());%></p>
+                </div>
+                
+                <ul class="personal-info">
+                 
+					<li><% out.print(value.getText()); %></li>
+					<%ArrayList<String> files = value.getFiles(); 
+						int size = files.size();
+						String image = "";
+						for(int i = 0; i < size; i++){
+							image = files.get(i);
+					%>
+					<img src="Images/UploadedFiles/" + <%= image %> + "height="186" width="153">
+					<%} %>
+                </ul>
+			</div>        
+		</section>
+				
 		<%		if(adm != null){ %>
 		<%			out.print(editButtons(pId)); %>
 		<%   		out.print(removePost(pId)); %>
