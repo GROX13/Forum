@@ -126,13 +126,17 @@ INSERT INTO categories (title, description)
 	VALUES('Sport', 'All about sport');
 
 INSERT INTO theme(creator_id, category_id, title, description, is_open)
-	VALUES(1, 1, 'Tennis', "", true);
+	VALUES(1, 1, 'Tennis', 'Tennis is a sport people
+	play individually against a single opponent or
+	between two teams of two players each.', true);
 
 INSERT INTO theme(creator_id, category_id, title, description, is_open)
-	VALUES(1, 1, 'Football', "", true);
+	VALUES(1, 1, 'Football', 'Football refers to a number of sports that involve, to varying degrees, 
+kicking a ball with the foot to score a goal.', true);
 
 INSERT INTO theme(creator_id, category_id, title, description, is_open)
-	VALUES(1, 1, 'American Football', "", true);
+	VALUES(1, 1, 'American Football', 'is a sport played by two teams of eleven players on a rectangular field 120 yards 
+long by 53.33 yards wide with goalposts at each end. ', true);
 
 INSERT INTO posts (author_id, theme_id, post)
 	VALUES(1, 1, 'The four Grand Slam tournaments 

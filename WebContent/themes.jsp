@@ -102,8 +102,10 @@
 	}
 	</script>
 	<%!
-        public String liDecorator(int id, String name){
-            return "<a href=\"Posts.jsp?id=" + id + "\">" + name + "</a>";
+        public String liDecorator(int id, String title, String description){
+            return "<div><p><a href = \"Posts.jsp?id=" 
+			+ id + "\">" + title + "</a></p><p>"  
+			+ description + "</p></div>";
         }
     %>
     <%!
@@ -145,10 +147,10 @@
 		<%		int tId = entry.getKey(); %>
 		<%		Theme value = entry.getValue(); %>
 		<%		if(value.getOpen()){											 
-					out.print(liDecorator(tId, value.getTitle()));
+					out.print(liDecorator(tId, value.getTitle(), value.getDescription()));
 				}else{
 					if(isAdmin || isUser)
-						out.print(liDecorator(tId, value.getTitle()));
+						out.print(liDecorator(tId, value.getTitle(), value.getDescription()));
 				}
 		%>
 		<%		if(isAdmin){ %>
