@@ -127,7 +127,7 @@
 	               			<% boolean isB = bannU.isBanned(); %>
 	               			<% if(isW){ %>
 	               				 <li><label>Warned</label><span class="word-wrap"><% out.print(isW); %></span></li>
-	               				 <li><label>Post Frequency</label><span class="word-wrap"><% out.print(fre); %></span></li>
+	               				 <li><label>1 Post In </label><span class="word-wrap"><% out.print(fre); %> hours</span></li>
 	               				 <li><label>Warn Ends</label><span class="word-wrap"><% out.print(warnU.getEnd_date()); %></span></li>
 	               			<% } %>
 	               			<% if(isB){ %>
