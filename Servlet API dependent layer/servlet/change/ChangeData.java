@@ -71,8 +71,8 @@ public class ChangeData extends HttpServlet {
 		// TODO Auto-generated method stub
 		User us = (User) request.getSession().getAttribute("user");
 		Admin ad = (Admin) request.getSession().getAttribute("admin");
-		String pass = request.getParameter("pass");
-		String firstname = request.getParameter("firstname");
+		String pass = request.getParameter("password");
+		String firstname = request.getParameter("firstName");
 		String lastname = request.getParameter("lastname");
 		String gender = request.getParameter("gender");
 		String birthdate = "";
@@ -85,9 +85,9 @@ public class ChangeData extends HttpServlet {
 				day = "0" + day;
 			birthdate = request.getParameter("yeardropdown") + month + day;
 		}
-		String email = request.getParameter("email");
+		String email = request.getParameter("mail");
 		String avatar = request.getParameter("avatar");
-		String signature = request.getParameter("signature");
+		String signature = request.getParameter("sign");
 		if (us != null) {
 			if (!pass.equals("")) {
 				try {

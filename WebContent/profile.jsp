@@ -1,3 +1,5 @@
+<%@page import="forum.data.objects.Bann"%>
+<%@page import="forum.data.objects.Warn"%>
 <%@page import="forum.data.accounts.Admin"%>
 <%@page import="java.sql.Date"%>
 <%@page import="forum.data.objects.Profile"%>
@@ -37,6 +39,10 @@
 		String picture = profile.GetAvatar();
 		Date birth = profile.GetBirthDate();
 		String password = profile.GetPasword();
+		Warn warn = new Warn(profile.GetUserID());
+		boolean isWarned = warn.isWarned();
+		Bann bann = new Bann(profile.GetUserID());
+		boolean isBanned = bann.isBanned();
 	%>
 		 
 	<head>
@@ -76,47 +82,105 @@
 		</script>
 	</head>
 	<body class="bg-cyan">
-		<section id="content" data-easytabs="true">             
-			<div id="profile" class="active" style="display: block;"> 
-                <div class="about">
-                   	<div class="photo-inner">
-                   		<div class="caroufredsel_wrapper" style="display: block; text-align: start; float: none; position: relative; top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 153px; height: 188px; margin: 0px; overflow: hidden;">
-                    		<ul style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 765px; height: 188px; z-index: auto; opacity: 1;">                          
-                            	<li><img src="Images/default.jpg" height="186" width="153"></li>
-                            	<li><img src="Images/default.jpg" height="186" width="153"></li>
-                            </ul>
-                        </div>
-                        <button  id = "editPic" style = "display:none" type = "button" class = "button">Edit</button>
-                    </div>        
-                    <h1><% out.print(username); %></h1>
-                    <h1><% out.print(userType); %></h1>
-                    <h3><% out.print(firstname + " " + lastname); %></h3>
-                    <p><% out.print(signiture); %></p>
-                    <button  id = "editsign" style = "display:none" type = "button" class = "button">Edit</button>
-                </div>
-                
-                <ul class="personal-info">
-					<li><label>First Name</label><span><% out.print(firstname); %></span></li>
-					<li><label>Last Name</label><span><% out.print(lastname); %></span></li>
-					<li id = "YourPass" style = "display:none">
-						<label>Password</label><span><% out.print(password); %></span>
-					</li>
-                    <li><label>Birthday</label><span><% out.print(birth); %></span></li>
-                    <li><label>Gender</label><span><% out.print(gender); %></span></li>
-                    <li><label>Email</label><span class="word-wrap"><% out.print(email); %></span></li>
-                </ul>
-                 <ul class="personal-info">
-                 
-                 	<li><button  id = "name" style = "display:none" type = "button" class = "button">Edit</button></li>
-                 	<li><button  id = "lastName" style = "display:none" type = "button" class = "button">Edit</button></li>
-                 	<li><button  id = "editPass" style = "display:none" type = "button" class = "button">Edit</button></li>
-                 	<li><button  id = "editDate" style = "display:none" type = "button" class = "button">Edit</button></li>
-                 	<li><button  id = "editGender" style = "display:none" type = "button" class = "button">Edit</button></li>
-					<li><button  id = "editmail" style = "display:none" type = "button" class = "button">Edit</button></li>
-				
-                </ul>
-                
-			</div>        
+		<section id="content" data-easytabs="true"> 
+			<form action = ChangeData method = "post">            
+				<div id="profile" class="active" style="display: block;"> 
+	                <div class="about">
+	                   	<div class="photo-inner">
+	                   		<div class="caroufredsel_wrapper" style="display: block; text-align: start; float: none; position: relative; top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 153px; height: 188px; margin: 0px; overflow: hidden;">
+	                    		<ul style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 765px; height: 188px; z-index: auto; opacity: 1;">                          
+	                            	<li><img src="Images/default.jpg" height="186" width="153"></li>
+	                            	<li><img src="Images/default.jpg" height="186" width="153"></li>
+	                            </ul>
+	                        </div>
+	                        <button onclick="myFunction('avatar', 'changeImg')" id = "editPic" style = "display:none" type = "button" class = "button">Edit</button>
+	                    	<p><input type = "file" id = "avatar" style = "display:none" name = "avatar"/></p>
+							<button  id = "changeImg" style = "display:none" type = "submit" class = "button">Save Changes</button>
+	                    </div>        
+	                    <h1><% out.print(username); %></h1>
+	                    <h1><% out.print(userType); %></h1>
+	                    <h3><% out.print(firstname + " " + lastname); %></h3>
+	                    <p><% out.print(signiture); %></p>
+	                    <button onclick="myFunction('sign', 'changeSign')" id = "editsign" style = "display:none" type = "button" class = "button">Edit</button>
+	              		<span >
+			                 	<input type = "text" id = "sign" style = "display:none" name = "sign"/>
+								<button  style = "display:none" id = "changeSign"  type = "submit" class = "button">Save Changes</button>
+						</span>
+	                </div>
+	                
+	                <ul class="personal-info">
+						<li><label>First Name</label><span><% out.print(firstname); %></span></li>
+						<li><label>Last Name</label><span><% out.print(lastname); %></span></li>
+						<li id = "YourPass" style = "display:none">
+							<label>Password</label><span><% out.print(password); %></span>
+						</li>
+	                    <li><label>Birthday</label><span><% out.print(birth); %></span></li>
+	                    <li><label>Gender</label><span><% out.print(gender); %></span></li>
+	                    <li><label>Email</label><span class="word-wrap"><% out.print(email); %></span></li>
+	                    <li id = "warnLabel" style = "display:none"><label>Warn</label><span class="word-wrap">Is Warned: <% out.print(warn.isWarned()); %></span></li>
+	                    <% if(warn.isWarned()){ %>
+	                  	  <li id = "warnTime" style = "display:none"><label>Warn Ends</label><span class="word-wrap"><% out.print(warn.getEnd_date()); %></span></li>
+	                    <% } %>
+	                    <li id = "bannLabel" style = "display:none"><label>Ban</label><span class="word-wrap">Is Banned: <% out.print(bann.isBanned()); %></span></li>
+	                    <% if(bann.isBanned()){ %>
+	                    	<li id = "bannTime" style = "display:none"><label>Ban</label><span class="word-wrap"><% out.print(bann.getEnd_date()); %></span></li>
+	                    <% } %>
+	                </ul>
+	                 <ul class="personal-info">
+	                 
+	                 	<li>
+		                 	<label><button  onclick="myFunction('firstName', 'changeName')" id = "name" style = "display:none" type = "button" class = "button">Edit</button></label>
+		                 	<span >
+		                 		<input type = "text" id = "firstName" style = "display:none" name = "firstName"/>
+								<button  style = "display:none" id = "changeName"  type = "submit" class = "button">Save Changes</button>
+							</span>
+	                 	</li>
+	                 	<li>
+	                 		<label><button onclick="myFunction('lastname', 'changeLastName')" id = "lastName" style = "display:none" type = "button" class = "button">Edit</button></label>
+		                 	<span >
+			                 	<input type = "text" id = "lastname" style = "display:none" name = "lastname"/>
+								<button  style = "display:none" id = "changeLastName"  type = "submit" class = "button">Save Changes</button>
+							</span>
+	                 	</li>
+	                 	<li>
+	                 		<label><button onclick="myFunction('password', 'changePass')"  id = "editPass" style = "display:none" type = "button" class = "button">Edit</button></label>
+	                 		<span >
+			                 	<input type = "text" id = "password" style = "display:none" name = "password"/>
+								<button  style = "display:none" id = "changePass"  type = "submit" class = "button">Save Changes</button>
+							</span>
+	                 	</li>
+	                 	<li>
+	                 		<label><button onclick="myFunction('daydropdown', 'monthdropdown', 'yeardropdown', 'changeDate')" id = "editDate" style = "display:none" type = "button" class = "button">Edit</button></label>
+	                 		<select id="daydropdown" style = "display:none" name = "daydropdown">
+							</select> 
+							<select id="monthdropdown" style = "display:none" name = "monthdropdown">
+							</select> 
+							<select id="yeardropdown" style = "display:none" name = "yeardropdown">
+							</select> 
+	                 		<script> 
+				 				populatedropdown("daydropdown", "monthdropdown", "yeardropdown");
+							</script>
+							<button  id = "changeDate" style = "display:none" type = "submit" class = "button">Save Changes</button>
+	                 	</li>
+	                 	<li>
+	                 		<label><button onclick="myFunction('gender', 'changeGender')" id = "editGender" style = "display:none" type = "button" class = "button">Edit</button></label>
+		                 	<select id = "gender" name = "gender" style = "display:none">
+								<option value = "" selected></option>
+			  					<option value="male"> Male </option>
+								<option value="female"> Female </option>
+							</select>
+							<button  style = "display:none" id = "changeGender"  type = "submit" class = "button">Save Changes</button>
+	                 	</li>
+						<li>
+							<label><button onclick="myFunction('mail', 'changeMail')" id = "editmail" style = "display:none" type = "button" class = "button">Edit</button></label>
+							<span >
+			                 	<input type = "text" id = "mail" style = "display:none" name = "mail"/>
+								<button  style = "display:none" id = "changeMail"  type = "submit" class = "button">Save Changes</button>
+							</span>
+						</li>
+				 	</ul>
+	             </div>  
+			</form>      	
 		</section>
 		<% if(profile.GetUserID() == id) { %>
 		 <script> 
@@ -124,5 +188,10 @@
 		 	myFunction("editGender", "editmail", "editsign", "editPic");
 		 </script>
 		 <% } %>
+		 <% if((adm != null && profile.GetUserID() != id) || (usr != null && profile.GetUserID() == id)){ %>
+		 	<script> 
+		 		myFunction("warnLabel", "bannLabel");
+		 	</script>
+		 <%} %>
 	</body>
 </html>
