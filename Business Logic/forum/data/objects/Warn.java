@@ -1,8 +1,10 @@
 package forum.data.objects;
 
+import java.security.Timestamp;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -149,7 +151,7 @@ public class Warn {
 		Date currentPostDate = postDate;
 		int frequency = resultSet.getInt(DataBaseInfo.MYSQL_WARN_FREQUENCY);
 		long k = (currentPostDate.getTime() - lastPostDate.getTime());
-		long temp = ((currentPostDate.getTime() - lastPostDate.getTime())/60000)%60;
+		long temp = ((currentPostDate.getTime() - lastPostDate.getTime())/60000)/60/24;
 		if(temp <= frequency)
 			return false;
 		return true;
