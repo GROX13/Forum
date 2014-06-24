@@ -47,7 +47,7 @@ public class HandleThemes extends HttpServlet {
 		
 		String open = request.getParameter("theme_isOpen");
 		boolean themeIsOpen = false;
-		if(open.equals("Open")) themeIsOpen = true;
+		if(open.equals("1")) themeIsOpen = true;
 		
 		Admin adm = (Admin) request.getSession().getAttribute("admin");
 		User usr = (User) request.getSession().getAttribute("user");
@@ -61,7 +61,7 @@ public class HandleThemes extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.getRequestDispatcher("themes.jsp").forward(request, response);
+		request.getRequestDispatcher("themes.jsp?id=" + themeCategoryID).forward(request, response);
 	}
 
 }

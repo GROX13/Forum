@@ -7,7 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<%
 		User user = new User();
-		String categoryTitle = user.viewcaCategory(Integer.parseInt(request.getParameter("id"))).getTitle();
+		int categoryID = Integer.parseInt(request.getParameter("id"));
+		String categoryTitle = user.viewcaCategory(categoryID).getTitle();
 	%>
 	<title>Add Theme in <%=categoryTitle%></title>
 		
@@ -22,8 +23,8 @@
 </head>
 <body class="bg-red">
 		<div class="body">
-		
-			<form action="HandleThemes" method="post" class="sky-form">
+		<%String handleThemes = "HandleThemes?id=" + categoryID ; %>
+			<form action=<% out.print("\"" + handleThemes + "\""); %> method="post" class="sky-form">
 				<header>Theme form</header>
 					
 				<fieldset>					
@@ -43,6 +44,17 @@
 							<textarea rows="4" id = "theme_description" name = "theme_description" required></textarea>
 						</label>
 						<div class="note">You may use these HTML tags and attributes: &lt;a href="" title=""&gt;, &lt;abbr title=""&gt;, &lt;acronym title=""&gt;, &lt;b&gt;, &lt;blockquote cite=""&gt;, &lt;cite&gt;, &lt;code&gt;, &lt;del datetime=""&gt;, &lt;em&gt;, &lt;i&gt;, &lt;q cite=""&gt;, &lt;strike&gt;, &lt;strong&gt;.</div>
+					</section>
+					<section>
+						<label class="label">Select</label>
+						<label class="select">
+							<select id ="theme_isOpen" name ="theme_isOpen" >
+								<option value="0">Choose if guest can see </option>
+								<option value="1">Open</option>
+								<option value="2">Closed</option>
+							</select>
+							<i></i>
+						</label>
 					</section>
 				</fieldset>
 				

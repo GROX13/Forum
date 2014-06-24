@@ -146,7 +146,7 @@
 						out.print(liDecorator(tId, value.getTitle()));
 				}
 		%>
-		<%		if(isUser){ %>
+		<%		if(isAdmin){ %>
 		<%			out.print(editButtons(tId)); %>
 		<%			out.print(removeTheme(tId)); %>
 		<%			out.print(showButtons(tId)); %>
