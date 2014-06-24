@@ -29,10 +29,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Categories</title>
 		
-		<link rel="stylesheet" href="CSS/css/demo.css">
-		<link rel="stylesheet" href="CSS/css/sky-forms.css">
 		<link rel="stylesheet" href="CSS/css/stylemenu.css">
 		<link rel="stylesheet" href="CSS/css/style-categories.css">
+		<link rel="stylesheet" href="CSS/css/demo.css">
+		<link rel="stylesheet" href="CSS/css/sky-forms.css">
 		
 		<link rel = "icon" href = "Icons/Wineass_W.ico" type = "icon">
 	</head>
@@ -78,24 +78,24 @@
     		</ul>
   		</nav>
   		
-  		<div class="categories">
+  		<article class="categories">
 			<% Map<Integer, Category> all = cm.getAll(); %>
 			<% Iterator<Map.Entry<Integer, Category>> iter = all.entrySet().iterator(); %>
 			<% iter = all.entrySet().iterator(); %>
-			<ul id = "categoryMenu" class = "categoryMenu">
 			<% while(iter.hasNext()){ %>
 			<% 		Map.Entry<Integer, Category> entry = iter.next(); %>
 			<%		int id = entry.getKey(); %>
-			<%		Category cat = entry.getValue(); %>
-			<% 		out.print("<li><a href = \"themes.jsp?id=" 
-						+ id + "\">" + cat.getTitle() + "</a>"  
-						+ cat.getDescription() + "</li>"); 
+			<%		Category cat = entry.getValue(); %>	
+			<% 		out.print("<div><p><a href = \"themes.jsp?id=" 
+						+ id + "\">" + cat.getTitle() + "</a></p><p>"  
+						+ cat.getDescription() + "</p></div>"); 
+				if (isAdmin) {
+					out.print("<a href =\"HandleCategoryRemove?id=" + id + "\">" + "Remove Category </a>");
+			}
 			%>
-			<% } %> 
-			</ul> 
-		</div>
+			<% } %>  
+		</article>
   		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
   		<script src="JavaScript/menu-opener.js"></script>
-	
 	</body>
 </html>

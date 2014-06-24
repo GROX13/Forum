@@ -24,7 +24,7 @@
 	<body class="bg-red">
 		<div class="body">
 		
-			<form action="#" class="sky-form">
+			<form action="HandleCategory" method="post" class="sky-form">
 				<header>Category form</header>
 					
 				<fieldset>					
@@ -32,7 +32,7 @@
 						<section>
 						<label class="label">Title</label>
 						<label class="input">
-							<input type="text">
+							<input type="text" id = "category" name = "category" required>
 						</label>
 					</section>
 					</div>
@@ -41,7 +41,7 @@
 						<label class="label">Description</label>
 						<label class="textarea">
 							<i class="icon-append icon-comment"></i>
-							<textarea rows="4"></textarea>
+							<textarea rows="4" id = "category_description" name = "category_description" required></textarea>
 						</label>
 						<div class="note">You may use these HTML tags and attributes: &lt;a href="" title=""&gt;, &lt;abbr title=""&gt;, &lt;acronym title=""&gt;, &lt;b&gt;, &lt;blockquote cite=""&gt;, &lt;cite&gt;, &lt;code&gt;, &lt;del datetime=""&gt;, &lt;em&gt;, &lt;i&gt;, &lt;q cite=""&gt;, &lt;strike&gt;, &lt;strong&gt;.</div>
 					</section>
