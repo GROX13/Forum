@@ -11,10 +11,24 @@
 		<title>Chat Room</title>
 	</head>
 	<body>
-		<form action = "HandleChatroom" method = "post">
-			Message: <input type="text" name="message"><br>
-			<input type="submit" value="Submit">
-		</form>
+		<form action="HandleChatroom" method = "post" class="sky-form">
+				<header>Chat Room</header>
+					
+				<fieldset>
+					<section>
+						<label class="label">Message</label>
+						<label class="textarea">
+							<i class="icon-append icon-comment"></i>
+							<textarea rows="4" id = "message" name = "message" required></textarea>
+						</label>
+						<div class="note">You may use these HTML tags and attributes: &lt;a href="" title=""&gt;, &lt;abbr title=""&gt;, &lt;acronym title=""&gt;, &lt;b&gt;, &lt;blockquote cite=""&gt;, &lt;cite&gt;, &lt;code&gt;, &lt;del datetime=""&gt;, &lt;em&gt;, &lt;i&gt;, &lt;q cite=""&gt;, &lt;strike&gt;, &lt;strong&gt;.</div>
+					</section>
+				</fieldset>
+				
+				<footer>
+					<button type="submit" class="button">Send</button>
+				</footer>
+			</form>
 		<% 
 		Object ID = request.getSession().getAttribute("chatter_id"); 
 		if(ID != null) {

@@ -46,6 +46,9 @@
   				<a href="index.jsp" class="menu-link">
         			<li>Log In</li>
       			</a>
+      			<a href="registration.jsp" class="menu-link">
+        			<li>Create new account</li>
+      			</a>
       			<a href="#" class="menu-link">
         			<li>About us</li>
       			</a> 

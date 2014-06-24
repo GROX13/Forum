@@ -2,11 +2,9 @@ package servlet.change;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import forum.data.accounts.Admin;
 import forum.data.accounts.User;
-import forum.data.objects.Profile;
 
 /**
  * Servlet implementation class ChangeData

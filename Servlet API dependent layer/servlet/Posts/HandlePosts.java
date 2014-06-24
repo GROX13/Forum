@@ -24,8 +24,6 @@ import javax.servlet.http.Part;
 import forum.data.accounts.Admin;
 import forum.data.accounts.User;
 
-import servlet.Posts.HandlePostChanges;
-
 /**
  * Servlet implementation class HandleFileUpload
  */
