@@ -8,7 +8,8 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-	<% int id = Integer.parseInt(request.getParameter("id")); %> 
+	<% String idProfile = request.getParameter("id"); %>
+	<% int id = 0;  %>
 	<% Admin adm = (Admin)request.getSession().getAttribute("admin"); %>
 	<% User usr = (User)request.getSession().getAttribute("user"); %>
 	<% Profile profile = null; %>
@@ -16,6 +17,10 @@
 		<% profile = adm.getProfile();} %>
 	<% if(usr != null){ %>
 		<% profile = usr.getProfile(); }%>
+	<% if(idProfile == null && (usr != null || adm != null)){ 
+		 id = profile.GetUserID(); } %>
+	<% if(idProfile != null){ %>
+		<% id = Integer.parseInt(idProfile);} %> 
 	<% if((profile != null && profile.GetUserID() != id) || profile == null){ %>
 		<% User user = new User(); %>
 		<% profile = user.viewProfile(id); %>
@@ -39,10 +44,6 @@
 		String picture = profile.GetAvatar();
 		Date birth = profile.GetBirthDate();
 		String password = profile.GetPasword();
-		Warn warn = new Warn(profile.GetUserID());
-		boolean isWarned = warn.isWarned();
-		Bann bann = new Bann(profile.GetUserID());
-		boolean isBanned = bann.isBanned();
 	%>
 		 
 	<head>
@@ -118,14 +119,22 @@
 	                    <li><label>Birthday</label><span><% out.print(birth); %></span></li>
 	                    <li><label>Gender</label><span><% out.print(gender); %></span></li>
 	                    <li><label>Email</label><span class="word-wrap"><% out.print(email); %></span></li>
-	                    <li id = "warnLabel" style = "display:none"><label>Is Warned</label><span class="word-wrap"><% out.print(warn.isWarned()); %></span></li>
-	                    <% if(warn.isWarned()){ %>
-	                  	  <li id = "warnTime" style = "display:none"><label>Warn Ends</label><span class="word-wrap"><% out.print(warn.getEnd_date()); %></span></li>
-	                    <% } %>
-	                    <li id = "bannLabel" style = "display:none"><label>Is Banned</label><span class="word-wrap"><% out.print(bann.isBanned()); %></span></li>
-	                    <% if(bann.isBanned()){ %>
-	                    	<li id = "bannTime" style = "display:none"><label>Ban Ends</label><span class="word-wrap"><% out.print(bann.getEnd_date()); %></span></li>
-	                    <% } %>
+	               		<% if(usr != null && profile.GetUserID() == id){ %>
+	               			<% Warn warnU = new Warn(id); %>
+	               			<% boolean isW = warnU.isWarned(); %>
+	               			<% int fre = warnU.getFrequency(); %>
+	               			<% Bann bannU = new Bann(id); %>
+	               			<% boolean isB = bannU.isBanned(); %>
+	               			<% if(isW){ %>
+	               				 <li><label>Warned</label><span class="word-wrap"><% out.print(isW); %></span></li>
+	               				 <li><label>Post Frequency</label><span class="word-wrap"><% out.print(fre); %></span></li>
+	               				 <li><label>Warn Ends</label><span class="word-wrap"><% out.print(warnU.getEnd_date()); %></span></li>
+	               			<% } %>
+	               			<% if(isB){ %>
+	               				 <li><label>Banned</label><span class="word-wrap"><% out.print(isB); %></span></li>
+	               				 <li><label>Ban Ends</label><span class="word-wrap"><% out.print(bannU.getEnd_date()); %></span></li>
+	               			<% } %>
+	               		<% } %>
 	                </ul>
 	                <% if(profile.GetUserID() == id){%>
 	                 <ul class="personal-infos">
@@ -183,59 +192,61 @@
 							</span>
 						</li>
 				 	</ul>
-				 	<%} %>
-				 	</form>
+				 <%} %>
+				 </form>
 	             <ul class = "personal-info">
-			      
-				<form action = <%= "WarnBann?id=" + id %> method = "post">
-					<% if(adm != null && profile.GetUserID() != id){ %>
-						<% Warn warnUser = new Warn(id); %>
-						<% boolean warned = warnUser.isWarned(); %>
-			<li><label>Warn: <%= warned %></label></li>
-			<select id = "warnUser" name = "warnUser" style = "display:none">
-					<option value = "" selected></option>
-  					<option value = 1> 1 Month </option>
-					<option value = 2> 2 Month </option>
-					<option value = 3> 3 Month </option>
-			</select>
-			<select id = "freq" name = "freq" style = "display:none">
-					<option value = "" selected></option>
-  					<option value = 5> 5 Post </option>
-					<option value = 10> 10 Post </option>
-					<option value = 15> 15 Post </option>
-			</select>
-				<button  id = "warn" style = "display:none" type = "submit" class = "button">Warn User</button>
-			<% 	if(!warned){ %>
-					<script> 
-		 				myFunction("warn", "warnUser", "freq");
-		 			</script>
-		 	<% } %>
-		 	<% if(warned){ %>
-		 	<li>	<label>Warned till : <%= warnUser.getEnd_date() %></label></li>
-		 		<li><label>Allowed number of posts : <%= warnUser.getFrequency() %></label></li>
-		 		<button  id = "unWarn" type = "submit" name = "remove" value = "warn" class = "button">Remove Warn</button>
-		 	<% } %>
-		 	<% Bann bannUser = new Bann(id); %>
-			<% boolean banned = bannUser.isBanned(); %>
-			<li><label>Bann: <%= banned %></label></li>
-			<select id = "bannUser" name = "bannUser" style = "display:none">
-					<option value = "" selected></option>
-  					<option value = 1> 1 Month </option>
-					<option value = 2> 2 Month </option>
-					<option value = 3> 3 Month </option>
-			</select>
-				<button  id = "bann" style = "display:none" type = "submit" class = "button">Bann User</button>
-			<% 	if(!banned){ %>
-					<script> 
-		 				myFunction("bann", "bannUser");
-		 			</script>
-		 	<% } %>
-		 	<% if(banned){ %>
-		 		<li><label>Banned till : <%= bannUser.getEnd_date() %></label></li>
-		 		<button  id = "unBann" type = "submit" name = "remove" value = "bann" class = "button">Remove Bann</button>
-		 	<% } %>
-		<% } %>
-		</form></ul></div>  
+			      	<form action = <%= "WarnBann?id=" + id %> method = "post">
+						<% if(adm != null && profile.GetUserID() != id && profile.GetUserType() != 1){ %>
+							<% Warn warnUser = new Warn(id); %>
+							<% boolean warned = warnUser.isWarned(); %>
+							<% Bann bannUser = new Bann(id); %>
+							<% boolean banned = bannUser.isBanned(); %>
+							<li><label id = "warnLabel">Warn: <%= warned %></label></li>
+							<select id = "warnUser" name = "warnUser" style = "display:none">
+									<option value = "" selected></option>
+				  					<option value = 1> 1 Month </option>
+									<option value = 2> 2 Month </option>
+									<option value = 3> 3 Month </option>
+							</select><br>
+							<select id = "freq" name = "freq" style = "display:none">
+									<option value = "" selected></option>
+				  					<option value = 5> 5 Hour </option>
+									<option value = 10> 10 Hour </option>
+									<option value = 15> 15 Hour </option>
+							</select>
+								<button  id = "warn" style = "display:none" type = "submit" class = "button">Warn User</button>
+							<% 	if(!warned && !banned){ %>
+									<script> 
+						 				myFunction( "warn", "warnUser", "freq");
+						 			</script>
+						 	<% } %>
+						 	<% if(warned && !banned){ %>
+						 		<li><label>Warned till : <%= warnUser.getEnd_date() %></label></li>
+						 		<li><label>Allowed 1 post in   <%= warnUser.getFrequency() %> hours</label></li>
+						 		<button  id = "unWarn" type = "submit" name = "remove" value = "warn" class = "button">Remove Warn</button>
+						 	<% } %>
+							<li><label id = "bannLabel">Bann: <%= banned %></label></li>
+							<select id = "bannUser" name = "bannUser" style = "display:none">
+									<option value = "" selected></option>
+				  					<option value = 1> 1 Month </option>
+									<option value = 2> 2 Month </option>
+									<option value = 3> 3 Month </option>
+							</select>
+								<button  id = "bann" style = "display:none" type = "submit" class = "button">Bann User</button>
+							<% 	if(!banned){ %>
+									<script> 
+						 				myFunction("bann", "bannUser");
+						 			</script>
+						 	<% } %>
+						 	<% if(banned){ %>
+						 		<li><label>Banned till : <%= bannUser.getEnd_date() %></label></li>
+						 		<button  id = "unBann" type = "submit" name = "remove" value = "bann" class = "button">Remove Bann</button>
+						 	<% } %>
+						<% } %>
+				
+						</form>
+					</ul>
+				</div>  
 		</section>
 		<% if(profile.GetUserID() == id) { %>
 		 <script> 
@@ -243,6 +254,5 @@
 		 	myFunction("editGender", "editmail", "editsign", "editPic");
 		 </script>
 		 <% } %>
-		
 	</body>
 </html>
