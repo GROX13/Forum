@@ -37,11 +37,11 @@
   		<nav class="menu">			 		
   			<ul class="menu-inner">
   				<% if (isGuest){ %>
-  				<a href="#" class="menu-link">
-        			<li>About us</li>
-      			</a>
   				<a href="index.jsp" class="menu-link">
         			<li>Log In</li>
+      			</a>
+      			<a href="#" class="menu-link">
+        			<li>About us</li>
       			</a>
   				<% %> 
   				<% }%> 
@@ -52,14 +52,11 @@
       			<a href="categoryform.jsp" class="menu-link">
        				<li>Add category</li>
       			</a>
-      			<a href="#" class="menu-link">
-        			<li>Delete category</li>
+      			<a href="logout.jsp" class="menu-link">
+        			<li>Log out</li>
       			</a>
       			<a href="#" class="menu-link">
         			<li>About us</li>
-      			</a>
-      			<a href="logout.jsp" class="menu-link">
-        			<li>Log out</li>
       			</a>
   				<% %> 
   				<% }%> 
@@ -67,11 +64,11 @@
   				<a href=<% out.print("\"" + myProfileLink + "\""); %> class="menu-link">
         			<li>Profile</li>
       			</a> 
-      			<a href="#" class="menu-link">
-        			<li>About us</li>
-      			</a>
       			<a href="logout.jsp" class="menu-link">
         			<li>Log out</li>
+      			</a>
+      			<a href="#" class="menu-link">
+        			<li>About us</li>
       			</a>
   				<% %> 
   				<% }%> 

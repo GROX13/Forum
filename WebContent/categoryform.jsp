@@ -29,17 +29,16 @@
 					
 				<fieldset>					
 					<div class="input">
-						<section class="col col-4">
-							<label class="label">Name</label>
-							<label class="input">
-								<i class="icon-append icon-user"></i>
-								<input type="text">
-							</label>
-						</section>
+						<section>
+						<label class="label">Title</label>
+						<label class="input">
+							<input type="text">
+						</label>
+					</section>
 					</div>
 					
 					<section>
-						<label class="label">Comment</label>
+						<label class="label">Description</label>
 						<label class="textarea">
 							<i class="icon-append icon-comment"></i>
 							<textarea rows="4"></textarea>
@@ -49,12 +48,10 @@
 				</fieldset>
 				
 				<footer>
-					<button type="submit" class="button">Add comment</button>
+					<button type="submit" class="button">Add category</button>
 				</footer>
 			</form>
 			
 		</div>
-	
-
-<!-- Mirrored from voky.com.ua/showcase/sky-forms/examples/demo-comment.html by HTTrack Website Copier/3.x [XR&CO'2013], Mon, 23 Jun 2014 12:58:14 GMT -->
-</body></html>
+	</body>
+</html>
