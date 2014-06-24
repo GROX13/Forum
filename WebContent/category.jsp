@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 <%@page import="forum.data.accounts.Admin"%>
 <%@page import="forum.data.accounts.User"%>
+=======
+<%@page import="forum.data.objects.Profile"%>
+<%@page import="forum.data.accounts.User"%>
+<%@page import="forum.data.accounts.Admin"%>
+>>>>>>> origin/master
 <%@ page language="java" contentType="text/html; charset = UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,11 +26,25 @@
   		<nav class="menu-opener">
     		<div class="menu-opener-inner"></div>
   		</nav>
+  	<% User usr = (User) request.getSession().getAttribute("user");%>
+	<% Admin adm = (Admin) request.getSession().getAttribute("admin");
+	String profileLink = "profile.jsp";
+	boolean guest = true;
+	Profile p = null;%>
+	<% if(adm != null) {
+			profileLink += "?id=" + adm.getProfile().GetUserID();
+			guest = false;
+		}else if(usr != null){
+			profileLink += "?id=" + usr.getProfile().GetUserID();
+			guest = false;
+		}%>
   		<nav class="menu">
     		<ul class="menu-inner">
-    			<a href="#" class="menu-link">
+    		<%if(!guest){ %>
+    			<a href=<%= profileLink%> class="menu-link">
         			<li>Profile</li>
       			</a>
+<<<<<<< HEAD
       			<a href="#" class="menu-link">
        				<li>Add category</li>
       			</a>
@@ -32,11 +52,24 @@
         			<li>Delete category</li>
       			</a>
       			<a href="#" class="menu-link">
+=======
+      			<%} %>
+      			<a href="categorybc.jsp" class="menu-link">
+       				<li>Categories</li>
+      			</a>
+      			<a href="#" class="menu-link">
+>>>>>>> origin/master
         			<li>About us</li>
       			</a>
+      			<%if(!guest){ %>
       			<a href="logout.jsp" class="menu-link">
         			<li>Log out</li>
       			</a>
+      			<%}else{ %>
+      			<a href="index.jsp" class="menu-link">
+        			<li>Log In</li>
+      			</a>
+      			<%} %>
     		</ul>
   		</nav>
   		

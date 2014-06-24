@@ -68,7 +68,6 @@ public class HandlePosts extends HttpServlet {
 	    
 	    ArrayList<String> files = new ArrayList<String>();
 		files.add(fileName);
-		//videos.add(video);
 		Admin adm = (Admin) request.getSession().getAttribute("admin");
 		User usr = (User) request.getSession().getAttribute("user");
 		try {
@@ -80,7 +79,6 @@ public class HandlePosts extends HttpServlet {
 						files);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
