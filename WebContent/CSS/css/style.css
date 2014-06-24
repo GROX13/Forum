@@ -295,6 +295,7 @@ header {
 	width: 350px;
 	min-height: 400px;
 	margin-left: 10px;
+	background: url(../images/personal-info-sep.png) no-repeat left top;
 	padding: 20px 0 0 20px;
 }
 
@@ -328,6 +329,7 @@ header {
 	width: 300px;
 	min-height: 400px;
 	margin-left: 10px;
+	background: url(../images/personal-info-sep.png) no-repeat left top;
 	padding: 20px 0 0 20px;
 }
 
