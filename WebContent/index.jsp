@@ -12,6 +12,8 @@
 		<link rel="stylesheet" href="CSS/css/demo.css">
 		<link rel="stylesheet" href="CSS/css/sky-forms.css">
 		<link rel = "icon" href = "Icons/Wineass_W.ico" type = "icon">
+		
+		<script src = "Login/fblogin.js" type = "text/javascript"> </script>	
 	</head>
 	<body class="bg-red">
 		<div class="body body-s">
@@ -60,7 +62,8 @@
 				<footer>
 					<button type="submit" class="button">Log in</button>
 					<a href="registration.jsp" class="button button-secondary">Register</a>
-					
+					<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+					</fb:login-button>
 				</footer>
 			</form>
 			
