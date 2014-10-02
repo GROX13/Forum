@@ -1,10 +1,8 @@
 package forum.data.objects;
 
-import java.security.Timestamp;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -22,9 +20,6 @@ public class Warn {
 	private ArrayList<String> fields;
 	private ArrayList<String> clause;
 	private boolean warned = false;
-	private static final int MILLISECONDS_IN_SECOND = 1000;
-	private static final int SECONDS_IN_HOUR = 3600;
-
 	private DataBaseManager DBManager;
 
 	public Warn(int userID) {
@@ -149,7 +144,6 @@ public class Warn {
 		Date lastPostDate = lastPostResultSet.getDate(DataBaseInfo.MYSQL_POSTS_ADD_DATE);
 		Date currentPostDate = postDate;
 		int frequency = resultSet.getInt(DataBaseInfo.MYSQL_WARN_FREQUENCY);
-		long k = (currentPostDate.getTime() - lastPostDate.getTime());
 		long temp = ((currentPostDate.getTime() - lastPostDate.getTime())/60000)/60/24;
 		if(temp <= frequency)
 			return false;
