@@ -1,5 +1,5 @@
-Forum_Website
-=============
+Forum
+=====
 
 Our objective is to create a website where people can discuss interesting topics. However, not 
 only can they discuss themes, they can compare their profiles to friends, challenge friends 
